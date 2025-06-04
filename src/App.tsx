@@ -1,11 +1,14 @@
-import { Button } from '@/components/ui/button'
+import { Providers } from '@/app/providers'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
-function App() {
+export const App = () => {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center">
-      <Button>Click me</Button>
-    </div>
+    <Providers>
+      <div className="min-h-svh">
+        <div className="flex justify-end p-4">
+          <ConnectButton />
+        </div>
+      </div>
+    </Providers>
   )
 }
-
-export default App
