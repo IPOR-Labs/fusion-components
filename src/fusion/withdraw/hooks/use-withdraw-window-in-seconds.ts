@@ -1,7 +1,7 @@
 import { useReadContract } from 'wagmi';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
 import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
-import { useWithdrawManagerAddress } from '@/fusion/withdraw/hooks/use-withdraw-manager-address';
+import { useWithdrawManagerAddress } from './use-withdraw-manager-address';
 
 export const useWithdrawWindowInSeconds = () => {
   const {

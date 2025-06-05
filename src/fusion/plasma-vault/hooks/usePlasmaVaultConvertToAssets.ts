@@ -1,25 +1,31 @@
 import { keepPreviousData } from '@tanstack/react-query';
-import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
 import { BLOCK_INTERVAL } from '@/utils/constants';
+import { erc4626Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 
-export const useAccessManagerAddress = () => {
+interface Args {
+  shares: bigint | undefined;
+}
+
+export const usePlasmaVaultConvertToAssets = ({ shares }: Args) => {
   const {
     params: { chainId, plasmaVaultAddress },
   } = usePlasmaVault();
 
-  const result = useReadContract({
-    chainId,
+  const { data } = useReadContract({
     address: plasmaVaultAddress,
-    abi: plasmaVaultAbi,
-    functionName: 'getAccessManagerAddress',
+    abi: erc4626Abi,
+    functionName: 'convertToAssets',
+    args: [shares!],
+    chainId,
     query: {
+      enabled: shares !== undefined,
       refetchInterval: BLOCK_INTERVAL,
       staleTime: BLOCK_INTERVAL,
       placeholderData: keepPreviousData,
     },
   });
 
-  return result;
+  return data;
 };

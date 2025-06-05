@@ -1,11 +1,11 @@
 import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
 import { type TransactionStateHandlers } from '@/transactions/types';
+import { useWalletChainAddress } from '@/wallet/hooks';
 import { sendAppTransaction } from '@/transactions/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import type { ChainId } from '@/app/wagmi';
-import type { Address } from 'viem';
+import { type ChainId } from '@/app/wagmi';
+import { type Address } from 'viem';
 import { z } from 'zod';
-import { useAccount } from 'wagmi';
 
 interface Args {
   chainId: ChainId;
@@ -13,12 +13,14 @@ interface Args {
   transactionStateHandlers: TransactionStateHandlers;
 }
 
-export const usePlasmaVaultDeposit = ({
+export const usePlasmaVaultWithdraw = ({
   chainId,
   plasmaVaultAddress,
   transactionStateHandlers,
 }: Args) => {
-  const { address: beneficiary } = useAccount();
+  const beneficiary = useWalletChainAddress(chainId);
+
+  const enabled = Boolean(beneficiary);
 
   return useContractWriteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
@@ -33,15 +35,16 @@ export const usePlasmaVaultDeposit = ({
         parameters: {
           address: plasmaVaultAddress,
           abi: plasmaVaultAbi,
-          functionName: 'deposit',
-          args: [amount, beneficiary],
+          functionName: 'withdraw',
+          args: [amount, beneficiary, beneficiary],
           account: accountAddress,
         },
       });
     },
-    transactionKey: 'plasmaVaultDeposit',
+    transactionKey: 'plasmaVaultWithdraw',
     transactionStateHandlers,
     chainId,
+    enabled,
     payloadSchema,
   });
 };

@@ -1,6 +1,6 @@
 import { NUMBER_REGEX } from "@/utils/regex";
-import type { Address, Hex } from "viem";
-import { isAddress, isHex } from "viem";
+import type { Address } from "viem";
+import { isAddress } from "viem";
 import z from "zod";
 
 export const AddressTypeSchema = z.custom<Address>(

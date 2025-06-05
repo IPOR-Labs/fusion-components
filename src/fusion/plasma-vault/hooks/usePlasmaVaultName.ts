@@ -1,4 +1,4 @@
-import { plasmaVaultAbi } from '@/abi/plasma-vault-abi.abi';
+import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
 import { useReadContract } from 'wagmi';
 import { type Address } from 'viem';
