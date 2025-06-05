@@ -1,4 +1,6 @@
 import type { Preview } from '@storybook/react-vite'
+import '../src/index.css'
+import '@rainbow-me/rainbowkit/styles.css';
 
 const preview: Preview = {
   parameters: {

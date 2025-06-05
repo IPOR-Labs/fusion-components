@@ -2,9 +2,13 @@ import { arbitrum, base, mainnet } from 'viem/chains';
 import { http, cookieStorage, createConfig, createStorage } from 'wagmi'
 import { injected } from 'wagmi/connectors';
 
+export const chains = [mainnet, arbitrum, base] as const;
+
+export type ChainId = typeof chains[number]['id'];
+
 export function getConfig() {
   return createConfig({
-    chains: [mainnet, arbitrum, base],
+    chains,
     connectors: [
       injected(),
     ],
