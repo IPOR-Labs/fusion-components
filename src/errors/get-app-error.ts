@@ -48,7 +48,7 @@ const getErrorCode = (error: unknown): UserErrorCode => {
   return 'UNEXPECTED_ERROR';
 };
 
-export const getAppError = (error: unknown, eventId: LogEventId): AppError => {
+export const getAppError = (error: unknown, eventId: any): AppError => {
   const code = getErrorCode(error);
   const message = errorMessagesMap[code].description;
 

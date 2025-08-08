@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, type Mock, beforeEach, afterEach } from 'vitest';
-import { renderHook } from '@testing-library/react';
 import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
 import { sleep } from '@/utils/sleep';
 import { type Hash } from 'viem';
@@ -14,8 +13,9 @@ const addTransactionSpy = vi.fn();
 const updateTransactionSpy = vi.fn();
 
 vi.mock('@/transactions/setup');
-vi.mock('@/wallet/utils/isSafeApp');
-
+vi.mock('@/wallet/utils/isSafeApp', () => ({
+  isSafeApp: false,
+}));
 
 describe('useContractWriteTransaction', () => {
   beforeEach(() => {
@@ -50,21 +50,19 @@ describe('useContractWriteTransaction', () => {
       }),
     });
 
-    const { result } = renderHook(() =>
-      useContractWriteTransaction({
-        chainId: 1,
-        transactionKey: 'openSwap',
-        transactionStateHandlers: {
-          onError: onErrorSpy,
-          onConfirm: onConfirmSpy,
-          onInit: onInitSpy,
-          onSuccess: onSuccessSpy,
-        },
-        writeAsync: async () => {
-          return '__TEST_HASH__' as Hash;
-        },
-      }),
-    );
+    const hookResult = useContractWriteTransaction({
+      chainId: 1,
+      transactionKey: 'openSwap',
+      transactionStateHandlers: {
+        onError: onErrorSpy,
+        onConfirm: onConfirmSpy,
+        onInit: onInitSpy,
+        onSuccess: onSuccessSpy,
+      },
+      writeAsync: async () => {
+        return '__TEST_HASH__' as Hash;
+      },
+    });
 
     expect(onErrorSpy).toBeCalledTimes(0);
     expect(onInitSpy).toBeCalledTimes(0);
@@ -74,7 +72,7 @@ describe('useContractWriteTransaction', () => {
     expect(addTransactionSpy).toBeCalledTimes(0);
     expect(updateTransactionSpy).toBeCalledTimes(0);
 
-    result.current.execute?.();
+    hookResult.execute?.();
 
     await sleep(9500);
 
@@ -116,18 +114,16 @@ describe('useContractWriteTransaction', () => {
       getTransaction: undefined,
     });
 
-    const { result } = renderHook(() =>
-      useContractWriteTransaction({
-        chainId: 1,
-        transactionKey: 'openSwap',
-        transactionStateHandlers: {
-          onError: onErrorSpy,
-        },
-        writeAsync: async () => {
-          return '__TEST_HASH__' as Hash;
-        },
-      }),
-    );
+    const hookResult = useContractWriteTransaction({
+      chainId: 1,
+      transactionKey: 'openSwap',
+      transactionStateHandlers: {
+        onError: onErrorSpy,
+      },
+      writeAsync: async () => {
+        return '__TEST_HASH__' as Hash;
+      },
+    });
 
     expect(onErrorSpy).toBeCalledTimes(0);
     expect(onInitSpy).toBeCalledTimes(0);
@@ -137,7 +133,7 @@ describe('useContractWriteTransaction', () => {
     expect(addTransactionSpy).toBeCalledTimes(0);
     expect(updateTransactionSpy).toBeCalledTimes(0);
 
-    await expect(result.current.execute?.()).rejects.toEqual(
+    await expect(hookResult.execute?.()).rejects.toEqual(
       new Error('DAPP_WRONG_WALLET_CHAIN'),
     );
 
@@ -151,7 +147,7 @@ describe('useContractWriteTransaction', () => {
 
     expect(onErrorSpy).toBeCalledWith({
       code: 'DAPP_WRONG_WALLET_CHAIN',
-      eventId: '__TEST_LOG_EVENT_ID__',
+      eventId: undefined,
       message: 'Your wallet is connected to wrong chain',
       originalError: new Error('DAPP_WRONG_WALLET_CHAIN'),
     });

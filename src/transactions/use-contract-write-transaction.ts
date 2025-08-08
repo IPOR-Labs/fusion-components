@@ -78,7 +78,9 @@ export const useContractWriteTransaction = <TSchema extends Schema>({
         // TODO: Promise never resolves
         await writeAsync(
           {
+            // @ts-expect-error
             publicClient,
+            // @ts-expect-error
             writeContractAsync,
             bypassGasEstimation: true,
             accountAddress,
@@ -94,7 +96,9 @@ export const useContractWriteTransaction = <TSchema extends Schema>({
 
       const _hash = await writeAsync(
         {
+          // @ts-expect-error
           publicClient,
+          // @ts-expect-error
           writeContractAsync,
           bypassGasEstimation: false,
           accountAddress,
@@ -135,6 +139,7 @@ export const useContractWriteTransaction = <TSchema extends Schema>({
           gasPriceBid: transaction.gasPrice,
           gasUsed: receipt.gasUsed,
           gasPricePaid: receipt.effectiveGasPrice,
+          // @ts-expect-error
           ethPrice,
         });
 

@@ -1,6 +1,17 @@
 import '@testing-library/jest-dom';
 import { vi, beforeEach, afterEach } from 'vitest';
 
+// Ensure DOM environment is available
+if (typeof globalThis.document === 'undefined') {
+  const { JSDOM } = require('jsdom');
+  const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
+    url: 'http://localhost',
+  });
+  globalThis.document = dom.window.document;
+  globalThis.window = dom.window;
+  globalThis.navigator = dom.window.navigator;
+}
+
 process.env.TZ = 'UTC';
 
 Object.assign(global, { TextDecoder, TextEncoder });

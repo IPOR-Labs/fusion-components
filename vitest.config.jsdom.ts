@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import dynamicImport from 'vite-plugin-dynamic-import';
 import checker from 'vite-plugin-checker';
 
-export default defineConfig(() => ({
+export default defineConfig({
   plugins: [
     react(),
     tsconfigPaths(),
@@ -39,7 +39,12 @@ export default defineConfig(() => ({
     ],
     globals: true,
     environment: 'jsdom',
-    setupFiles: './src/setupTests.tsx',
+    setupFiles: ['./setup-tests.tsx'],
     css: true,
+    environmentOptions: {
+      jsdom: {
+        resources: 'usable',
+      },
+    },
   },
-}));
+});

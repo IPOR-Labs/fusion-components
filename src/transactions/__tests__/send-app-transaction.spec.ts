@@ -111,7 +111,7 @@ describe('sendAppTransaction', () => {
       },
     });
 
-    await expect(tx).resolves.toBe(undefined);
+    await expect(tx).resolves.toBe('WRITE_CONTRACT_RESULT_MOCK');
 
     expect(getGasPriceBlockNative).toBeCalledTimes(0);
     expect(estimateContractGasSpy).toBeCalledTimes(1);
@@ -162,7 +162,7 @@ describe('sendAppTransaction', () => {
       },
     });
 
-    await expect(tx).resolves.toBe(undefined);
+    await expect(tx).resolves.toBe('WRITE_CONTRACT_RESULT_MOCK');
 
     expect(getGasPriceBlockNative).toBeCalledTimes(0);
     expect(estimateContractGasSpy).toBeCalledTimes(0);

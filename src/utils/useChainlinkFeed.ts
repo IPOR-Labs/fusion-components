@@ -25,7 +25,7 @@ const useChainlinkFeed = ({ assetType }: Args) => {
 
 export const useChainlinkAssetUsdPrice = ({
   assetType,
-  enabled,
+  // enabled,
 }: {
   assetType: AssetType;
   enabled: boolean;
