@@ -1,0 +1,274 @@
+## Fusion Deposit/Withdraw Widget – Implementation Plan
+
+### Overview and scope
+
+This document captures the complete implementation plan for the embeddable Fusion Deposit/Withdraw widget per the host-integration spec. It consolidates all decisions and constraints agreed in this planning thread and defines a step-by-step execution plan the codebase will implement next.
+
+Scope includes the embed model and global API, build-time config, widget-only providers, Shadow DOM isolation, CSS strategy, unified UI (Deposit/Withdraw tabs), wallet integration via injected `WalletClient`, error handling, single-instance lifecycle, bundling outputs, and a RainbowKit-powered demo app for manual E2E testing. Business logic (smart contracts), tests, event API, and i18n are out of scope for now.
+
+### Decisions you made
+
+- **Global and outputs**
+  - **Global name**: `window.FusionDepositWidget`
+  - **Format**: IIFE via Vite library mode
+  - **Hashed outputs**: one JS and one CSS with content hashes
+
+- **Providers inside the widget**
+  - Include a minimal provider stack (no RainbowKit): `WagmiProvider` + `QueryClientProvider` + `TransactionsProvider` + `PlasmaVaultProvider` + widget-only `WidgetWalletBridge`.
+
+- **Wallet bridge**
+  - Provide `WidgetWalletBridge` to map an injected `WalletClient` and host `connect()` into the `useWallet()` shape used by the app’s flows. No RainbowKit in the widget.
+
+- **UI surface**
+  - Unified widget with tabs: Deposit (default) and Withdraw. No separate connect button. Primary CTA shows “Connect wallet” when needed and calls `config.connect()`; remains pending until host calls `controller.update({ walletClient })`.
+
+- **Shadow DOM and portals**
+  - Shadow DOM mode `open`. Radix Dialogs should portal into the Shadow Root (not `document.body`).
+
+- **Reads without wallet**
+  - Use public RPC via `wagmi` config for read-only state when no wallet is connected.
+
+- **Build-time constants**
+  - Hardcode in `src/widget.config.ts`:
+    - `chainId = base (8453)`
+    - `plasmaVaultAddress = "0x18d7fe241df221db1e240051b69fc5dbafae6c90"`
+    - Supported chains and transports
+
+- **Build entry and types**
+  - Add `src/widget/entry.ts` to expose the global initializer and lifecycle; add `src/widget/types.ts` for host TypeScript types.
+
+- **CSS**
+  - Dedicated widget CSS entry (e.g., `src/widget/styles.css`), auto-injected as `<link>` inside the Shadow Root. Resolve URL from the JS via Vite’s `?url` import.
+
+- **Demo**
+  - Location: `examples/rainbowkit/`
+  - Use RainbowKit in the demo only to supply a `WalletClient` to the widget
+  - Simple static server; a copy step mirrors hashed widget assets to demo aliases: `fusion-widget.js`, `fusion-widget.css`
+
+- **Tools**
+  - Vite library mode (IIFE), asset `?url` for CSS, small copy script to prepare demo aliases
+
+- **Error propagation**
+  - Call `onError(err)` for user-impacting failures only (tx/sign errors, network switch failures); do not report internal recoverable retries.
+
+- **Single-instance behavior**
+  - Calling `init()` replaces any existing instance (destroy then create new).
+
+- **Naming**
+  - Public symbol: `window.FusionDepositWidget` with `init`, `update`, `destroy`.
+
+- **License and README**
+  - Add `LICENSE` (MIT). Update `README.md` with embed snippet and demo instructions.
+
+- **Host constraints**
+  - Add an empty CSP in the demo and evolve rules as needed during manual testing.
+  - No SSR; client-side integration only.
+
+### Crucial aspects
+
+- Preserve isolation: Shadow DOM with external CSS `<link>`; avoid inline styles.
+- Bridge writes seamlessly: implement a `wagmi` connector over the injected `WalletClient` so existing `useWriteContract`-based flows keep working.
+- Keep `useWallet()` API shape for existing hooks (e.g., `useIsWrongWalletChain`, flows params) via `WidgetWalletBridge`.
+- Ensure Radix Dialogs portal into Shadow Root to avoid leaking styles/DOM.
+- Exclude RainbowKit and demo-only deps from the widget bundle.
+- Lifecycle correctness: single-instance guard, full cleanup on `destroy()`.
+
+### Considerations
+
+- The transaction flows rely on `wagmi` writes and `react-query`. We’ll keep those by providing the minimal providers and a custom connector; no refactor of transaction internals is planned.
+- The app’s RainbowKit usage remains intact for the app; the widget uses its own entry and providers without RainbowKit.
+
+### Public API
+
+- **Global**: `window.FusionDepositWidget`
+- **init(container, config): Controller**
+  - `container: HTMLElement | string` (selector must resolve)
+  - `config: { walletClient?: WalletClient | null; connect?: () => Promise<void>; onError?: (err: unknown) => void }`
+  - Returns `Controller`
+- **Controller**
+  - `update({ walletClient?, connect?, onError? })`: shallow-merge; ignore unknown keys
+  - `destroy()`: unmount React, clear Shadow Root, remove CSS link, detach listeners
+  - Single active instance; `init()` again destroys the current instance and creates a new one
+
+### Implementation steps
+
+1. Create build-time config
+   - **Title**: Build-time constants in `src/widget.config.ts`
+   - **Description**: Export `chainId`, `plasmaVaultAddress`, supported chains, and wagmi transports for the widget. Hard-coded per spec.
+   - **Acceptance criteria**:
+     - File `src/widget.config.ts` exists exporting constants and is imported by the widget providers.
+     - No runtime configuration for `chainId` or `plasmaVaultAddress` is required.
+   - **Notes**:
+     - Chains include at least `base`; transports can use public HTTP by default.
+
+2. Add widget entry and global initializer
+   - **Title**: `src/widget/entry.ts` exposing `window.FusionDepositWidget`
+   - **Description**: Implement `init`, `update`, `destroy`; manage single instance; resolve container; create Shadow Root; mount React root; inject CSS `<link>` using imported URL; wire `onError`.
+   - **Acceptance criteria**:
+     - Global `window.FusionDepositWidget` available after loading the built IIFE.
+     - `init()` mounts into Shadow Root; `update()` updates config; `destroy()` fully cleans up.
+     - Repeated `init()` replaces prior instance.
+   - **Notes**:
+     - Use `document.currentScript` or module URL to resolve CSS; with `?url`, the emitted URL is direct.
+
+3. Define widget types for hosts
+   - **Title**: `src/widget/types.ts` for Config and Controller
+   - **Description**: Export TypeScript types for host integrations to consume.
+   - **Acceptance criteria**:
+     - Types compile and match the runtime API.
+   - **Notes**:
+     - Keep narrow and stable; avoid leaking internal types.
+
+4. Implement minimal provider stack
+   - **Title**: `src/widget/WidgetProviders.tsx`
+   - **Description**: Compose `WagmiProvider` (configured from build-time constants), `QueryClientProvider`, `TransactionsProvider`, and `PlasmaVaultProvider` with fixed `chainId` and `plasmaVaultAddress`.
+   - **Acceptance criteria**:
+     - Widget content renders with all required contexts; read-only works without wallet.
+   - **Notes**:
+     - `WagmiProvider` should not include RainbowKit connectors.
+
+5. Bridge injected wallet to wagmi
+   - **Title**: `src/widget/ExternalWalletConnector.ts`
+   - **Description**: Implement a wagmi connector that uses the injected viem `WalletClient` for account/signing so `useWriteContract` works unchanged.
+   - **Acceptance criteria**:
+     - When `walletClient` is provided via `update()`, writes use it successfully.
+     - When `walletClient` is `null`/missing, writes are disabled and read-only persists.
+   - **Notes**:
+     - Auto-connect when present; treat `null` as disconnect.
+
+6. Provide a wallet context compatible with existing hooks
+   - **Title**: `src/widget/WidgetWalletBridge.tsx`
+   - **Description**: Expose a context matching `useWallet()` shape: `accountAddress`, `walletChainId`, `selectWallet` (calls `config.connect`), `changeChain` (using `walletClient` to switch/add chain), `blockExplorerUrl`, `isConnected`, etc.
+   - **Acceptance criteria**:
+     - Existing hooks (`useIsWrongWalletChain`, deposit/withdraw params) function without code changes.
+   - **Notes**:
+     - Keep parity with `src/wallet/context.tsx` data shape where used by flows.
+
+7. Make Radix Dialog portal Shadow DOM-aware
+   - **Title**: Portal container override via context
+   - **Description**: Edit `src/components/ui/dialog.tsx` to read a portal container from React context (default to `document.body`). Add `src/widget/DialogPortalProvider.tsx` to supply the Shadow Root as the portal target within the widget.
+   - **Acceptance criteria**:
+     - Dialog overlays/content render inside the widget Shadow Root.
+     - No DOM/CSS escape to the host page body.
+   - **Notes**:
+     - Avoid breaking existing app behavior by defaulting to `document.body` outside the widget.
+
+8. Build unified widget UI
+   - **Title**: `src/widget/WidgetApp.tsx` with tabs
+   - **Description**: Implement a small UI rendering Deposit/Withdraw tabs (default Deposit). Use the existing content/components, not the app dialogs. CTA logic: connect, switch network, or execute action.
+   - **Acceptance criteria**:
+     - Default tab is Deposit; Withdraw available.
+     - CTA behavior:
+       - No wallet: “Connect wallet” → calls `config.connect()`; stays “Connecting…” until `update({ walletClient })`.
+       - Wrong network: “Switch to CHAIN_NAME” → attempts `switchChain`, then `addChain` on failure; inline error + `onError` on failure.
+       - Ready: “Deposit” / “Withdraw” executes flows successfully.
+   - **Notes**:
+     - Remove any RainbowKit `useConnectModal` usage from widget paths.
+
+9. Create widget CSS and inject into Shadow Root
+   - **Title**: `src/widget/styles.css` + auto-link injection
+   - **Description**: Prepare CSS entry with needed Tailwind layers and theme tokens (either import `src/index.css` or include a minimal subset). In `entry.ts`, import via `?url` and inject a `<link>` into the Shadow Root.
+   - **Acceptance criteria**:
+     - One external CSS file is emitted with a content hash.
+     - CSS is linked inside the Shadow Root and no inline styles are used.
+   - **Notes**:
+     - Prefer reusing `src/index.css` initially to ensure visual parity.
+
+10. Configure Vite for library build
+    - **Title**: Vite IIFE library output with hashed filenames
+    - **Description**: Update `vite.config.ts` to build the widget from `src/widget/entry.ts` as an IIFE exposing `FusionDepositWidget`; ensure hashed file names for JS and CSS.
+    - **Acceptance criteria**:
+      - `pnpm build` (or `pnpm build:widget`) produces `fusion-widget.[hash].js` and matching CSS in `dist/`.
+    - **Notes**:
+      - Keep app dev server unaffected for `src/main.tsx`.
+
+11. Add demo app (RainbowKit only in demo)
+    - **Title**: `examples/rainbowkit/` demo
+    - **Description**: Plain static host page that includes `fusion-widget.js`/`.css` aliases, initializes the widget, and uses RainbowKit to obtain a `WalletClient` and call `controller.update({ walletClient })`.
+    - **Acceptance criteria**:
+      - Demo shows: connect/disconnect; simulate wallet changes; re-init/destroy; display last error; option to switch to wrong network.
+      - Demo served by a simple static server.
+    - **Notes**:
+      - Add a CSP `<meta>` initially empty; update rules incrementally during testing.
+
+12. Copy script for demo aliases
+    - **Title**: Copy hashed assets to `examples/rainbowkit/`
+    - **Description**: Add a small script `scripts/copy-widget-assets.(ts|js)` to copy the latest hashed JS/CSS from `dist/` to `examples/rainbowkit/fusion-widget.js` and `fusion-widget.css`.
+    - **Acceptance criteria**:
+      - Running `pnpm demo:prepare` updates the demo aliases.
+    - **Notes**:
+      - Guard against multiple matches; pick the latest by mtime.
+
+13. Package scripts and documentation
+    - **Title**: Scripts in `package.json` and README updates
+    - **Description**: Add scripts: `build:widget`, `demo:prepare`, `demo:serve`, `demo`. Update `README.md` with embed snippet and demo instructions. Add `LICENSE` (MIT).
+    - **Acceptance criteria**:
+      - Scripts run successfully and README clearly documents usage.
+      - LICENSE present with MIT text.
+    - **Notes**:
+      - Keep existing app scripts unchanged.
+
+14. Ensure RainbowKit exclusion from widget bundle
+    - **Title**: Keep RainbowKit out of the library build
+    - **Description**: Avoid importing `@rainbow-me/rainbowkit` in any `src/widget/**` files and ensure tree-shaking doesn’t pull demo deps.
+    - **Acceptance criteria**:
+      - Built IIFE has no RainbowKit code.
+    - **Notes**:
+      - RainbowKit stays only in `examples/rainbowkit/` and app code paths.
+
+15. Manual verification pass
+    - **Title**: E2E manual test against the demo
+    - **Description**: Validate read-only state without wallet, connect flow via `config.connect()`, wrong-network switch with fallback to `addChain`, deposit/withdraw flows, re-init/destroy stability, and error reporting.
+    - **Acceptance criteria**:
+      - All flows above work; `onError` fired only for user-impacting failures.
+    - **Notes**:
+      - Adjust demo CSP rules as needed (e.g., `connect-src` for RPC endpoints; `style-src`/`script-src` to allow local assets).
+
+### Files created/modified
+
+- **Create**
+  - `src/widget.config.ts`
+  - `src/widget/entry.ts`
+  - `src/widget/types.ts`
+  - `src/widget/WidgetProviders.tsx`
+  - `src/widget/ExternalWalletConnector.ts`
+  - `src/widget/WidgetWalletBridge.tsx`
+  - `src/widget/DialogPortalProvider.tsx`
+  - `src/widget/WidgetApp.tsx`
+  - `src/widget/tabs/DepositTab.tsx`
+  - `src/widget/tabs/WithdrawTab.tsx`
+  - `src/widget/styles.css`
+  - `examples/rainbowkit/index.html`
+  - `examples/rainbowkit/main.tsx`
+  - `examples/rainbowkit/App.tsx`
+  - `examples/rainbowkit/providers.tsx`
+  - `examples/rainbowkit/styles.css` (optional)
+  - `scripts/copy-widget-assets.(ts|js)`
+  - `LICENSE`
+
+- **Modify**
+  - `vite.config.ts` (add IIFE library build entry and hashed outputs)
+  - `src/components/ui/dialog.tsx` (support portal container override)
+  - `README.md` (embed snippet + demo docs)
+  - `package.json` (add `build:widget`, `demo:*` scripts)
+
+### Tools and helpers
+
+- Vite library mode (IIFE) for `src/widget/entry.ts` exposing `FusionDepositWidget`.
+- Vite asset `?url` import to get hashed CSS URL at runtime for Shadow Root `<link>` injection.
+- Small copy script to mirror hashed assets to demo aliases.
+- Simple static server to host `examples/rainbowkit/`.
+- Viem actions for `switchChain`/`addChain` via injected `WalletClient`.
+- Context-based portal override for Radix Dialog into Shadow Root.
+
+### Error policy
+
+- Call `config.onError(err)` only for user-impacting failures (tx/sign failures, network switch failures). Do not report internal, recoverable retries.
+- Show inline UI errors when appropriate (e.g., network switch fails).
+
+### Single-instance and lifecycle
+
+- Maintain a singleton controller reference inside the module.
+- `init()` destroys an existing instance (if any) and creates a new one.
+- `destroy()` unmounts React, clears Shadow Root content, removes CSS `<link>`, and detaches any listeners.
+
