@@ -1,21 +1,37 @@
-# Fusion components
+# Fusion Components
 
-We use `pnpm` as a package manager however for preview purposes it should run with any (`npm`, `yarn`).
+Use `pnpm` as a package manager.
 
-Install dependencies
+## Build Embeddable Fusion Deposit/Withdraw Widget
+
+Install dependencies, then build
 
 ```bash
 pnpm install
+pnpm build
 ```
 
-Run in dev mode
+The build emits `fusion-widget.[hash].js` and `fusion-widget.[hash].css` in `dist/`.
+
+Use it on a host page
+
+```html
+<fusion-deposit />
+<script src="/path/to/fusion-widget.[hash].js"></script>
+```
+
+# Development
+
+Install dependencies, then run in dev mode
 
 ```bash
+pnpm install
 pnpm dev
 ```
 
-Run in Storybook
+Or run in Storybook
 
 ```bash
+pnpm install
 pnpm sb
 ```

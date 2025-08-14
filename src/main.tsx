@@ -1,11 +1,9 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
 import './index.css'
-import '@rainbow-me/rainbowkit/styles.css';
-import { App } from './app'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+import { FusionDepositElement } from './widgets/fusion-deposit/fusion-deposit.element';
+
+const tagName = 'fusion-deposit';
+
+if (!customElements.get(tagName)) {
+  customElements.define(tagName, FusionDepositElement);
+}
