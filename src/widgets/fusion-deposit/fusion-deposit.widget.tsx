@@ -7,6 +7,7 @@ import { Providers } from '@/app/providers';
 import { PlasmaVaultProvider, usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DepositAsset } from '@/fusion/deposit/deposit-asset/deposit-asset';
+import { HybridWithdraw } from '@/fusion/withdraw/hybrid-withdraw/hybrid-withdraw';
 
 export interface Props extends FusionDepositConfig {
   chainId: ChainId;
@@ -59,7 +60,9 @@ const Content = () => {
           <TabsContent value="deposit">
             <DepositAsset />
           </TabsContent>
-          <TabsContent value="withdraw">Change your password here.</TabsContent>
+          <TabsContent value="withdraw">
+            <HybridWithdraw />
+          </TabsContent>
         </Tabs>
       </CardContent>
     </Card>
