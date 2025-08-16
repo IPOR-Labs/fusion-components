@@ -82,10 +82,11 @@ alwaysApply: false
 
 ### Demo page (manual E2E testing)
 
-- Location: `examples/basic/` (plain static host page).
+- Location: `examples/rainbowkit/` (vite project).
+- Each demo under `./examples/**` is a standalone app (separate `package.json`) used only for manual testing. Run its own scripts (`pnpm dev`, `pnpm build`, etc.) inside the demo folder.
 - Demo-only wallet integration: use `wagmi` + RainbowKit in the demo page (not bundled into the widget).
-- Referencing hashed files: a simple prepare step copies the latest built hashed assets to non-hashed aliases used by the demo (`fusion-widget.js`, `fusion-widget.css`).
-- Local serving: simple static server script to serve `examples/basic/`.
+- Referencing hashed files: manually copied and referenced in `index.html`.
+- Local serving: use vite.
 - Showcases:
   - Connect/disconnect via demo UI; pending state.
   - Simulate wallet changes with `controller.update({ walletClient })`.

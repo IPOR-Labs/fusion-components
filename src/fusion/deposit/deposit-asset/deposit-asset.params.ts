@@ -1,5 +1,5 @@
 import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
-import { useWallet } from '@/wallet/context';
+import { useWalletContext } from '@/wallet/context';
 import { useIsWrongWalletChain } from '@/wallet/hooks';
 import { useState } from 'react';
 import { useIsTxPending } from '@/transactions/hooks';
@@ -25,7 +25,7 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
   const {
     params: { plasmaVaultAddress, chainId },
   } = usePlasmaVault();
-  const { selectWallet, accountAddress, changeChain } = useWallet();
+  const { selectWallet, accountAddress, changeChain } = useWalletContext();
   const isWrongWalletChain = useIsWrongWalletChain(chainId);
 
   const assetAddress = usePlasmaVaultAssetAddress({ plasmaVaultAddress });

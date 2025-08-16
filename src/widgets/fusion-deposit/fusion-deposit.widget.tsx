@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import type { FusionDepositConfig } from './fusion-deposit.types'
 import { erc20Abi, type Address } from 'viem'
 import { useReadContract } from 'wagmi';
 import type { ChainId } from '@/app/wagmi';
@@ -8,22 +7,22 @@ import { PlasmaVaultProvider, usePlasmaVault } from '@/fusion/plasma-vault/plasm
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DepositAsset } from '@/fusion/deposit/deposit-asset/deposit-asset';
 import { HybridWithdraw } from '@/fusion/withdraw/hybrid-withdraw/hybrid-withdraw';
+import type { AppContextValue } from '@/app/app.context';
 
-export interface Props extends FusionDepositConfig {
+export interface Props {
   chainId: ChainId;
   address: Address;
+  appConfig: AppContextValue;
 }
 
 export const FusionDepositWidget = ({
   address,
   chainId,
-  connect,
-  onError,
-  walletClient,
+  appConfig,
 }: Props) => {
   return (
     <div className="dark">
-      <Providers>
+      <Providers appConfig={appConfig}>
         <PlasmaVaultProvider chainId={chainId} plasmaVaultAddress={address}>
           <Content />
         </PlasmaVaultProvider>

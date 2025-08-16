@@ -3,7 +3,7 @@ import { type ChainId } from '@/app/wagmi';
 import { BLOCK_INTERVAL } from '@/utils/constants';
 import { type Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
-import { useWallet } from '@/wallet/context';
+import { useWalletContext } from '@/wallet/context';
 
 interface Args {
   tokenAddress: Address;
@@ -16,7 +16,7 @@ export const useRevokeTokenAllowance = ({
   spender,
   chainId,
 }: Args) => {
-  const { accountAddress } = useWallet();
+  const { accountAddress } = useWalletContext();
 
   const { data: allowance } = useReadContract({
     address: tokenAddress,

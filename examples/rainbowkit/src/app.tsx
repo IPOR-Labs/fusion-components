@@ -21,14 +21,11 @@ export const App = () => {
   useEffect(() => {
     widgetRef.current?.update({
       walletClient,
-      onError: (e) => setLastError(e),
+      onError: (e: unknown) => setLastError(e),
       connect: async () => {
         openConnectModal?.();
       },
     });
-    return () => {
-      widgetRef.current?.destroy();
-    }
   }, [widgetRef.current, walletClient]);
 
   return (
@@ -40,6 +37,8 @@ export const App = () => {
       {/* @ts-expect-error */}
       <fusion-deposit
         ref={widgetRef}
+        address="0x45aa96f0b3188d47a1dafdbefce1db6b37f58216"
+        chain-id="8453"
       />
     </div>
   );

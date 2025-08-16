@@ -1,7 +1,7 @@
-import { useWallet } from './context';
+import { useWalletContext } from './context';
 
 export const useIsWrongWalletChain = (chainId: number): boolean => {
-  const { accountAddress, walletChainId } = useWallet();
+  const { accountAddress, walletChainId } = useWalletContext();
 
   if (!accountAddress || !walletChainId) {
     return false;
@@ -15,7 +15,7 @@ export const useIsWrongWalletChain = (chainId: number): boolean => {
 };
 
 export const useWalletChainAddress = (chainId: number) => {
-  const { accountAddress, walletChainId } = useWallet();
+  const { accountAddress, walletChainId } = useWalletContext();
 
   if (!accountAddress || !walletChainId) {
     return undefined;

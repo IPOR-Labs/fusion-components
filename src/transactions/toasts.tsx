@@ -4,7 +4,7 @@ import { formatNumber } from '@/utils/format-number';
 import { type Transaction } from '@/transactions/types';
 import { TX_TOAST_MESSAGE } from './messages';
 import { ONE_CENT } from '@/utils/constants';
-import { useWallet } from '@/wallet/context';
+import { useWalletContext } from '@/wallet/context';
 
 const TOAST_TIME = 10000;
 
@@ -41,7 +41,7 @@ export const transactionToastError = (tx: Transaction) => {
 
 const TransactionDescription = (tx: Transaction) => {
   const { hash, data } = tx;
-  const { blockExplorerUrl } = useWallet();
+  const { blockExplorerUrl } = useWalletContext();
 
   return (
     <>

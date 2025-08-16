@@ -4,74 +4,44 @@
 
 This document captures the complete implementation plan for the embeddable Fusion Deposit/Withdraw widget per the host-integration spec. It consolidates all decisions and constraints agreed in this planning thread and defines a step-by-step execution plan the codebase will implement next.
 
-Scope includes the embed model and global API, build-time config, widget-only providers, Shadow DOM isolation, CSS strategy, unified UI (Deposit/Withdraw tabs), wallet integration via injected `WalletClient`, error handling, single-instance lifecycle, bundling outputs, and a RainbowKit-powered demo app for manual E2E testing. Business logic (smart contracts), tests, event API, and i18n are out of scope for now.
+Scope includes the embed model and global API, build-time config, widget-only providers, Shadow DOM isolation, CSS strategy, unified UI (Deposit/Withdraw tabs), wallet integration via injected `WalletClient`, error handling, bundling outputs, and a RainbowKit-powered demo app for manual E2E testing. Business logic (smart contracts), tests, event API, and i18n are out of scope.
 
-### Decisions you made
+### Decisions
 
 - **Global and outputs**
-  - **Global name**: `window.FusionDepositWidget`
-  - **Format**: IIFE via Vite library mode
-  - **Hashed outputs**: one JS and one CSS with content hashes
+  - **Web component**: `<fusion-deposit>`
+  - **Format**: Vite bundle, no library mode
+  - **Hashed outputs**: one JS and one CSS with
 
 - **Providers inside the widget**
   - Include a minimal provider stack (no RainbowKit): `WagmiProvider` + `QueryClientProvider` + `TransactionsProvider` + `PlasmaVaultProvider` + widget-only `WidgetWalletBridge`.
-
-- **Wallet bridge**
-  - Provide `WidgetWalletBridge` to map an injected `WalletClient` and host `connect()` into the `useWallet()` shape used by the app’s flows. No RainbowKit in the widget.
 
 - **UI surface**
   - Unified widget with tabs: Deposit (default) and Withdraw. No separate connect button. Primary CTA shows “Connect wallet” when needed and calls `config.connect()`; remains pending until host calls `controller.update({ walletClient })`.
 
 - **Shadow DOM and portals**
-  - Shadow DOM mode `open`. Radix Dialogs should portal into the Shadow Root (not `document.body`).
+  - Shadow DOM mode `open`.
 
 - **Reads without wallet**
   - Use public RPC via `wagmi` config for read-only state when no wallet is connected.
 
-- **Build-time constants**
-  - Hardcode in `src/widget.config.ts`:
-    - `chainId = base (8453)`
-    - `plasmaVaultAddress = "0x18d7fe241df221db1e240051b69fc5dbafae6c90"`
-    - Supported chains and transports
-
-- **Build entry and types**
-  - Add `src/widget/entry.ts` to expose the global initializer and lifecycle; add `src/widget/types.ts` for host TypeScript types.
-
-- **CSS**
-  - Dedicated widget CSS entry (e.g., `src/widget/styles.css`), auto-injected as `<link>` inside the Shadow Root. Resolve URL from the JS via Vite’s `?url` import.
-
 - **Demo**
-  - Location: `examples/rainbowkit/`
-  - Use RainbowKit in the demo only to supply a `WalletClient` to the widget
-  - Simple static server; a copy step mirrors hashed widget assets to demo aliases: `fusion-widget.js`, `fusion-widget.css`
-
-- **Tools**
-  - Vite library mode (IIFE), asset `?url` for CSS, small copy script to prepare demo aliases
+  - Location: `/examples/rainbowkit/`
+  - Each demo under `/examples/**` is a standalone app with its own `package.json` and Vite config. Use the demo’s own scripts (e.g. `pnpm dev`) from that folder.
+  - Use RainbowKit in the first demo `/examples/rainbowkit/` only to supply a `WalletClient` to the widget
+  - A copy JS and CSS assets from `/dist/assets` onto demo assets: `/examples/rainbowkit//assets/`: `fusion-deposit-widget.css`, `fusion-deposit-widget.css`
 
 - **Error propagation**
   - Call `onError(err)` for user-impacting failures only (tx/sign errors, network switch failures); do not report internal recoverable retries.
 
-- **Single-instance behavior**
-  - Calling `init()` replaces any existing instance (destroy then create new).
-
-- **Naming**
-  - Public symbol: `window.FusionDepositWidget` with `init`, `update`, `destroy`.
-
-- **License and README**
-  - Add `LICENSE` (MIT). Update `README.md` with embed snippet and demo instructions.
-
 - **Host constraints**
-  - Add an empty CSP in the demo and evolve rules as needed during manual testing.
+  - Add an empty CSP in the demo Vite config and evolve rules as needed during manual testing.
   - No SSR; client-side integration only.
 
 ### Crucial aspects
 
-- Preserve isolation: Shadow DOM with external CSS `<link>`; avoid inline styles.
 - Bridge writes seamlessly: implement a `wagmi` connector over the injected `WalletClient` so existing `useWriteContract`-based flows keep working.
-- Keep `useWallet()` API shape for existing hooks (e.g., `useIsWrongWalletChain`, flows params) via `WidgetWalletBridge`.
-- Ensure Radix Dialogs portal into Shadow Root to avoid leaking styles/DOM.
-- Exclude RainbowKit and demo-only deps from the widget bundle.
-- Lifecycle correctness: single-instance guard, full cleanup on `destroy()`.
+- Lifecycle correctness: full cleanup on `destroy()`.
 
 ### Considerations
 
@@ -80,7 +50,7 @@ Scope includes the embed model and global API, build-time config, widget-only pr
 
 ### Public API
 
-- **Global**: `window.FusionDepositWidget`
+- **Web component**: `<fusion-deposit>`
 - **init(container, config): Controller**
   - `container: HTMLElement | string` (selector must resolve)
   - `config: { walletClient?: WalletClient | null; connect?: () => Promise<void>; onError?: (err: unknown) => void }`
@@ -184,31 +154,23 @@ Scope includes the embed model and global API, build-time config, widget-only pr
 
 11. Add demo app (RainbowKit only in demo)
     - **Title**: `examples/rainbowkit/` demo
-    - **Description**: Plain static host page that includes `fusion-widget.js`/`.css` aliases, initializes the widget, and uses RainbowKit to obtain a `WalletClient` and call `controller.update({ walletClient })`.
+    - **Description**: Separate Vite project  to serve host page that includes `fusion-widget.js`/`.css` aliases, initializes the widget, and uses RainbowKit to obtain a `WalletClient` and call `controller.update({ walletClient })`.
     - **Acceptance criteria**:
       - Demo shows: connect/disconnect; simulate wallet changes; re-init/destroy; display last error; option to switch to wrong network.
       - Demo served by a simple static server.
     - **Notes**:
       - Add a CSP `<meta>` initially empty; update rules incrementally during testing.
 
-12. Copy script for demo aliases
-    - **Title**: Copy hashed assets to `examples/rainbowkit/`
-    - **Description**: Add a small script `scripts/copy-widget-assets.(ts|js)` to copy the latest hashed JS/CSS from `dist/` to `examples/rainbowkit/fusion-widget.js` and `fusion-widget.css`.
-    - **Acceptance criteria**:
-      - Running `pnpm demo:prepare` updates the demo aliases.
-    - **Notes**:
-      - Guard against multiple matches; pick the latest by mtime.
-
-13. Package scripts and documentation
+12. Package scripts and documentation
     - **Title**: Scripts in `package.json` and README updates
-    - **Description**: Add scripts: `build:widget`, `demo:prepare`, `demo:serve`, `demo`. Update `README.md` with embed snippet and demo instructions. Add `LICENSE` (MIT).
+    - **Description**: Add script `build:widget`. Update `README.md` with embed snippet and demo instructions. Add `LICENSE` (MIT).
     - **Acceptance criteria**:
       - Scripts run successfully and README clearly documents usage.
       - LICENSE present with MIT text.
     - **Notes**:
       - Keep existing app scripts unchanged.
 
-14. Ensure RainbowKit exclusion from widget bundle
+13. Ensure RainbowKit exclusion from widget bundle
     - **Title**: Keep RainbowKit out of the library build
     - **Description**: Avoid importing `@rainbow-me/rainbowkit` in any `src/widget/**` files and ensure tree-shaking doesn’t pull demo deps.
     - **Acceptance criteria**:
@@ -216,7 +178,7 @@ Scope includes the embed model and global API, build-time config, widget-only pr
     - **Notes**:
       - RainbowKit stays only in `examples/rainbowkit/` and app code paths.
 
-15. Manual verification pass
+14. Manual verification pass
     - **Title**: E2E manual test against the demo
     - **Description**: Validate read-only state without wallet, connect flow via `config.connect()`, wrong-network switch with fallback to `addChain`, deposit/withdraw flows, re-init/destroy stability, and error reporting.
     - **Acceptance criteria**:

@@ -1,6 +1,6 @@
 import { keepPreviousData } from '@tanstack/react-query';
 import { BLOCK_INTERVAL } from '@/utils/constants';
-import { useWallet } from '@/wallet/context';
+import { useWalletContext } from '@/wallet/context';
 import { type Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
@@ -17,7 +17,7 @@ export const usePlasmaVaultAllowanceToToken = ({
   const {
     params: { plasmaVaultAddress, chainId },
   } = usePlasmaVault();
-  const { accountAddress } = useWallet();
+  const { accountAddress } = useWalletContext();
 
   const { data } = useReadContract({
     address: tokenAddress,

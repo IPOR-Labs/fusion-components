@@ -1,8 +1,8 @@
 import { useHasRole } from '@/fusion/access-manager/hooks/useHasRole';
-import { useWallet } from '@/wallet/context';
+import { useWalletContext } from '@/wallet/context';
 
 export const useIsAccountWhitelisted = () => {
-  const { accountAddress } = useWallet();
+  const { accountAddress } = useWalletContext();
 
   const { data: hasRoleData } = useHasRole({
     accountAddress,
