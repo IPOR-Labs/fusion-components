@@ -1,39 +1,32 @@
-import { PlasmaVaultDepositProvider } from './deposit-asset.context';
-import { Content } from './content';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useState } from 'react';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { PlasmaVaultDepositProvider, useDeposit } from '@/fusion/deposit/deposit-asset/deposit-asset.context';
+import { DepositBody } from '@/fusion/deposit/deposit-asset/components/DepositBody';
+import { WithdrawNote } from '@/fusion/withdraw/components/WithdrawNote';
 
-export const DepositDialog = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const closeModal = () => setIsModalOpen(false);
-  const { connectModalOpen } = useConnectModal();
-
+export const Deposit = () => {
   return (
-    <Dialog
-      open={isModalOpen}
-      onOpenChange={setIsModalOpen}
-      modal={!connectModalOpen}
-    >
-      <DialogTrigger asChild>
-        <Button variant="default">Deposit</Button>
-      </DialogTrigger>
-      <DialogContent
-        className="theme-fusion"
-        onInteractOutside={(e) => {
-          /**
-           * @dev We don't allow interaction outside the dialog
-           * to keep this dialog open when user clicks
-           * on the consent modal or wallet connect modal
-           */
-          e.preventDefault();
-        }}
-      >
-        <PlasmaVaultDepositProvider onConfirm={closeModal}>
-          <Content />
-        </PlasmaVaultDepositProvider>
-      </DialogContent>
-    </Dialog>
+    <PlasmaVaultDepositProvider>
+      <Content />
+    </PlasmaVaultDepositProvider>
   );
 };
+
+const Content = () => {
+  const {
+    params: {
+      isScheduledWithdrawal,
+      withdrawWindowInSeconds,
+      assetSymbol,
+    },
+  } = useDeposit();
+
+  return (
+    <>
+      <WithdrawNote
+        isScheduledWithdrawal={isScheduledWithdrawal}
+        withdrawWindowInSeconds={withdrawWindowInSeconds}
+        withdrawTokenSymbol={assetSymbol}
+      />
+      <DepositBody />
+    </>
+  )
+}

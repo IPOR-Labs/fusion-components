@@ -1,37 +1,72 @@
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import type { FusionDepositConfig } from './fusion-deposit.types'
+import { erc20Abi, type Address } from 'viem'
+import { useReadContract } from 'wagmi';
+import type { ChainId } from '@/app/wagmi';
+import { Providers } from '@/app/providers';
+import { PlasmaVaultProvider, usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Deposit } from '@/fusion/deposit/deposit-asset/deposit-asset';
 
-interface Props {
-  config: FusionDepositConfig
+export interface Props extends FusionDepositConfig {
+  chainId: ChainId;
+  address: Address;
 }
 
-export const FusionDepositWidget = ({ config }: Props) => {
-  const hasWallet = !!config.walletClient
-  const hasConnect = !!config.connect
-
+export const FusionDepositWidget = ({
+  address,
+  chainId,
+  connect,
+  onError,
+  walletClient,
+}: Props) => {
   return (
-    <div className="fusion-widget">
-      <h1 className="text-xl font-bold mb-4">Fusion Deposit/Withdraw Widget</h1>
-      
-      <div className="space-y-2 text-sm">
-        <div>Wallet Connected: {hasWallet ? 'Yes' : 'No'}</div>
-        <div>Connect Function: {hasConnect ? 'Available' : 'Not provided'}</div>
-        <div>Error Handler: {config.onError ? 'Available' : 'Not provided'}</div>
-      </div>
-
-      {!hasWallet && hasConnect && (
-        <button 
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          onClick={() => config.connect?.()}
-        >
-          Connect Wallet
-        </button>
-      )}
-
-      {hasWallet && (
-        <div className="mt-4 p-3 bg-green-100 border border-green-300 rounded">
-          <p className="text-green-800">Wallet is connected and ready for transactions!</p>
-        </div>
-      )}
-    </div>
+    <Providers>
+      <PlasmaVaultProvider chainId={chainId} plasmaVaultAddress={address}>
+        <Content />
+      </PlasmaVaultProvider>
+    </Providers>
   )
 }
+
+const Content = () => {
+  const {
+    params: {
+      chainId,
+      plasmaVaultAddress,
+    }
+  } = usePlasmaVault();
+  const { data: name } = useReadContract({
+    chainId,
+    address: plasmaVaultAddress,
+    abi: erc20Abi,
+    functionName: 'name',
+  });
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{name}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue="deposit">
+          <TabsList>
+            <TabsTrigger value="deposit">Deposit</TabsTrigger>
+            <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
+          </TabsList>
+          <TabsContent value="deposit">
+            <Deposit />
+          </TabsContent>
+          <TabsContent value="withdraw">Change your password here.</TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
+  )
+}
+
+
+
+
+
+
+		

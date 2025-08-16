@@ -1,9 +1,5 @@
-import './index.css'
-
-import { FusionDepositElement } from './widgets/fusion-deposit/fusion-deposit.element';
+import { FusionDepositWebComponent } from './widgets/fusion-deposit/fusion-deposit.web-component';
 
 const tagName = 'fusion-deposit';
 
-if (!customElements.get(tagName)) {
-  customElements.define(tagName, FusionDepositElement);
-}
+customElements.define(tagName, FusionDepositWebComponent);
