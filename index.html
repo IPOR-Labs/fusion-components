@@ -6,19 +6,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Fusion Components</title>
     <script defer type="module" src="/src/main.tsx"></script>
+    <style>
+      .widgets-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .widget {
+        max-width: 600px;
+      }
+    </style>
   </head>
   <body>
-    <fusion-deposit
-      address="0xc4c00d8b323f37527eeda27c87412378be9f68ec"
-      chain-id="8453"
-    ></fusion-deposit>
-    <fusion-deposit
-      address="0x45aa96f0b3188d47a1dafdbefce1db6b37f58216"
-      chain-id="8453"
-    ></fusion-deposit>
-    <fusion-deposit
-      address="0xa91267a25939b2b0f046013fbf9597008f7f014b"
-      chain-id="42161"
-    ></fusion-deposit>
+    <div class="widgets-list">
+      <fusion-deposit
+        class="widget"
+        address="0xc4c00d8b323f37527eeda27c87412378be9f68ec"
+        chain-id="8453"
+      ></fusion-deposit>
+      <fusion-deposit
+        class="widget"
+        address="0x45aa96f0b3188d47a1dafdbefce1db6b37f58216"
+        chain-id="8453"
+      ></fusion-deposit>
+      <fusion-deposit
+        class="widget"
+        address="0xa91267a25939b2b0f046013fbf9597008f7f014b"
+        chain-id="42161"
+      ></fusion-deposit>
+    </div>
   </body>
 </html>

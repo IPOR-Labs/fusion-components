@@ -1,11 +1,11 @@
-import { DepositForm } from './DepositForm';
+import { DepositAssetForm } from './deposit-asset-form';
 import { ErrorDialog } from '@/errors/components/ErrorDialog';
 import { ConfirmTransactionDialog } from '@/transactions/components/ConfirmTransactionDialog';
-import { RevokeUsdtAllowance } from '@/fusion/deposit/deposit-asset/components/RevokeUsdtAllowance';
-import { useDeposit } from '@/fusion/deposit/deposit-asset/deposit-asset.context';
+import { useDepositAssetContext } from '../deposit-asset.context';
+import { DepositAssetRevokeUsdtAllowance } from './deposit-asset-revoke-usdt-allowance';
 import { parseUnits } from 'viem';
 
-export const DepositBody = () => {
+export const DepositAssetBody = () => {
   const {
     params: { assetDecimals, setAllowanceFromEvent },
     state: {
@@ -15,7 +15,7 @@ export const DepositBody = () => {
       hideRevokeModal,
     },
     form,
-  } = useDeposit();
+  } = useDepositAssetContext();
   const { isConfirmingTransaction, error } = plasmaVaultDepositForm;
 
   const amountString = form.watch('amount');
@@ -26,8 +26,8 @@ export const DepositBody = () => {
 
   return (
     <>
-      <DepositForm />
-      <RevokeUsdtAllowance
+      <DepositAssetForm />
+      <DepositAssetRevokeUsdtAllowance
         isOpen={isRevokeModal}
         newUsdtAllowance={amount || 0n}
         onDone={hideRevokeModal}

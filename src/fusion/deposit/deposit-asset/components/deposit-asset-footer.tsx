@@ -1,10 +1,10 @@
 import { parseUnits } from 'viem';
-import { useDeposit } from '@/fusion/deposit/deposit-asset/deposit-asset.context';
+import { useDepositAssetContext } from '../deposit-asset.context';
 import { calcNeedsApproval } from '@/utils/calc-needs-approval';
-import { useIsSubmitDisabled } from '@/fusion/deposit/deposit-asset/deposit-asset.hooks';
+import { useIsSubmitDisabled } from '../deposit-asset.hooks';
 import { TransactionFormButtons } from '@/components/TransactionFormButtons';
 
-export const DepositFooter = () => {
+export const DepositAssetFooter = () => {
   const {
     params: {
       accountAddress,
@@ -19,7 +19,7 @@ export const DepositFooter = () => {
       isPending,
     },
     form,
-  } = useDeposit();
+  } = useDepositAssetContext();
 
   const amountString = form.watch('amount');
   const isSubmitDisabled = useIsSubmitDisabled();

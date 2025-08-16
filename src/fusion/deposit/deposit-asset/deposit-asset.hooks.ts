@@ -1,5 +1,5 @@
 import { formSchema } from '@/fusion/deposit/deposit-asset/deposit-asset.form';
-import { useDeposit } from '@/fusion/deposit/deposit-asset/deposit-asset.context';
+import { useDepositAssetContext } from './deposit-asset.context';
 import { parseUnits } from 'viem';
 import { calcNeedsApproval } from '@/utils/calc-needs-approval';
 import { getNeedsRevokeApproval } from '@/revokeAllowance/utils/getNeedsRevokeApproval';
@@ -10,7 +10,7 @@ const useNeedsRevokeBeforeApproval = () => {
   const {
     params: { chainId, assetAddress, allowance, assetDecimals },
     form,
-  } = useDeposit();
+  } = useDepositAssetContext();
 
   if (chainId !== mainnet.id) {
     return false;
@@ -36,7 +36,7 @@ export const useSubmit = () => {
     actions: { approve, deposit },
     form,
     state: { showRevokeModal },
-  } = useDeposit();
+  } = useDepositAssetContext();
 
   const needsRevokeBeforeApproval = useNeedsRevokeBeforeApproval();
 
@@ -84,7 +84,7 @@ export const useIsSubmitDisabled = () => {
   const {
     params: { canDeposit },
     form,
-  } = useDeposit();
+  } = useDepositAssetContext();
   const { isDirty, isValid } = form.formState;
 
   if (canDeposit === false) {

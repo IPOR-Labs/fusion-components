@@ -1,9 +1,9 @@
-import { useDeposit } from '@/fusion/deposit/deposit-asset/deposit-asset.context';
+import { useDepositAssetContext } from '../deposit-asset.context';
 import { AmountInput } from '@/fusion/markets/erc20/components/AmountInput';
 import { formatSignificant } from '@/utils/format-significant';
 import { parseUnits } from 'viem';
 
-export const DepositAmountInput = () => {
+export const DepositAssetAmountInput = () => {
   const {
     params: {
       assetBalance,
@@ -13,7 +13,7 @@ export const DepositAmountInput = () => {
       chainId,
       maxDeposit,
     },
-  } = useDeposit();
+  } = useDepositAssetContext();
 
   const validator = (value: string) => {
     if (maxDeposit === undefined || assetDecimals === undefined) {

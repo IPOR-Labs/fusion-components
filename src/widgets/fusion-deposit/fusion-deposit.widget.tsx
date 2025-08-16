@@ -6,7 +6,7 @@ import type { ChainId } from '@/app/wagmi';
 import { Providers } from '@/app/providers';
 import { PlasmaVaultProvider, usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Deposit } from '@/fusion/deposit/deposit-asset/deposit-asset';
+import { DepositAsset } from '@/fusion/deposit/deposit-asset/deposit-asset';
 
 export interface Props extends FusionDepositConfig {
   chainId: ChainId;
@@ -57,7 +57,7 @@ const Content = () => {
             <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
           </TabsList>
           <TabsContent value="deposit">
-            <Deposit />
+            <DepositAsset />
           </TabsContent>
           <TabsContent value="withdraw">Change your password here.</TabsContent>
         </Tabs>

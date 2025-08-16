@@ -1,12 +1,28 @@
-import { PlasmaVaultDepositProvider, useDeposit } from '@/fusion/deposit/deposit-asset/deposit-asset.context';
-import { DepositBody } from '@/fusion/deposit/deposit-asset/components/DepositBody';
+import { DepositAssetContext, useDepositAssetContext } from './deposit-asset.context';
+import { DepositAssetBody } from './components/deposit-asset-body';
+import { useContextState } from './deposit-asset.state';
+import { useParams } from './deposit-asset.params';
+import { useActions } from './deposit-asset.actions';
+import { useDepositForm } from './deposit-asset.form';
 import { WithdrawNote } from '@/fusion/withdraw/components/WithdrawNote';
 
-export const Deposit = () => {
+export const DepositAsset = () => {
+  const params = useParams({});
+  const state = useContextState({ params });
+  const actions = useActions({ params, state });
+  const form = useDepositForm();
+
   return (
-    <PlasmaVaultDepositProvider>
+    <DepositAssetContext.Provider
+      value={{
+        actions,
+        params,
+        state,
+        form,
+      }}
+    >
       <Content />
-    </PlasmaVaultDepositProvider>
+    </DepositAssetContext.Provider>
   );
 };
 
@@ -17,7 +33,7 @@ const Content = () => {
       withdrawWindowInSeconds,
       assetSymbol,
     },
-  } = useDeposit();
+  } = useDepositAssetContext();
 
   return (
     <>
@@ -26,7 +42,7 @@ const Content = () => {
         withdrawWindowInSeconds={withdrawWindowInSeconds}
         withdrawTokenSymbol={assetSymbol}
       />
-      <DepositBody />
+      <DepositAssetBody />
     </>
   )
 }

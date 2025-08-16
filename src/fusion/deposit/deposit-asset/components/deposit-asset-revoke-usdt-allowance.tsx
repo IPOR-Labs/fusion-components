@@ -17,7 +17,7 @@ interface Props {
   isOpen: boolean;
 }
 
-export const RevokeUsdtAllowance = (props: Props) => {
+export const DepositAssetRevokeUsdtAllowance = (props: Props) => {
   return (
     <Dialog open={props.isOpen}>
       <DialogContent
