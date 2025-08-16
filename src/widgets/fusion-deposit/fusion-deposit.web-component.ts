@@ -26,14 +26,14 @@ export class FusionDepositWebComponent extends HTMLElement {
   }
 
   static get observedAttributes(): string[] {
-    return ['address', 'chain-id'];
+    return ['data-address', 'data-chain-id'];
   }
 
   attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
-    if (name === 'address') {
+    if (name === 'data-address') {
       this.address = newValue as Address;
     }
-    if (name === 'chain-id') {
+    if (name === 'data-chain-id') {
       this.chainId = parseInt(newValue) as ChainId;
     }
     this.render();

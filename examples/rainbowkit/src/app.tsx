@@ -37,8 +37,8 @@ export const App = () => {
       {/* @ts-expect-error */}
       <fusion-deposit
         ref={widgetRef}
-        address="0x45aa96f0b3188d47a1dafdbefce1db6b37f58216"
-        chain-id="8453"
+        data-address="0x45aa96f0b3188d47a1dafdbefce1db6b37f58216"
+        data-chain-id="8453"
       />
     </div>
   );
