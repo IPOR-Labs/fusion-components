@@ -21,11 +21,13 @@ export const FusionDepositWidget = ({
   walletClient,
 }: Props) => {
   return (
-    <Providers>
-      <PlasmaVaultProvider chainId={chainId} plasmaVaultAddress={address}>
-        <Content />
-      </PlasmaVaultProvider>
-    </Providers>
+    <div className="dark">
+      <Providers>
+        <PlasmaVaultProvider chainId={chainId} plasmaVaultAddress={address}>
+          <Content />
+        </PlasmaVaultProvider>
+      </Providers>
+    </div>
   )
 }
 
@@ -63,10 +65,3 @@ const Content = () => {
     </Card>
   )
 }
-
-
-
-
-
-
-		

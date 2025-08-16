@@ -4,15 +4,14 @@ import { createRoot, type Root } from 'react-dom/client';
 import { FusionDepositWidget } from './fusion-deposit.widget';
 import type { FusionDepositConfig } from './fusion-deposit.types';
 import type { ChainId } from '@/app/wagmi';
-
 import styles from '@/index.css?inline';
 
 export class FusionDepositWebComponent extends HTMLElement {
   private root: Root;
-  private config: FusionDepositConfig;
   private address: Address | undefined = undefined;
   private chainId: ChainId | undefined = undefined;
-
+  private config: FusionDepositConfig;
+  
   constructor() {
     super();
     this.config = {
@@ -48,6 +47,10 @@ export class FusionDepositWebComponent extends HTMLElement {
     this.render();
   }
 
+  destroy() {
+    this.root.unmount();
+  }
+
   private render() {
     if (!this.chainId) return;
     if (!this.address) return;
@@ -63,10 +66,11 @@ export class FusionDepositWebComponent extends HTMLElement {
   }
 
   private applyStyles() {
+    if (!this.shadowRoot) {
+      throw new Error('Shadow root not found');
+    };
+
 		try {
-      if (!this.shadowRoot) {
-        throw new Error('Shadow root not found');
-      };
 			if ('adoptedStyleSheets' in Document.prototype && 'replaceSync' in CSSStyleSheet.prototype) {
 				const sheet = new CSSStyleSheet();
 				sheet.replaceSync(styles);
@@ -83,9 +87,13 @@ export class FusionDepositWebComponent extends HTMLElement {
   }
 
   private legacyApplyStyles() {
+    if (!this.shadowRoot) {
+      throw new Error('Shadow root not found');
+    };
+
     const styleEl = document.createElement('style');
     styleEl.textContent = styles;
-    this.shadowRoot?.appendChild(styleEl);
+    this.shadowRoot.appendChild(styleEl);
   }
 };
 

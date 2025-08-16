@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
 import { useAccountEffect, useWalletClient } from 'wagmi';
-import { FusionDepositElement } from '../../../src/widgets/fusion-deposit/fusion-deposit.element';
+import { FusionDepositWebComponent } from '../../../src/widgets/fusion-deposit/fusion-deposit.web-component';
 
 export const App = () => {
-  const widgetRef = useRef<FusionDepositElement | null>(null);
+  const widgetRef = useRef<FusionDepositWebComponent | null>(null);
   const [lastError, setLastError] = useState<unknown>(null);
 
   const { data: walletClient } = useWalletClient();
