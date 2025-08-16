@@ -8,9 +8,6 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "sb": "yarn storybook",
     "test": "vitest run --config ./vitest.config.jsdom.ts",
     "test:ci": "vitest run --config ./vitest.config.jsdom.ts",
     "test:watch": "vitest watch --config ./vitest.config.jsdom.ts",
@@ -47,13 +44,7 @@
     "zod": "3.25.51"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^4",
     "@eslint/js": "^9.25.0",
-    "@storybook/addon-a11y": "^9.0.4",
-    "@storybook/addon-docs": "^9.0.4",
-    "@storybook/addon-onboarding": "^9.0.4",
-    "@storybook/addon-vitest": "^9.0.4",
-    "@storybook/react-vite": "^9.0.4",
     "@testing-library/react": "16.3.0",
     "@types/node": "22.15.29",
     "@types/react": "^19.1.2",
