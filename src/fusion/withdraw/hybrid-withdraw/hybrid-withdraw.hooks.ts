@@ -1,6 +1,6 @@
 import { formatUnits, parseUnits } from 'viem';
 import { useHybridWithdrawContext } from './hybrid-withdraw.context';
-import { usePlasmaVaultConvertToShares } from '@/fusion/plasma-vault/hooks/usePlasmaVaultConvertToShares';
+import { useFusionVaultConvertToShares } from '@/fusion/plasma-vault/hooks/use-fusion-vault-convert-to-shares';
 import { minBigInt } from '@/utils/min-bigint';
 
 export const useIsScheduledWithdrawal = () => {
@@ -45,11 +45,17 @@ export const useAssetAmount = () => {
 
 export const useSubmit = () => {
   const {
-    actions: { withdraw, requestShares, requestMaxShares, maxRedeem },
+    params: { accountAddress },
+    actions: {
+      executeWithdraw,
+      executeRequestShares,
+      executeRequestMaxShares,
+      executeMaxRedeem,
+    },
     form,
   } = useHybridWithdrawContext();
   const amount = useAssetAmount();
-  const shares = usePlasmaVaultConvertToShares({
+  const shares = useFusionVaultConvertToShares({
     assets: amount,
   });
   const isScheduledWithdrawal = useIsScheduledWithdrawal();
@@ -60,7 +66,7 @@ export const useSubmit = () => {
 
     if (isScheduledWithdrawal) {
       if (form.getValues('isMax')) {
-        await requestMaxShares?.();
+        await executeRequestMaxShares?.();
         form.reset();
         return;
       }
@@ -69,18 +75,25 @@ export const useSubmit = () => {
         return;
       }
 
-      await requestShares?.({ shares });
+      await executeRequestShares?.({ shares });
       form.reset();
       return;
     }
 
     if (form.getValues('isMax')) {
-      await maxRedeem?.();
+      await executeMaxRedeem?.();
       form.reset();
       return;
     }
 
-    await withdraw?.({ amount });
+    if (accountAddress === undefined) {
+      throw new Error('accountAddress is undefined');
+    };
+
+    await executeWithdraw?.({ 
+      amount,
+      beneficiary: accountAddress,
+    });
     form.reset();
   };
 

@@ -1,15 +1,34 @@
 import { DepositAssetContext, useDepositAssetContext } from './deposit-asset.context';
 import { DepositAssetBody } from './components/deposit-asset-body';
-import { useContextState } from './deposit-asset.state';
 import { useParams } from './deposit-asset.params';
 import { useActions } from './deposit-asset.actions';
 import { useDepositForm } from './deposit-asset.form';
-import { WithdrawNote } from '@/fusion/withdraw/components/WithdrawNote';
+import { WithdrawNote } from '@/fusion/withdraw/components/withdraw-note';
+import { useTransactionState } from '@/app/transactions/hooks/use-transaction-state';
+import { erc20Abi, parseEventLogs } from 'viem';
 
 export const DepositAsset = () => {
   const params = useParams({});
-  const state = useContextState({ params });
-  const actions = useActions({ params, state });
+  const approveTxState = useTransactionState({
+    onSuccess: ({ receipt }) => {
+      const logs = parseEventLogs({
+        abi: erc20Abi,
+        eventName: 'Approval',
+        logs: receipt.logs,
+      });
+      const event = logs[0];
+      if (event) {
+        const newAllowance = event.args.value;
+        params.setAllowanceFromEvent(newAllowance);
+      }
+    },
+  },);
+  const depositTxState = useTransactionState();
+  const actions = useActions({ 
+    params,
+    approveTxState,
+    depositTxState,
+  });
   const form = useDepositForm();
 
   return (
@@ -17,8 +36,9 @@ export const DepositAsset = () => {
       value={{
         actions,
         params,
-        state,
         form,
+        approveTxState,
+        depositTxState,
       }}
     >
       <Content />

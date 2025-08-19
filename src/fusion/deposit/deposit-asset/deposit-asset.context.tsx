@@ -2,13 +2,14 @@ import { createContext, useContext } from 'react';
 import { type Actions } from './deposit-asset.actions';
 import { type Params } from './deposit-asset.params';
 import { type DepositForm } from './deposit-asset.form';
-import { type ContextState } from './deposit-asset.state';
+import type { TransactionState } from '@/app/transactions/hooks/use-transaction-state';
 
 interface ContextData {
   params: Params;
   actions: Actions;
-  state: ContextState;
   form: DepositForm;
+  approveTxState: TransactionState;
+  depositTxState: TransactionState;
 }
 
 export const DepositAssetContext = createContext<ContextData | null>(null);

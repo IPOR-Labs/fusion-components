@@ -1,22 +1,16 @@
 import { DepositAssetForm } from './deposit-asset-form';
-import { ErrorDialog } from '@/errors/components/ErrorDialog';
-import { ConfirmTransactionDialog } from '@/transactions/components/ConfirmTransactionDialog';
 import { useDepositAssetContext } from '../deposit-asset.context';
 import { DepositAssetRevokeUsdtAllowance } from './deposit-asset-revoke-usdt-allowance';
 import { parseUnits } from 'viem';
+import { TransactionFeedback } from '@/app/transactions/components/transaction-feedback';
 
 export const DepositAssetBody = () => {
   const {
-    params: { assetDecimals, setAllowanceFromEvent },
-    state: {
-      plasmaVaultDepositForm,
-      dismissError,
-      isRevokeModal,
-      hideRevokeModal,
-    },
+    params: { assetDecimals, setAllowanceFromEvent, isRevokeModal, hideRevokeModal },
     form,
+    approveTxState,
+    depositTxState,
   } = useDepositAssetContext();
-  const { isConfirmingTransaction, error } = plasmaVaultDepositForm;
 
   const amountString = form.watch('amount');
 
@@ -33,8 +27,8 @@ export const DepositAssetBody = () => {
         onDone={hideRevokeModal}
         onUpdateAllowance={setAllowanceFromEvent}
       />
-      <ConfirmTransactionDialog isOpen={isConfirmingTransaction} />
-      <ErrorDialog error={error} onDismiss={dismissError} />
+      <TransactionFeedback transactionState={approveTxState} />
+      <TransactionFeedback transactionState={depositTxState} />
     </>
   );
 };

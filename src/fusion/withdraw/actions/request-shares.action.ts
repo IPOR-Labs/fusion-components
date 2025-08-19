@@ -1,11 +1,11 @@
-import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
-import { type TransactionStateHandlers } from '@/transactions/types';
-import { sendAppTransaction } from '@/transactions/send-app-transaction';
+import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
+import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { type ChainId } from '@/app/wagmi';
 import { z } from 'zod';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
 import { type Address } from 'viem';
-import { isNonZeroAddress } from '@/utils/isNonZeroAddress';
+import { isNonZeroAddress } from '@/utils/is-non-zero-address';
 
 interface Args {
   chainId: ChainId;
@@ -13,7 +13,7 @@ interface Args {
   transactionStateHandlers: TransactionStateHandlers;
 }
 
-export const useWithdrawManagerRequestShares = ({
+export const useRequestShares = ({
   chainId,
   withdrawManagerAddress,
   transactionStateHandlers,
@@ -37,7 +37,6 @@ export const useWithdrawManagerRequestShares = ({
         },
       });
     },
-    transactionKey: 'withdrawManagerRequest',
     transactionStateHandlers,
     chainId,
     enabled: isNonZeroAddress(withdrawManagerAddress),

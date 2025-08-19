@@ -1,17 +1,18 @@
 import { keepPreviousData } from '@tanstack/react-query';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
 import { BLOCK_INTERVAL } from '@/utils/constants';
 import { useReadContract } from 'wagmi';
+import { useAppContext } from '@/app/app.context';
 
 export const useAccessManagerAddress = () => {
   const {
-    params: { chainId, plasmaVaultAddress },
-  } = usePlasmaVault();
+    chainId,
+    fusionVaultAddress,
+  } = useAppContext();
 
   const result = useReadContract({
     chainId,
-    address: plasmaVaultAddress,
+    address: fusionVaultAddress,
     abi: plasmaVaultAbi,
     functionName: 'getAccessManagerAddress',
     query: {

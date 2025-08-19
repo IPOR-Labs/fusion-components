@@ -2,7 +2,7 @@ import { createElement, type ReactElement } from 'react';
 import type { Address } from 'viem';
 import { createRoot, type Root } from 'react-dom/client';
 import { FusionDepositWidget } from './fusion-deposit.widget';
-import type { AppContextValue } from '@/app/app.context';
+import type { AppConfig } from '@/app/app.context';
 import type { ChainId } from '@/app/wagmi';
 import styles from '@/index.css?inline';
 
@@ -10,7 +10,7 @@ export class FusionDepositWebComponent extends HTMLElement {
   private root: Root;
   private address: Address | undefined = undefined;
   private chainId: ChainId | undefined = undefined;
-  private config: AppContextValue;
+  private config: AppConfig;
   
   constructor() {
     super();
@@ -22,7 +22,6 @@ export class FusionDepositWebComponent extends HTMLElement {
     const shadow = this.attachShadow({ mode: 'open' });
     this.root = createRoot(shadow);
     this.applyStyles();
-    this.render();
   }
 
   static get observedAttributes(): string[] {
@@ -39,7 +38,7 @@ export class FusionDepositWebComponent extends HTMLElement {
     this.render();
   }
 
-  update(config: Partial<AppContextValue>) {
+  update(config: Partial<AppConfig>) {
     this.config = {
       ...this.config,
       ...config,
@@ -54,8 +53,8 @@ export class FusionDepositWebComponent extends HTMLElement {
       FusionDepositWidget,
       {
         chainId: this.chainId,
-        address: this.address,
-        appConfig: this.config,
+        fusionVaultAddress: this.address,
+        ...this.config,
       }
     );
     this.root.render(element);

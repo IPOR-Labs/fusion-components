@@ -12,7 +12,7 @@ import { intervalToDuration } from 'date-fns';
 import { formatDuration } from 'date-fns';
 import { addSeconds } from 'date-fns';
 import { format } from 'date-fns';
-import { getNow } from '@/utils/getNow';
+import { getNow } from '@/utils/get-now';
 import { DATE_FORMAT_WITH_HOUR } from '@/utils/constants';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { formatSignificant } from '@/utils/format-significant';

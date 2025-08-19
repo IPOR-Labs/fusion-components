@@ -1,17 +1,16 @@
 import { HybridWithdrawContext } from './hybrid-withdraw.context';
 import { useParams } from './hybrid-withdraw.params';
-import { useTransactionState } from '@/transactions/useTransactionState';
+import { useTransactionState } from '@/app/transactions/hooks/use-transaction-state';
 import { useActions } from './hybrid-withdraw.actions';
 import { useHybridWithdrawForm } from './hybrid-withdraw.form';
 import { useHybridWithdrawContext } from './hybrid-withdraw.context';
-import { ConfirmTransactionDialog } from '@/transactions/components/ConfirmTransactionDialog';
-import { ErrorDialog } from '@/errors/components/ErrorDialog';
 import { HybridWithdrawForm } from './components/hybrid-withdraw-form';
+import { TransactionFeedback } from '@/app/transactions/components/transaction-feedback';
 
 export const HybridWithdraw = () => {
   const params = useParams({});
-  const state = useTransactionState();
-  const actions = useActions({ params, state });
+  const txState = useTransactionState();
+  const actions = useActions({ params, txState });
   const form = useHybridWithdrawForm();
 
   return (
@@ -19,7 +18,7 @@ export const HybridWithdraw = () => {
       value={{
         params,
         actions,
-        state,
+        txState,
         form,
       }}
     >
@@ -30,15 +29,13 @@ export const HybridWithdraw = () => {
 
 const HybridWithdrawContent = () => {
   const {
-    state: { txState, dismissError },
+    txState
   } = useHybridWithdrawContext();
-  const { isConfirming, error } = txState;
 
   return (
     <>
       <HybridWithdrawForm />
-      <ConfirmTransactionDialog isOpen={isConfirming} />
-      <ErrorDialog error={error} onDismiss={dismissError} />
+      <TransactionFeedback transactionState={txState} />
     </>
   );
 };

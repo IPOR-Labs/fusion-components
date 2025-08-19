@@ -2,9 +2,9 @@ import { formSchema } from '@/fusion/deposit/deposit-asset/deposit-asset.form';
 import { useDepositAssetContext } from './deposit-asset.context';
 import { parseUnits } from 'viem';
 import { calcNeedsApproval } from '@/utils/calc-needs-approval';
-import { getNeedsRevokeApproval } from '@/revokeAllowance/utils/getNeedsRevokeApproval';
+import { getNeedsRevokeApproval } from '@/app/allowance/utils/get-needs-revoke-approval';
 import { mainnet } from 'viem/chains';
-import { USDT_ADDRESS } from '@/fusion/markets/erc20/erc20.addresses';
+import { USDT_ADDRESS } from '@/utils/erc20.addresses';
 
 const useNeedsRevokeBeforeApproval = () => {
   const {
@@ -32,10 +32,9 @@ const useNeedsRevokeBeforeApproval = () => {
 
 export const useSubmit = () => {
   const {
-    params: { allowance, assetAddress, assetDecimals },
-    actions: { approve, deposit },
+    params: { fusionVaultAddress, allowance, assetAddress, assetDecimals, accountAddress, showRevokeModal },
+    actions: { executeApprove, executeDeposit },
     form,
-    state: { showRevokeModal },
   } = useDepositAssetContext();
 
   const needsRevokeBeforeApproval = useNeedsRevokeBeforeApproval();
@@ -66,14 +65,23 @@ export const useSubmit = () => {
         return;
       }
 
-      await approve?.({
+      await executeApprove?.({
         amount,
         assetAddress,
+        fusionVaultAddress,
       });
       return;
     }
 
-    await deposit?.({ amount });
+    if (accountAddress === undefined) {
+      throw new Error('accountAddress is undefined');
+    }
+
+    await executeDeposit?.({
+      amount,
+      fusionVaultAddress,
+      beneficiary: accountAddress,
+    });
     form.reset();
   };
 

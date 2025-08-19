@@ -5,10 +5,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { USDT_ADDRESS } from '@/fusion/markets/erc20/erc20.addresses';
-import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
-import { RevokeAllowance } from '@/revokeAllowance';
+import { USDT_ADDRESS } from '@/utils/erc20.addresses';
+import { RevokeAllowance } from '@/app/allowance/revoke-allowance/revoke-allowance';
 import { mainnet } from 'viem/chains';
+import { useAppContext } from '@/app/app.context';
 
 interface Props {
   newUsdtAllowance: bigint;
@@ -40,14 +40,15 @@ export const DepositAssetRevokeUsdtAllowance = (props: Props) => {
 
 const Content = ({ newUsdtAllowance, onDone, onUpdateAllowance }: Props) => {
   const {
-    params: { chainId, plasmaVaultAddress },
-  } = usePlasmaVault();
+    chainId,
+    fusionVaultAddress,
+  } = useAppContext();
 
   return (
     <RevokeAllowance
       chainId={chainId}
       tokenAddress={USDT_ADDRESS[chainId]}
-      spender={plasmaVaultAddress}
+      spender={fusionVaultAddress}
       newAllowance={newUsdtAllowance}
       onDone={onDone}
       onUpdateAllowance={onUpdateAllowance}

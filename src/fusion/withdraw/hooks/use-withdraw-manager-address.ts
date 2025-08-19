@@ -1,37 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
 import { usePublicClient } from 'wagmi';
-import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
-import { type Address, zeroAddress } from 'viem';
+import { zeroAddress } from 'viem';
 import { AddressTypeSchema } from '@/utils/schema';
-import { isNonZeroAddress } from '@/utils/isNonZeroAddress';
-import { substrateToAddress } from '@/fusion/substrates/utils/substrate-to-address';
+import { isNonZeroAddress } from '@/utils/is-non-zero-address';
+import { substrateToAddress } from '@/utils/substrate-to-address';
+import { useAppContext } from '@/app/app.context';
 
 const WITHDRAW_MANAGER_SLOT =
   '0xb37e8684757599da669b8aea811ee2b3693b2582d2c730fab3f4965fa2ec3e11';
 
-interface Args {
-  plasmaVaultAddress: Address | undefined;
-}
-
-export const useWithdrawManagerAddress = ({ plasmaVaultAddress }: Args) => {
+export const useWithdrawManagerAddress = () => {
   const {
-    params: { chainId },
-  } = usePlasmaVault();
+    chainId,
+    fusionVaultAddress,
+  } = useAppContext();
   const publicClient = usePublicClient({ chainId });
 
   const { data: withdrawManagerAddress } = useQuery({
-    queryKey: ['useWithdrawManagerAddress', chainId, plasmaVaultAddress],
+    queryKey: ['useWithdrawManagerAddress', chainId, fusionVaultAddress],
     queryFn: async () => {
       if (publicClient === undefined) {
         throw new Error('publicClient is undefined');
       }
 
-      if (plasmaVaultAddress === undefined) {
+      if (fusionVaultAddress === undefined) {
         throw new Error('plasmaVaultAddress is undefined');
       }
 
       const bytes32Data = await publicClient.getStorageAt({
-        address: plasmaVaultAddress,
+        address: fusionVaultAddress,
         slot: WITHDRAW_MANAGER_SLOT,
       });
 
@@ -55,7 +52,7 @@ export const useWithdrawManagerAddress = ({ plasmaVaultAddress }: Args) => {
        */
       return zeroAddress;
     },
-    enabled: publicClient !== undefined && plasmaVaultAddress !== undefined,
+    enabled: publicClient !== undefined && fusionVaultAddress !== undefined,
   });
 
   return withdrawManagerAddress;

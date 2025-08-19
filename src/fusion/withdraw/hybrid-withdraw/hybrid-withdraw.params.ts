@@ -1,16 +1,14 @@
-import { useWalletContext } from '@/wallet/context';
-import { useIsWrongWalletChain } from '@/wallet/hooks';
-import { useIsTxPending } from '@/transactions/hooks';
-import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
-import { usePlasmaVaultAssetDecimals } from '@/fusion/plasma-vault/hooks/usePlasmaVaultAssetDecimals';
-import { usePlasmaVaultAssetSymbol } from '@/fusion/plasma-vault/hooks/usePlasmaVaultAssetSymbol';
-import { useAccountBalanceInPlasmaVault } from '@/fusion/plasma-vault/hooks/useAccountBalanceInPlasmaVault';
+import { useFusionVaultAssetDecimals } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-decimals';
+import { useFusionVaultAssetSymbol } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-symbol';
+import { useAccountBalanceInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-balance-in-fusion-vault';
 import { useWithdrawManagerAddress } from '../hooks/use-withdraw-manager-address';
 import { useWithdrawWindowInSeconds } from '../hooks/use-withdraw-window-in-seconds';
 import { useIsAccountScheduledWithdraw } from '../hooks/use-is-account-scheduled-withdraw';
-import { usePlasmaVaultAssetAddress } from '@/fusion/plasma-vault/hooks/usePlasmaVaultAssetAddress';
+import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
 import { useWithdrawManagerFee } from '../hooks/use-withdraw-manager-fee';
 import { useMaxInstantWithdrawAmount } from '../hooks/use-max-instant-withdraw-amount';
+import { useAppContext } from '@/app/app.context';
+import { useIsWrongWalletChain } from '@/app/wallet/hooks';
 
 interface Args {
   onConfirm?: () => void;
@@ -18,36 +16,26 @@ interface Args {
 
 export const useParams = ({ onConfirm }: Args) => {
   const {
-    params: { plasmaVaultAddress, chainId },
-  } = usePlasmaVault();
-  const { selectWallet, accountAddress, changeChain } = useWalletContext();
+    chainId,
+    fusionVaultAddress,
+    connect,
+    walletClient,
+  } = useAppContext();
   const isWrongWalletChain = useIsWrongWalletChain(chainId);
+  const accountAddress = walletClient?.account?.address;
+  const switchChain = walletClient?.switchChain;
 
-  const assetDecimals = usePlasmaVaultAssetDecimals({
-    plasmaVaultAddress,
-  });
-  const assetSymbol = usePlasmaVaultAssetSymbol();
-  const assetAddress = usePlasmaVaultAssetAddress({
-    plasmaVaultAddress,
-  });
-  const balanceToWithdraw = useAccountBalanceInPlasmaVault();
-  const isPendingMaxRedeem = useIsTxPending('plasmaVaultMaxRedeem');
-  const isPendingWithdraw = useIsTxPending('plasmaVaultWithdraw');
-  const isPending = isPendingMaxRedeem || isPendingWithdraw;
-  const withdrawManagerAddress = useWithdrawManagerAddress({
-    plasmaVaultAddress,
-  });
+  const assetDecimals = useFusionVaultAssetDecimals();
+  const assetSymbol = useFusionVaultAssetSymbol();
+  const assetAddress = useFusionVaultAssetAddress();
+  const balanceToWithdraw = useAccountBalanceInFusionVault();
+  const withdrawManagerAddress = useWithdrawManagerAddress();
   const withdrawWindowInSeconds = useWithdrawWindowInSeconds();
-  const isWithdrawRequestPending = useIsAccountScheduledWithdraw({
-    accountAddress,
-    plasmaVaultAddress,
-  });
+  const isWithdrawRequestPending = useIsAccountScheduledWithdraw();
   const withdrawFee = useWithdrawManagerFee({
-    plasmaVaultAddress,
     feeType: 'WITHDRAW_FEE',
   });
   const requestFee = useWithdrawManagerFee({
-    plasmaVaultAddress,
     feeType: 'REQUEST_FEE',
   });
 
@@ -55,17 +43,16 @@ export const useParams = ({ onConfirm }: Args) => {
 
   return {
     chainId,
-    plasmaVaultAddress,
+    fusionVaultAddress,
     assetAddress,
     assetDecimals,
     assetSymbol,
     balanceToWithdraw,
     isWrongWalletChain,
-    switchChain: () => changeChain(chainId),
+    switchChain: () => switchChain?.({ id: chainId }),
     accountAddress,
-    selectWallet,
+    connect,
     onConfirm,
-    isPending,
     withdrawManagerAddress,
     withdrawWindowInSeconds,
     isWithdrawRequestPending,

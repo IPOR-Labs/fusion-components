@@ -8,18 +8,21 @@ export const DepositAssetFooter = () => {
   const {
     params: {
       accountAddress,
-      isApproving,
       allowance,
       chainId,
       isWrongWalletChain,
       assetDecimals,
       canDeposit,
-      selectWallet,
+      connect,
       switchChain,
-      isPending,
     },
     form,
+    approveTxState,
+    depositTxState,
   } = useDepositAssetContext();
+
+  const isApproving = approveTxState.txStatus.type === 'pending';
+  const isPending = depositTxState.txStatus.type === 'pending';
 
   const amountString = form.watch('amount');
   const isSubmitDisabled = useIsSubmitDisabled();
@@ -44,7 +47,7 @@ export const DepositAssetFooter = () => {
         transactionSubmitButtonText="Deposit"
         isWrongWalletChain={isWrongWalletChain}
         chainId={chainId}
-        selectWallet={selectWallet}
+        selectWallet={connect}
         switchChain={switchChain}
         isLoading={isPending}
         approvalProps={{

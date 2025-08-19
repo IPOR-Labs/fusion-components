@@ -1,13 +1,19 @@
+import type { ChainId } from '@/app/wagmi';
 import { createContext, useContext } from 'react';
-import type { WalletClient } from 'viem'
+import type { Address, WalletClient } from 'viem';
 
-export interface AppContextValue {
+export interface AppConfig {
   /** Optional viem WalletClient for wallet operations */
   walletClient?: WalletClient | undefined
   /** Function to call when wallet connection is requested */
   connect?: () => Promise<void>
   /** Error handler for user-impacting failures */
   onError?: (err: unknown) => void
+}
+
+export interface AppContextValue extends AppConfig {
+  chainId: ChainId;
+  fusionVaultAddress: Address;
 }
 
 export const AppContext = createContext<AppContextValue | null>(null);

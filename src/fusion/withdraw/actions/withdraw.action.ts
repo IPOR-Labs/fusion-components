@@ -1,39 +1,31 @@
-import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
-import { type TransactionStateHandlers } from '@/transactions/types';
-import { useWalletChainAddress } from '@/wallet/hooks';
-import { sendAppTransaction } from '@/transactions/send-app-transaction';
+import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
+import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { type ChainId } from '@/app/wagmi';
 import { type Address } from 'viem';
 import { z } from 'zod';
+import { AddressTypeSchema } from '@/utils/schema';
 
 interface Args {
   chainId: ChainId;
-  plasmaVaultAddress: Address;
+  fusionVaultAddress: Address;
   transactionStateHandlers: TransactionStateHandlers;
 }
 
-export const usePlasmaVaultWithdraw = ({
+export const useWithdraw = ({
   chainId,
-  plasmaVaultAddress,
+  fusionVaultAddress,
   transactionStateHandlers,
 }: Args) => {
-  const beneficiary = useWalletChainAddress(chainId);
-
-  const enabled = Boolean(beneficiary);
-
   return useContractWriteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
-      const { amount } = payloadSchema.parse(payload);
-
-      if (!beneficiary) {
-        throw new Error('beneficiary is undefined');
-      }
+      const { amount, beneficiary } = payloadSchema.parse(payload);
 
       return await sendAppTransaction({
         config,
         parameters: {
-          address: plasmaVaultAddress,
+          address: fusionVaultAddress,
           abi: plasmaVaultAbi,
           functionName: 'withdraw',
           args: [amount, beneficiary, beneficiary],
@@ -41,14 +33,13 @@ export const usePlasmaVaultWithdraw = ({
         },
       });
     },
-    transactionKey: 'plasmaVaultWithdraw',
     transactionStateHandlers,
     chainId,
-    enabled,
     payloadSchema,
   });
 };
 
 const payloadSchema = z.object({
   amount: z.bigint(),
+  beneficiary: AddressTypeSchema,
 });

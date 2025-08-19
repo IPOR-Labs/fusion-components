@@ -2,7 +2,7 @@ import { extractChain, type Address } from 'viem';
 import { ApprovalText } from '@/components/ApprovalSteps/ApprovalText';
 import { Button } from '@/components/ui/button';
 import { Loader2Icon } from 'lucide-react';
-import { getSwitchChainButtonLabel } from '@/wallet/utils/get-switch-chain-button-label';
+import { getSwitchChainButtonLabel } from '@/app/wallet/utils/get-switch-chain-button-label';
 import { chains, type ChainId } from '@/app/wagmi';
 import { cn } from '@/lib/utils';
 import { ApprovalSteps } from '@/components/ApprovalSteps/ApprovalSteps';

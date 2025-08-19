@@ -1,31 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { erc20Abi, type Address } from 'viem'
+import { erc20Abi } from 'viem'
 import { useReadContract } from 'wagmi';
-import type { ChainId } from '@/app/wagmi';
 import { Providers } from '@/app/providers';
-import { PlasmaVaultProvider, usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DepositAsset } from '@/fusion/deposit/deposit-asset/deposit-asset';
 import { HybridWithdraw } from '@/fusion/withdraw/hybrid-withdraw/hybrid-withdraw';
-import type { AppContextValue } from '@/app/app.context';
+import { useAppContext, type AppContextValue } from '@/app/app.context';
 
-export interface Props {
-  chainId: ChainId;
-  address: Address;
-  appConfig: AppContextValue;
-}
-
-export const FusionDepositWidget = ({
-  address,
-  chainId,
-  appConfig,
-}: Props) => {
+export const FusionDepositWidget = (appContext: AppContextValue) => {
   return (
     <div className="dark">
-      <Providers appConfig={appConfig}>
-        <PlasmaVaultProvider chainId={chainId} plasmaVaultAddress={address}>
-          <Content />
-        </PlasmaVaultProvider>
+      <Providers appContext={appContext}>
+        <Content />
       </Providers>
     </div>
   )
@@ -33,14 +19,12 @@ export const FusionDepositWidget = ({
 
 const Content = () => {
   const {
-    params: {
-      chainId,
-      plasmaVaultAddress,
-    }
-  } = usePlasmaVault();
+    chainId,
+    fusionVaultAddress,
+  } = useAppContext();
   const { data: name } = useReadContract({
     chainId,
-    address: plasmaVaultAddress,
+    address: fusionVaultAddress,
     abi: erc20Abi,
     functionName: 'name',
   });

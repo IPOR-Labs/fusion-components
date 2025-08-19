@@ -1,45 +1,45 @@
 import { type Params } from './hybrid-withdraw.params';
-import { usePlasmaVaultWithdraw } from '../actions/withdraw.action';
-import { usePlasmaVaultMaxRedeem } from '../actions/max-redeem.action';
-import { useWithdrawManagerRequestShares } from '../actions/request-shares.action';
-import { useWithdrawManagerRequestMaxShares } from '../actions/request-max-shares.action';
-import { type TransactionState } from '@/transactions/useTransactionState';
+import { useWithdraw } from '../actions/withdraw.action';
+import { useMaxRedeem } from '../actions/max-redeem.action';
+import { useRequestShares } from '../actions/request-shares.action';
+import { useRequestMaxShares } from '../actions/request-max-shares.action';
+import { type TransactionState } from '@/app/transactions/hooks/use-transaction-state';
 
 interface Args {
   params: Params;
-  state: TransactionState;
+  txState: TransactionState;
 }
 
 export const useActions = ({
-  state: { transactionStateHandlers },
-  params: { chainId, plasmaVaultAddress, withdrawManagerAddress },
+  txState: { transactionStateHandlers },
+  params: { chainId, fusionVaultAddress, withdrawManagerAddress },
 }: Args) => {
-  const { execute: maxRedeem } = usePlasmaVaultMaxRedeem({
+  const { execute: executeMaxRedeem } = useMaxRedeem({
     chainId,
-    plasmaVaultAddress,
+    fusionVaultAddress,
     transactionStateHandlers,
   });
-  const { execute: withdraw } = usePlasmaVaultWithdraw({
+  const { execute: executeWithdraw } = useWithdraw({
     chainId,
-    plasmaVaultAddress,
+    fusionVaultAddress,
     transactionStateHandlers,
   });
-  const { execute: requestShares } = useWithdrawManagerRequestShares({
+  const { execute: executeRequestShares } = useRequestShares({
     chainId,
     withdrawManagerAddress,
     transactionStateHandlers,
   });
-  const { execute: requestMaxShares } = useWithdrawManagerRequestMaxShares({
+  const { execute: executeRequestMaxShares } = useRequestMaxShares({
     chainId,
     withdrawManagerAddress,
     transactionStateHandlers,
   });
 
   return {
-    withdraw,
-    requestShares,
-    requestMaxShares,
-    maxRedeem,
+    executeWithdraw,
+    executeRequestShares,
+    executeRequestMaxShares,
+    executeMaxRedeem,
   };
 };
 

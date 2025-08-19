@@ -11,13 +11,14 @@ export const HybridWithdrawFooter = () => {
       accountAddress,
       chainId,
       isWrongWalletChain,
-      isPending,
-      selectWallet,
+      connect,
       switchChain,
     },
+    txState,
   } = useHybridWithdrawContext();
   const isSubmitDisabled = useIsSubmitDisabled();
   const submitButtonLabel = useSubmitButtonLabel();
+  const isPending = txState.txStatus.type === 'pending';
 
   return (
     <TransactionFormButtons
@@ -27,7 +28,7 @@ export const HybridWithdrawFooter = () => {
       isWrongWalletChain={isWrongWalletChain}
       isLoading={isPending}
       chainId={chainId}
-      selectWallet={selectWallet}
+      selectWallet={connect}
       switchChain={switchChain}
     />
   );

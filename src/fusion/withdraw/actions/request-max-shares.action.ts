@@ -1,11 +1,11 @@
-import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
-import { type TransactionStateHandlers } from '@/transactions/types';
-import { sendAppTransaction } from '@/transactions/send-app-transaction';
+import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
+import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { type ChainId } from '@/app/wagmi';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
 import { type Address } from 'viem';
-import { isNonZeroAddress } from '@/utils/isNonZeroAddress';
-import { useAccountSharesInPlasmaVault } from '@/fusion/plasma-vault/hooks/useAccountSharesInPlasmaVault';
+import { isNonZeroAddress } from '@/utils/is-non-zero-address';
+import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
 
 interface Args {
   chainId: ChainId;
@@ -13,12 +13,12 @@ interface Args {
   transactionStateHandlers: TransactionStateHandlers;
 }
 
-export const useWithdrawManagerRequestMaxShares = ({
+export const useRequestMaxShares = ({
   chainId,
   withdrawManagerAddress,
   transactionStateHandlers,
 }: Args) => {
-  const shares = useAccountSharesInPlasmaVault();
+  const shares = useAccountSharesInFusionVault();
 
   const enabled = Boolean(shares);
 
@@ -39,7 +39,6 @@ export const useWithdrawManagerRequestMaxShares = ({
         },
       });
     },
-    transactionKey: 'withdrawManagerRequest',
     transactionStateHandlers,
     chainId,
     enabled: enabled && isNonZeroAddress(withdrawManagerAddress),

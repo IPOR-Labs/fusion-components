@@ -1,27 +1,19 @@
 import { useReadContract } from 'wagmi';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
-import { isNonZeroAddress } from '@/utils/isNonZeroAddress';
-import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
+import { isNonZeroAddress } from '@/utils/is-non-zero-address';
 import { useWithdrawManagerAddress } from './use-withdraw-manager-address';
 import { BLOCK_INTERVAL } from '@/utils/constants';
 import { keepPreviousData } from '@tanstack/react-query';
-import { type Address } from 'viem';
+import { useAppContext } from '@/app/app.context';
 
-interface Args {
-  accountAddress: Address | undefined;
-  plasmaVaultAddress: Address | undefined;
-}
-
-export const useAccountWithdrawRequestInfo = ({
-  accountAddress,
-  plasmaVaultAddress,
-}: Args) => {
+export const useAccountWithdrawRequestInfo = () => {
   const {
-    params: { chainId },
-  } = usePlasmaVault();
-  const withdrawManagerAddress = useWithdrawManagerAddress({
-    plasmaVaultAddress,
-  });
+    chainId,
+    walletClient,
+  } = useAppContext();
+  const accountAddress = walletClient?.account?.address;
+
+  const withdrawManagerAddress = useWithdrawManagerAddress();
 
   const { data: requestInfo, isError } = useReadContract({
     chainId,

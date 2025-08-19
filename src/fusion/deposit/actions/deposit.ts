@@ -1,37 +1,29 @@
-import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
-import { type TransactionStateHandlers } from '@/transactions/types';
-import { sendAppTransaction } from '@/transactions/send-app-transaction';
+import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
+import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import type { ChainId } from '@/app/wagmi';
-import type { Address } from 'viem';
 import { z } from 'zod';
-import { useAccount } from 'wagmi';
+import { AddressTypeSchema } from '@/utils/schema';
 
 interface Args {
   chainId: ChainId;
-  plasmaVaultAddress: Address;
   transactionStateHandlers: TransactionStateHandlers;
 }
 
 export const usePlasmaVaultDeposit = ({
   chainId,
-  plasmaVaultAddress,
   transactionStateHandlers,
 }: Args) => {
-  const { address: beneficiary } = useAccount();
-
   return useContractWriteTransaction({
+    chainId,
     writeAsync: async ({ accountAddress, ...config }, payload) => {
-      const { amount } = payloadSchema.parse(payload);
-
-      if (!beneficiary) {
-        throw new Error('beneficiary is undefined');
-      }
+      const { fusionVaultAddress, amount, beneficiary } = payloadSchema.parse(payload);
 
       return await sendAppTransaction({
         config,
         parameters: {
-          address: plasmaVaultAddress,
+          address: fusionVaultAddress,
           abi: plasmaVaultAbi,
           functionName: 'deposit',
           args: [amount, beneficiary],
@@ -39,13 +31,13 @@ export const usePlasmaVaultDeposit = ({
         },
       });
     },
-    transactionKey: 'plasmaVaultDeposit',
     transactionStateHandlers,
-    chainId,
     payloadSchema,
   });
 };
 
 const payloadSchema = z.object({
+  fusionVaultAddress: AddressTypeSchema,
   amount: z.bigint(),
+  beneficiary: AddressTypeSchema,
 });
