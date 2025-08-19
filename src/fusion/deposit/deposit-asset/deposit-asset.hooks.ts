@@ -32,7 +32,7 @@ const useNeedsRevokeBeforeApproval = () => {
 
 export const useSubmit = () => {
   const {
-    params: { fusionVaultAddress, allowance, assetAddress, assetDecimals, accountAddress, showRevokeModal },
+    params: { fusionVaultAddress, allowance, assetAddress, assetDecimals, accountAddress, showRevokingUsdtAllowance },
     actions: { executeApprove, executeDeposit },
     form,
   } = useDepositAssetContext();
@@ -61,7 +61,7 @@ export const useSubmit = () => {
       }
 
       if (needsRevokeBeforeApproval) {
-        showRevokeModal();
+        showRevokingUsdtAllowance();
         return;
       }
 

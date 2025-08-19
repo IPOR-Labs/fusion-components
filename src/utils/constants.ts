@@ -51,5 +51,3 @@ export const LINKS = {
   IPOR_FUSION: 'https://ipor.io/ipor-fusion',
   FUSION_TOKEN_SNAPSHOT: 'https://docs.ipor.io/ipor-faq/fusn-snapshot-22446433',
 } as const;
-
-export const ONE_CENT = parseEther('0.01');

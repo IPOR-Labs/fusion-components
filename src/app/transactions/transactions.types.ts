@@ -1,11 +1,5 @@
 import type { Hash, TransactionReceipt } from "viem";
 
-export interface TransactionMessages {
-  pending: string;
-  success: string;
-  error: string;
-};
-
 export type TransactionStateHandlers = {
   onInit?: () => void;
   onConfirm?: ({ hash }: { hash: Hash }) => void;
@@ -19,5 +13,3 @@ export type TransactionStateHandlers = {
     receipt: TransactionReceipt | undefined;
   }) => void;
 };
-
-export type AppError = unknown;

@@ -3,7 +3,7 @@ import {
   useSubmitButtonLabel,
 } from '../hybrid-withdraw.hooks';
 import { useHybridWithdrawContext } from '../hybrid-withdraw.context';
-import { TransactionFormButtons } from '@/components/TransactionFormButtons';
+import { TransactionFormButtons } from '@/components/transaction-form-buttons';
 
 export const HybridWithdrawFooter = () => {
   const {

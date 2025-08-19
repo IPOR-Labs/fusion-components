@@ -5,7 +5,7 @@ import {
   useInstantWithdrawAmount,
   useIsScheduledWithdrawal,
 } from '../hybrid-withdraw.hooks';
-import { Capacity } from '@/components/capacity/capacity';
+import { Capacity } from '@/components/capacity';
 import { Clock4Icon, InfoIcon, ZapIcon } from 'lucide-react';
 import { TooltipContent, Tooltip, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { intervalToDuration } from 'date-fns';

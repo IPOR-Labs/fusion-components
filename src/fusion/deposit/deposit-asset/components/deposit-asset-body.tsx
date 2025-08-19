@@ -6,7 +6,7 @@ import { TransactionFeedback } from '@/app/transactions/components/transaction-f
 
 export const DepositAssetBody = () => {
   const {
-    params: { assetDecimals, setAllowanceFromEvent, isRevokeModal, hideRevokeModal },
+    params: { assetDecimals, setAllowanceFromEvent, isRevokingUsdtAllowance, hideRevokingUsdtAllowance },
     form,
     approveTxState,
     depositTxState,
@@ -21,12 +21,13 @@ export const DepositAssetBody = () => {
   return (
     <>
       <DepositAssetForm />
-      <DepositAssetRevokeUsdtAllowance
-        isOpen={isRevokeModal}
-        newUsdtAllowance={amount || 0n}
-        onDone={hideRevokeModal}
-        onUpdateAllowance={setAllowanceFromEvent}
-      />
+      {isRevokingUsdtAllowance && (
+        <DepositAssetRevokeUsdtAllowance
+          newUsdtAllowance={amount || 0n}
+          onDone={hideRevokingUsdtAllowance}
+          onUpdateAllowance={setAllowanceFromEvent}
+        />
+      )}
       <TransactionFeedback transactionState={approveTxState} />
       <TransactionFeedback transactionState={depositTxState} />
     </>

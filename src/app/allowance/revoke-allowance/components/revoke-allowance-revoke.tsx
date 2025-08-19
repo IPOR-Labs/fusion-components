@@ -1,4 +1,4 @@
-import { ApprovalSteps } from '@/components/ApprovalSteps/ApprovalSteps';
+import { ApprovalSteps } from '@/components/approval-steps';
 import { RevokeAllowanceRevokeButton } from './revoke-allowance-revoke-button';
 import { RevokeAllowanceReaproveButton } from './revoke-allowance-reaprove-button';
 import { useIsRevoking, useNeedsRevokeApproval } from '../revoke-allowance.hooks';

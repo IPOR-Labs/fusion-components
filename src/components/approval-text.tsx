@@ -1,4 +1,4 @@
-import { RevokeCashLink } from '@/components/ExternalLink/RevokeCashLink';
+import { RevokeCashLink } from '@/components/ExternalLink/revoke-cash-link';
 import { FullNumber } from '@/components/full-number';
 import { formatNumber } from '@/utils/format-number';
 import { LoaderIcon } from 'lucide-react';

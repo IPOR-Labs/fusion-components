@@ -50,12 +50,12 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
 
   const { data: maxDeposit } = useFusionVaultMaxDeposit();
 
-  const [isRevokeModal, setIsRevokeModal] = useState(false);
-  const showRevokeModal = () => {
-    setIsRevokeModal(true);
+  const [isRevokingUsdtAllowance, setIsRevokingUsdtAllowance] = useState(false);
+  const showRevokingUsdtAllowance = () => {
+    setIsRevokingUsdtAllowance(true);
   };
-  const hideRevokeModal = () => {
-    setIsRevokeModal(false);
+  const hideRevokingUsdtAllowance = () => {
+    setIsRevokingUsdtAllowance(false);
   };
 
   return {
@@ -83,9 +83,9 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
     withdrawWindowInSeconds,
     isScheduledWithdrawal,
     maxDeposit,
-    isRevokeModal,
-    showRevokeModal,
-    hideRevokeModal,
+    isRevokingUsdtAllowance,
+    showRevokingUsdtAllowance,
+    hideRevokingUsdtAllowance,
   };
 };
 
