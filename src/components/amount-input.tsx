@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 import { useFormContext } from 'react-hook-form';
 import { normalizeNumberInput } from '@/lib/normalize-number-input';
 import { type Address, formatUnits, parseUnits } from 'viem';
+import styles from './amount-input.module.css';
 
 const PERCENTAGE_VOLUME_OPTIONS = ['25', '50', '75', '100'] as const;
 
@@ -96,7 +97,7 @@ export const AmountInput = ({
 
         return (
           <FormItem>
-            <div className="flex items-center justify-between">
+            <div className={styles.header}>
               <FormLabel>{label}</FormLabel>
               <button
                 disabled={isDisabled}
@@ -107,7 +108,7 @@ export const AmountInput = ({
                 }}
                 type="button"
               >
-                <NumberDisplay className="text-xs text-muted-foreground">
+                <NumberDisplay className={styles.availableText}>
                   Available:{' '}
                   {displayBalance({
                     balance,
@@ -118,13 +119,13 @@ export const AmountInput = ({
               </button>
             </div>
             <div
-              className={cn('grid gap-2', {
-                'grid-cols-1': isNarrow,
-                'grid-cols-2': !isNarrow,
+              className={cn(styles.grid, {
+                [styles.gridNarrow]: isNarrow,
+                [styles.gridWide]: !isNarrow,
               })}
             >
-              <div className="flex items-center">
-                <FormControl className="-mr-8">
+              <div className={styles.inputContainer}>
+                <FormControl className={styles.formControl}>
                   <Input
                     placeholder="0"
                     {...field}
@@ -148,7 +149,7 @@ export const AmountInput = ({
                   tokenAddress={tokenAddress}
                 />
               </div>
-              <div className="flex items-center justify-between gap-2">
+              <div className={styles.buttonsContainer}>
                 {volumeOptions.map(({ option, value }) => {
                   const isActive = value === field.value;
 
@@ -161,9 +162,8 @@ export const AmountInput = ({
                         onChange(value);
                         onChangeMax?.(option === '100');
                       }}
-                      className={cn('flex-grow', {
-                        'bg-primary-foreground text-primary-background':
-                          isActive,
+                      className={cn(styles.button, {
+                        [styles.buttonActive]: isActive,
                       })}
                       disabled={isDisabled}
                     >
