@@ -1,8 +1,7 @@
-import { describe, it, expect, vi, type Mock, beforeEach, afterEach } from 'vitest';
-import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
 import { sleep } from '@/utils/sleep';
 import { type Hash } from 'viem';
-import { useSetup } from '@/transactions/setup';
 
 const onErrorSpy = vi.fn();
 const onConfirmSpy = vi.fn();
@@ -28,31 +27,30 @@ describe('useContractWriteTransaction', () => {
   });
 
   it('should invoke transaction state handlers if tx succeeds', async () => {
-    (useSetup as Mock).mockReturnValue({
-      explorerUrl: '__TEST_EXPLORER_URL__',
-      publicClient: {},
-      writeContractAsync: vi.fn(),
-      isSafeWallet: false,
-      accountAddress: '0x6f4c07cd140e1a79e73727770f249822933ba76b',
-      isWrongWalletChain: false,
-      ethPrice: 999n,
-      queryClient: { invalidateQueries: vi.fn() },
-      addTransaction: addTransactionSpy,
-      updateTransaction: updateTransactionSpy,
-      getReceipt: async () => ({
-        status: 'success',
-        gasUsed: 111111111n,
-        effectiveGasPrice: 444444444444n,
-      }),
-      getTransaction: async () => ({
-        gas: 22222222222n,
-        gasPrice: 33333333333n,
-      }),
-    });
+    // (useSetup as Mock).mockReturnValue({
+    //   explorerUrl: '__TEST_EXPLORER_URL__',
+    //   publicClient: {},
+    //   writeContractAsync: vi.fn(),
+    //   isSafeWallet: false,
+    //   accountAddress: '0x6f4c07cd140e1a79e73727770f249822933ba76b',
+    //   isWrongWalletChain: false,
+    //   ethPrice: 999n,
+    //   queryClient: { invalidateQueries: vi.fn() },
+    //   addTransaction: addTransactionSpy,
+    //   updateTransaction: updateTransactionSpy,
+    //   getReceipt: async () => ({
+    //     status: 'success',
+    //     gasUsed: 111111111n,
+    //     effectiveGasPrice: 444444444444n,
+    //   }),
+    //   getTransaction: async () => ({
+    //     gas: 22222222222n,
+    //     gasPrice: 33333333333n,
+    //   }),
+    // });
 
     const hookResult = useContractWriteTransaction({
       chainId: 1,
-      transactionKey: 'openSwap',
       transactionStateHandlers: {
         onError: onErrorSpy,
         onConfirm: onConfirmSpy,
@@ -99,24 +97,23 @@ describe('useContractWriteTransaction', () => {
   });
 
   it('should not execute and handle error if walletChainAddress is undefined (wrong chain)', async () => {
-    (useSetup as Mock).mockReturnValue({
-      explorerUrl: '__TEST_EXPLORER_URL__',
-      isWrongWalletChain: true,
-      ethPrice: 999n,
-      publicClient: {},
-      writeContractAsync: vi.fn(),
-      isSafeWallet: false,
-      accountAddress: '0x6f4c07cd140e1a79e73727770f249822933ba76b',
-      queryClient: undefined,
-      addTransaction: addTransactionSpy,
-      updateTransaction: updateTransactionSpy,
-      getReceipt: undefined,
-      getTransaction: undefined,
-    });
+    // (useSetup as Mock).mockReturnValue({
+    //   explorerUrl: '__TEST_EXPLORER_URL__',
+    //   isWrongWalletChain: true,
+    //   ethPrice: 999n,
+    //   publicClient: {},
+    //   writeContractAsync: vi.fn(),
+    //   isSafeWallet: false,
+    //   accountAddress: '0x6f4c07cd140e1a79e73727770f249822933ba76b',
+    //   queryClient: undefined,
+    //   addTransaction: addTransactionSpy,
+    //   updateTransaction: updateTransactionSpy,
+    //   getReceipt: undefined,
+    //   getTransaction: undefined,
+    // });
 
     const hookResult = useContractWriteTransaction({
       chainId: 1,
-      transactionKey: 'openSwap',
       transactionStateHandlers: {
         onError: onErrorSpy,
       },

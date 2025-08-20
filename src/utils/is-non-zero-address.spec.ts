@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isNonZeroAddress } from './isNonZeroAddress';
+import { isNonZeroAddress } from './is-non-zero-address';
 import { zeroAddress } from 'viem';
 
 describe('isNonZeroAddress', () => {

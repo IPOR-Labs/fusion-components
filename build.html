@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fusion Components</title>
+    <script defer type="module" src="/src/main.tsx"></script>
+    <style>
+      .widgets-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .widget {
+        max-width: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="widgets-list">
+      <fusion-deposit
+        class="widget"
+        data-address="0xc4c00d8b323f37527eeda27c87412378be9f68ec"
+        data-chain-id="8453"
+      ></fusion-deposit>
+      <fusion-deposit
+        class="widget"
+        data-address="0x45aa96f0b3188d47a1dafdbefce1db6b37f58216"
+        data-chain-id="8453"
+      ></fusion-deposit>
+      <fusion-deposit
+        class="widget"
+        data-address="0xa91267a25939b2b0f046013fbf9597008f7f014b"
+        data-chain-id="42161"
+      ></fusion-deposit>
+    </div>
+  </body>
+</html>

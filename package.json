@@ -11,8 +11,8 @@
     "test": "vitest run --config ./vitest.config.jsdom.ts",
     "test:ci": "vitest run --config ./vitest.config.jsdom.ts",
     "test:watch": "vitest watch --config ./vitest.config.jsdom.ts",
-    "t": "yarn test:watch",
-    "find-unused-exports": "yarn ts-unused-exports ./tsconfig.app.json"
+    "t": "pnpm test:watch",
+    "find-unused-exports": "pnpm ts-unused-exports ./tsconfig.app.json"
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.1",
