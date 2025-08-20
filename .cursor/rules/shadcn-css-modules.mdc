@@ -1,0 +1,140 @@
+### shadcn components → CSS Modules (manual conversion rules)
+
+This document defines how we manually convert shadcn components to CSS Modules in this codebase. It is guidance for prompting and reviews, not an automated generator.
+
+### Goals
+- Drop Tailwind entirely for app code; use CSS Modules everywhere.
+- Keep component APIs intact (props, `className` passthrough, variant names/values).
+- Retain `class-variance-authority` (cva) and `tailwind-merge` usage for compatibility.
+- Preserve design tokens and dark theme via `src/index.css` CSS variables.
+- Scope styles to components (no global utility classes). The app runs in Shadow DOM.
+
+### Core principles
+- Use CSS Modules, one file per component, colocated.
+- Use kebab-case filenames: `component-name.module.css`.
+- Prefer rem units for spacing and sizing.
+- Keep responsive behavior (Tailwind breakpoints) via media queries; skip container queries.
+- Inline only animations actually used by a component.
+- Preserve `data-slot` attributes for QA/testing.
+
+### File and class conventions
+- Module filename: `ComponentName.tsx` ↔ `component-name.module.css`.
+- Class names inside modules are internal; suggested defaults:
+  - Structural: `.root`, `.header`, `.content`, `.footer`, `.icon`.
+  - Variants: `.variantDefault`, `.variantSecondary`, `.variantOutline`, `.variantDestructive`, `.variantGhost`, `.variantLink`.
+  - Sizes: `.sizeSm`, `.sizeDefault`, `.sizeLg`, `.sizeIcon`.
+- Map `cva` variants to these classes. Keep `className` passthrough last to allow local overrides.
+
+### Tokens, theming, resets
+- Use CSS variables from `src/index.css` (e.g., `--background`, `--foreground`, `--primary`, `--ring`, `--border`).
+- Dark mode remains controlled by a root `.dark` class.
+- App uses `modern-normalize` inside the shadow root to provide a lightweight reset.
+- Do not use Tailwind directives (`@tailwind`, `@apply`, `@theme`, `@custom-variant`).
+
+### Responsive behavior
+- Keep Tailwind breakpoint values (use rem equivalents if desired):
+  - sm: 640px, md: 768px, lg: 1024px, xl: 1280px, 2xl: 1536px
+- Implement with media queries in the module file, e.g. `@media (min-width: 640px) { ... }`.
+
+### Focus, ring, and outlines
+- Replace Tailwind ring utilities with outline/box-shadow using tokens:
+  - Example: `outline: none; box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring), transparent 50%);`
+  - Use `--ring` and `--primary` consistently for focus-visible states.
+
+### Animations
+- Inline only the keyframes actually used by the component into its module file.
+- Names can change; keep behavior (timing, easing) semantically equivalent.
+
+### States and selectors
+- Use pseudo-classes and data attributes in modules:
+  - `:disabled`, `:hover`, `:active`, `:focus-visible`, `[aria-invalid="true"]`, etc.
+- Replace Tailwind nested selectors like `[&_svg]` with regular descendants (e.g., `.root svg { pointer-events: none; }`).
+
+### What not to do
+- Do not add or keep any Tailwind usage (utilities, directives, plugins) in app code.
+- Do not introduce global utility classes.
+- Do not move formatting into hooks/data layers; keep it in view components.
+
+### Manual conversion checklist (per component)
+1) Create `component-name.module.css` next to the component.
+2) Translate existing Tailwind utility strings into CSS rules:
+   - Map spacing like `px-6` to rem-based `padding-inline: 1.5rem;` (use values matching current visuals).
+   - Use tokens for colors, borders, backgrounds, shadows.
+   - Implement hover/active/disabled/focus-visible states.
+   - Add responsive rules with the breakpoints above.
+3) If variants exist, define classes for each variant/size.
+4) In the TSX file, import the module and update `cva` to use module class names:
+   - Base: `cva(styles.root, { variants: { variant: { default: styles.variantDefault, ... }, size: { sm: styles.sizeSm, ... } }, defaultVariants: { ... } })`.
+5) Render with `className={cn(buttonVariants({ variant, size }), className)}`.
+6) Inline any used animations in the module; remove references to external animation libs.
+7) Preserve `data-slot` attributes.
+8) Perform manual QA (see below).
+
+### QA checklist (manual)
+- Focus-visible is clearly visible and uses ring tokens.
+- Disabled + hover/active states behave correctly.
+- Dark mode colors match tokens.
+- Spacing, typography scale, and border radii look consistent.
+- Responsive behavior works at sm/md/lg/xl/2xl.
+- No layout regressions, no overflow issues.
+
+### Notes for new shadcn component installs
+- Install the component normally, then immediately convert:
+  - Remove Tailwind utility class strings from the TSX.
+  - Create a colocated CSS Module and move styles into it using tokens and rem units.
+  - Keep `cva` and `tailwind-merge`; map variants to module classes.
+  - Preserve `data-slot` and responsive behavior via media queries.
+  - Inline only required keyframes.
+
+### Example sketch (button)
+- `button.module.css` (abbreviated)
+```
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-inline: 1rem;
+  padding-block: 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 120ms ease, box-shadow 120ms ease, color 120ms ease;
+}
+.variantDefault { background-color: var(--primary); color: var(--primary-foreground); }
+.variantDestructive { background-color: var(--destructive); color: white; }
+.variantOutline { background-color: var(--background); border: 1px solid var(--border); }
+.sizeSm { height: 2rem; padding-inline: 0.75rem; }
+.sizeDefault { height: 2.25rem; }
+.sizeLg { height: 2.5rem; padding-inline: 1.5rem; }
+.sizeIcon { inline-size: 2.25rem; block-size: 2.25rem; padding: 0; }
+.root:focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in oklch, var(--ring), transparent 50%); }
+.root:disabled { opacity: 0.5; pointer-events: none; }
+```
+
+- `button.tsx` (sketch)
+```
+import styles from './button.module.css'
+import { cva } from 'class-variance-authority'
+import { cn } from '@/lib/utils'
+
+const buttonVariants = cva(styles.root, {
+  variants: {
+    variant: {
+      default: styles.variantDefault,
+      destructive: styles.variantDestructive,
+      outline: styles.variantOutline,
+      // ...
+    },
+    size: {
+      sm: styles.sizeSm,
+      default: styles.sizeDefault,
+      lg: styles.sizeLg,
+      icon: styles.sizeIcon,
+    },
+  },
+  defaultVariants: { variant: 'default', size: 'default' },
+})
+```
+
+This guideline ensures consistent, reviewable conversions without Tailwind, while keeping component ergonomics intact.
