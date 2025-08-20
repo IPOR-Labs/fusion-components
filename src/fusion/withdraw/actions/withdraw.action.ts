@@ -5,7 +5,7 @@ import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { type ChainId } from '@/wagmi';
 import { type Address } from 'viem';
 import { z } from 'zod';
-import { AddressTypeSchema } from '@/lib/schema';
+import { addressSchema } from '@/lib/schema';
 
 interface Args {
   chainId: ChainId;
@@ -41,5 +41,5 @@ export const useWithdraw = ({
 
 const payloadSchema = z.object({
   amount: z.bigint(),
-  beneficiary: AddressTypeSchema,
+  beneficiary: addressSchema,
 });

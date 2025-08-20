@@ -8,7 +8,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { getValumeOptions } from '@/lib/get-volume-options';
 import { StatusIcon } from '@/components/status-icon';
 import { type ChainId } from '@/wagmi';
 import { displayBalance } from '@/lib/display-balance';
@@ -16,6 +15,8 @@ import { cn } from '@/lib/utils';
 import { useFormContext } from 'react-hook-form';
 import { normalizeNumberInput } from '@/lib/normalize-number-input';
 import { type Address, formatUnits, parseUnits } from 'viem';
+
+const PERCENTAGE_VOLUME_OPTIONS = ['25', '50', '75', '100'] as const;
 
 interface Props {
   name: string;
@@ -179,3 +180,34 @@ export const AmountInput = ({
     />
   );
 };
+
+const getValumeOptions = ({
+  balance,
+  decimals,
+  currentValue,
+}: {
+  balance: bigint;
+  decimals: number;
+  currentValue: string;
+}) => {
+  const balanceString = formatUnits(balance, decimals);
+
+  return PERCENTAGE_VOLUME_OPTIONS.map((option) => {
+    if (option === '100') {
+      return {
+        value: balanceString,
+        option,
+        isActive: balance !== 0n && currentValue === balanceString,
+      };
+    }
+
+    const value = (balance * BigInt(option)) / 100n;
+    const valueString = formatUnits(value, decimals);
+    return {
+      value: valueString,
+      option,
+      isActive: balance !== 0n && currentValue === valueString,
+    };
+  });
+};
+

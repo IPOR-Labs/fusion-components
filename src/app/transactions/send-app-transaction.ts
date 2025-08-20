@@ -1,4 +1,4 @@
-import { getGasPrice } from '@/lib/get-gas-price';
+import { getGasPrice } from '@/app/transactions/utils/get-gas-price';
 import {
   type PublicClient,
   type WalletClient,

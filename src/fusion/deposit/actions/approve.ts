@@ -3,7 +3,7 @@ import { useContractWriteTransaction } from '@/app/transactions/use-contract-wri
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { z } from 'zod';
-import { AddressTypeSchema } from '@/lib/schema';
+import { addressSchema } from '@/lib/schema';
 import type { ChainId } from '@/wagmi';
 
 interface Args {
@@ -37,7 +37,7 @@ export const usePlasmaVaultApprove = ({
 };
 
 const payloadSchema = z.object({
-  fusionVaultAddress: AddressTypeSchema,
-  assetAddress: AddressTypeSchema,
+  fusionVaultAddress: addressSchema,
+  assetAddress: addressSchema,
   amount: z.bigint(),
 });

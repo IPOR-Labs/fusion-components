@@ -4,7 +4,7 @@ import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-a
 import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
 import type { ChainId } from '@/wagmi';
 import type { TransactionStateHandlers } from '@/app/transactions/transactions.types';
-import { AddressTypeSchema } from '@/lib/schema';
+import { addressSchema } from '@/lib/schema';
 import { z } from 'zod';
 import type { Address } from 'viem';
 
@@ -46,7 +46,7 @@ export const useMaxRedeem = ({
 };
 
 const payloadSchema = z.object({
-  beneficiary: AddressTypeSchema,
+  beneficiary: addressSchema,
 });
 
 

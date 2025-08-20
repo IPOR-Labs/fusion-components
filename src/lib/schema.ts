@@ -3,7 +3,7 @@ import type { Address } from "viem";
 import { isAddress } from "viem";
 import z from "zod";
 
-export const AddressTypeSchema = z.custom<Address>(
+export const addressSchema = z.custom<Address>(
   (address) => isAddress(address, { strict: false }),
   {
     message: 'Incorrect address',

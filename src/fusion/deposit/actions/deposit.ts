@@ -4,7 +4,7 @@ import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import type { ChainId } from '@/wagmi';
 import { z } from 'zod';
-import { AddressTypeSchema } from '@/lib/schema';
+import { addressSchema } from '@/lib/schema';
 
 interface Args {
   chainId: ChainId;
@@ -37,7 +37,7 @@ export const usePlasmaVaultDeposit = ({
 };
 
 const payloadSchema = z.object({
-  fusionVaultAddress: AddressTypeSchema,
+  fusionVaultAddress: addressSchema,
   amount: z.bigint(),
-  beneficiary: AddressTypeSchema,
+  beneficiary: addressSchema,
 });

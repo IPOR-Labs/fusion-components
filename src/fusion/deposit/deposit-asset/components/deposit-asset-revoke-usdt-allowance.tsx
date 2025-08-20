@@ -1,5 +1,5 @@
 import { TokenIcon } from '@/components/token-icon';
-import { USDT_ADDRESS } from '@/lib/erc20.addresses';
+import { USDT_ADDRESS_MAINNET } from '@/lib/constants';
 import { RevokeAllowance } from '@/app/allowance/revoke-allowance/revoke-allowance';
 import { mainnet } from 'viem/chains';
 import { useAppContext } from '@/app.context';
@@ -25,12 +25,12 @@ export const DepositAssetRevokeUsdtAllowance = ({
     <Card>
       <CardContent>
         <div className="flex items-center gap-4">
-          <TokenIcon chainId={mainnet.id} address={USDT_ADDRESS[mainnet.id]} />
+          <TokenIcon chainId={mainnet.id} address={USDT_ADDRESS_MAINNET} />
           USDT requires revoking approval before approving higher value
         </div>
         <RevokeAllowance
           chainId={chainId}
-          tokenAddress={USDT_ADDRESS[chainId]}
+          tokenAddress={USDT_ADDRESS_MAINNET}
           spender={fusionVaultAddress}
           newAllowance={newUsdtAllowance}
           onDone={onDone}

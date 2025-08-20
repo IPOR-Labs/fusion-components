@@ -1,4 +1,4 @@
-import { allowedNumberRegexOnlyPositive } from '@/lib/regex';
+import { NUMBER_ONLY_POSITIVE_REGEX } from '@/lib/regex';
 
 const DEFAULT_MAX_DECIMALS = 18;
 const DEFAULT_MAX_LENGTH = 30;
@@ -50,7 +50,7 @@ export const normalizeNumberInput = (
     return null;
   }
 
-  if (!allowedNumberRegexOnlyPositive.test(value)) {
+  if (!NUMBER_ONLY_POSITIVE_REGEX.test(value)) {
     return null;
   }
 

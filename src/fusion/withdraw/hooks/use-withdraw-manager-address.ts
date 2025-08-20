@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { usePublicClient } from 'wagmi';
 import { zeroAddress } from 'viem';
-import { AddressTypeSchema } from '@/lib/schema';
+import { addressSchema } from '@/lib/schema';
 import { isNonZeroAddress } from '@/lib/is-non-zero-address';
 import { substrateToAddress } from '@/lib/substrate-to-address';
 import { useAppContext } from '@/app.context';
@@ -44,7 +44,7 @@ export const useWithdrawManagerAddress = () => {
        * we don't want to throw an error in this case
        */
       if (isNonZeroAddress(trimmedData)) {
-        return AddressTypeSchema.parse(trimmedData);
+        return addressSchema.parse(trimmedData);
       }
 
       /**
