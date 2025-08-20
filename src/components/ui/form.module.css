@@ -1,0 +1,22 @@
+.item {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.label {
+  /* Base label styling is handled by the Label component */
+}
+
+.label[data-error="true"] {
+  color: var(--destructive);
+}
+
+.description {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.message {
+  color: var(--destructive);
+  font-size: 0.875rem;
+}
