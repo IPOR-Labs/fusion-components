@@ -1,0 +1,97 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+## Support Level
+
+- Favor elegant, maintainable solutions over verbose code. Assume understanding of language idioms and design patterns.
+- Highlight potential performance implications and optimization opportunities in suggested code.
+- Frame solutions within broader architectural contexts and suggest design alternatives when appropriate.
+- Focus comments on 'why' not 'what' - assume code readability through well-named functions and variables.
+- Proactively address edge cases, race conditions, and security considerations without being prompted.
+- When debugging, provide targeted diagnostic approaches rather than shotgun solutions.
+- Suggest comprehensive testing strategies rather than just example tests, including considerations for mocking, test organization, and coverage.
+
+## Clean Code
+
+- Use feedback from linters to improve the code when making changes.
+- Prioritize error handling and edge cases.
+- Handle errors and edge cases at the beginning of functions.
+- Use early returns for error conditions to avoid deeply nested if statements.
+- Place the happy path last in the function for improved readability.
+- Avoid unnecessary else statements; use if-return pattern instead.
+- Use guard clauses to handle preconditions and invalid states early.
+
+## File and Variable Names
+
+- Use kebab-case for file names.
+- Use camelCase for variable names.
+- Use UPPER_SNAKE_CASE for constants, hardcoded values, or magic values.
+- Use unique file names across the entire codebase to enable clear reference when searching by file name.
+
+## TypeScript
+
+- Avoid explicitly typing function return values. Always try to infer the type.
+- Use absolute paths for importing modules like `import { module } from '@/<path>';`
+- Use objects for function arguments. For example `const myFunc = (args: { a: string; b: number }) => {...}` instead of `const myFunc = (a: string, b: number) => {...}`
+
+## React
+
+- Use functional components with hooks instead of class components
+- Use React context to share data to avoid prop drilling.
+- For React component props, use the name `interface Props`. Don't use prefixes like `interface ComponentNameProps`.
+- Don't use `React.FC` or `PropsWithChildren`. Just assign type to the props argument like `const MyComp = (props: Props) => ()`
+- Implement React.memo() for expensive components that render often with the same props
+- Utilize React.lazy() and Suspense for code-splitting and performance optimization
+- Use the useCallback hook for event handlers passed to child components to prevent unnecessary re-renders
+- Prefer useMemo for expensive calculations to avoid recomputation on every render
+- Implement useId() for generating unique IDs for accessibility attributes
+- Consider using the new useOptimistic hook for optimistic UI updates in forms
+- Use useTransition for non-urgent state updates to keep the UI responsive
+- Data formatting should always be done in view components, not in hooks or data layer
+
+## Tanstack Query (formerly React Query)
+
+- Use `useQuery` hooks for HTTP requests and fetching data.
+- Utilize `{ data, isFetching, isError }` returned from `useQuery` to determine whether data is ready, loading, or has encountered an error.
+
+## Styling and shadcn components library
+
+- This project utilizes shadcn components but Tailwind is dropped in favor of CSS modules
+- Before you implement or install any new component, look for a shadcn component to be used first.
+- Use CSS variables from `/src/index.css`
+- After installing any new shadcn component, convert its Tailwind CSS classNames into CSS Modules
+
+## Icons
+
+- Use Lucide icons for iconography
+- Use long names when importing Lucide icons. For example `ExternalLinkIcon` instead of `ExternalLink`.
+
+## Zod
+
+- start schema variable names with lowercase like here `const depositorsResponseSchema = z.object(...)`
+
+## Blockchain, viem, wagmi
+
+- Never fallback to mainnet, if no chain found then return undefined or throw an error
+- Don't use `string` to type addresses, use `Address` type from `viem` instead
+- Don't use `number` to type chainId, use `ChainId` type from `src/wagmi.ts` instead
+- Don't use wagmi for any functionallity related to wallet like `useWriteContract`. Always use `walletClient` from `src/app.context.tsx`.
+- Don't use `connectors` in `src/wagmi.ts`. Always rely on `walletClient` injected from the host to the widget
+
+## Package manager
+
+- use pnpm as package manager
+
+## Node.js
+
+- Before you run any command in the terminal, ensure that node version is correct. Correct node version you find in `.nvmrc` file in root directory. Then run `nvm use <node_version>`. For example `nvm use 22`.
+
+
+
+
+
+
+
