@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { type ReactNode } from 'react';
+import styles from './external-link.module.css';
 
 interface ExternalLinkProps {
   href: string;
@@ -29,7 +30,7 @@ export const ExternalLink = (props: ExternalLinkProps) => {
       target="_blank"
       {...(!trusted && { rel: 'noopener noreferrer' })}
       className={cn(className, {
-        'text-ipor-asset hover:underline': !disableDefaultStyles,
+        [styles.root]: !disableDefaultStyles,
       })}
       data-testid={testId}
     >
