@@ -1,7 +1,7 @@
 import { formatUnits, parseUnits } from 'viem';
 import { useHybridWithdrawContext } from './hybrid-withdraw.context';
 import { useFusionVaultConvertToShares } from '@/fusion/plasma-vault/hooks/use-fusion-vault-convert-to-shares';
-import { minBigInt } from '@/utils/min-bigint';
+import { minBigInt } from '@/lib/min-bigint';
 
 export const useIsScheduledWithdrawal = () => {
   const {

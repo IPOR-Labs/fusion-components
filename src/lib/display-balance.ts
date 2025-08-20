@@ -1,5 +1,5 @@
-import { DEFAULT_DECIMALS } from '@/utils/constants';
-import { formatSignificant } from '@/utils/format-significant';
+import { DEFAULT_DECIMALS } from '@/lib/constants';
+import { formatSignificant } from '@/lib/format-significant';
 
 interface Args {
   balance: bigint | undefined;

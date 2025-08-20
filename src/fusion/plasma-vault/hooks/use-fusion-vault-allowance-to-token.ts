@@ -1,8 +1,8 @@
 import { keepPreviousData } from '@tanstack/react-query';
-import { BLOCK_INTERVAL } from '@/utils/constants';
+import { BLOCK_INTERVAL } from '@/lib/constants';
 import { type Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 
 interface Args {
   tokenAddress: Address | undefined;

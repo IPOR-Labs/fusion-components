@@ -1,11 +1,11 @@
 import { keepPreviousData } from '@tanstack/react-query';
-import { BLOCK_INTERVAL } from '@/utils/constants';
+import { BLOCK_INTERVAL } from '@/lib/constants';
 import { useReadContract } from 'wagmi';
 import { useWithdrawManagerAddress } from './use-withdraw-manager-address';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
 import { type WithdrawManagerFeeType } from '../withdraw.types';
-import { assertNever } from '@/utils/assert-never';
-import { useAppContext } from '@/app/app.context';
+import { assertNever } from '@/lib/assert-never';
+import { useAppContext } from '@/app.context';
 
 interface Args {
   feeType: WithdrawManagerFeeType;

@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { tokenAmountStringSchema } from '@/utils/schema';
+import { tokenAmountStringSchema } from '@/lib/schema';
 
 export const formSchema = z.object({
   amount: tokenAmountStringSchema,

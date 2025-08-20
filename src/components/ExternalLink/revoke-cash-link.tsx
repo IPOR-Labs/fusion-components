@@ -1,5 +1,5 @@
 import { ExternalLink } from '@/components/external-link';
-import { LINKS } from '@/utils/constants';
+import { LINKS } from '@/lib/constants';
 import { type Address } from 'viem';
 
 interface Props {

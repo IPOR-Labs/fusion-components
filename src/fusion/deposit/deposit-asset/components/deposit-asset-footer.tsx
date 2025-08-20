@@ -1,6 +1,6 @@
 import { parseUnits } from 'viem';
 import { useDepositAssetContext } from '../deposit-asset.context';
-import { calcNeedsApproval } from '@/utils/calc-needs-approval';
+import { calcNeedsApproval } from '@/lib/calc-needs-approval';
 import { useIsSubmitDisabled } from '../deposit-asset.hooks';
 import { TransactionFormButtons } from '@/components/transaction-form-buttons';
 

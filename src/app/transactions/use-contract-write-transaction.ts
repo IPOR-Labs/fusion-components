@@ -2,8 +2,8 @@ import { type TransactionStateHandlers } from './transactions.types';
 import { type Address, type Hash, type TransactionReceipt, type WalletClient } from 'viem';
 import { Schema, z } from 'zod';
 import { usePublicClient } from 'wagmi';
-import { type ChainId } from '@/app/wagmi';
-import { useAppContext } from '@/app/app.context';
+import { type ChainId } from '@/wagmi';
+import { useAppContext } from '@/app.context';
 import { useIsSafeWallet } from '@/app/wallet/hooks/use-is-safe-wallet';
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
 

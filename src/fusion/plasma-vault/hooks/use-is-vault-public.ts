@@ -2,7 +2,7 @@ import { useReadContract } from 'wagmi';
 import { maxUint64, toFunctionSelector } from 'viem';
 import { accessManagerAbi } from '@/abi/access-manager.abi';
 import { useAccessManagerAddress } from '@/fusion/access-manager/hooks/use-access-manager-address';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 
 export const useIsVaultPublic = () => {
   const {

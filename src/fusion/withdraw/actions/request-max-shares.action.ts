@@ -1,10 +1,10 @@
 import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
-import { type ChainId } from '@/app/wagmi';
+import { type ChainId } from '@/wagmi';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
 import { type Address } from 'viem';
-import { isNonZeroAddress } from '@/utils/is-non-zero-address';
+import { isNonZeroAddress } from '@/lib/is-non-zero-address';
 import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
 
 interface Args {

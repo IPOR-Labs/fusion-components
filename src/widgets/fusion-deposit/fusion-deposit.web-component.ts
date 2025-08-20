@@ -2,8 +2,8 @@ import { createElement, type ReactElement } from 'react';
 import type { Address } from 'viem';
 import { createRoot, type Root } from 'react-dom/client';
 import { FusionDepositWidget } from './fusion-deposit.widget';
-import type { AppConfig } from '@/app/app.context';
-import type { ChainId } from '@/app/wagmi';
+import type { AppConfig } from '@/app.context';
+import type { ChainId } from '@/wagmi';
 import styles from '@/index.css?inline';
 
 export class FusionDepositWebComponent extends HTMLElement {

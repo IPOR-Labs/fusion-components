@@ -1,6 +1,6 @@
 import { RevokeCashLink } from '@/components/ExternalLink/revoke-cash-link';
 import { FullNumber } from '@/components/full-number';
-import { formatNumber } from '@/utils/format-number';
+import { formatNumber } from '@/lib/format-number';
 import { LoaderIcon } from 'lucide-react';
 import { type Address, parseUnits } from 'viem';
 

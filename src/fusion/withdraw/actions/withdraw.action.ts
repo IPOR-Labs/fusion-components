@@ -2,10 +2,10 @@ import { useContractWriteTransaction } from '@/app/transactions/use-contract-wri
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { type ChainId } from '@/app/wagmi';
+import { type ChainId } from '@/wagmi';
 import { type Address } from 'viem';
 import { z } from 'zod';
-import { AddressTypeSchema } from '@/utils/schema';
+import { AddressTypeSchema } from '@/lib/schema';
 
 interface Args {
   chainId: ChainId;

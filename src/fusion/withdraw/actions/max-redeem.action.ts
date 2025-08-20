@@ -2,9 +2,9 @@ import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
 import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
-import type { ChainId } from '@/app/wagmi';
+import type { ChainId } from '@/wagmi';
 import type { TransactionStateHandlers } from '@/app/transactions/transactions.types';
-import { AddressTypeSchema } from '@/utils/schema';
+import { AddressTypeSchema } from '@/lib/schema';
 import { z } from 'zod';
 import type { Address } from 'viem';
 

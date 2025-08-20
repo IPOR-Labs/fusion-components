@@ -1,4 +1,4 @@
-import { allowedNumberRegexOnlyPositive } from '@/utils/regex';
+import { allowedNumberRegexOnlyPositive } from '@/lib/regex';
 
 const DEFAULT_MAX_DECIMALS = 18;
 const DEFAULT_MAX_LENGTH = 30;

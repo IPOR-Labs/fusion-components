@@ -1,4 +1,4 @@
-import { getGasPriceBlockNative } from '@/utils/get-gas-price-block-native';
+import { getGasPriceBlockNative } from '@/lib/get-gas-price-block-native';
 import { mainnet } from 'wagmi/chains';
 
 const DEFAULT_GAS_CONFIDENCE = 70;

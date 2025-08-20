@@ -1,4 +1,4 @@
-import { displayBalance } from '@/utils/display-balance';
+import { displayBalance } from '@/lib/display-balance';
 import { describe, expect, it } from 'vitest';
 
 describe('displayBalance', () => {

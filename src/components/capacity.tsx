@@ -1,5 +1,5 @@
 import { Progress } from '@/components/ui/progress';
-import { formatSignificant } from '@/utils/format-significant';
+import { formatSignificant } from '@/lib/format-significant';
 import { formatUnits, parseUnits } from 'viem';
 import { cn } from '@/lib/utils';
 

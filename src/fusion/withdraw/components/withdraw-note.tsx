@@ -12,8 +12,8 @@ import {
   intervalToDuration,
 } from 'date-fns';
 import { InfoIcon } from 'lucide-react';
-import { DATE_FORMAT_WITH_HOUR } from '@/utils/constants';
-import { getNow } from '@/utils/get-now';
+import { DATE_FORMAT_WITH_HOUR } from '@/lib/constants';
+import { getNow } from '@/lib/get-now';
 
 const MILLISECONDS_IN_SECOND = 1000n;
 

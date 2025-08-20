@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { usePublicClient } from 'wagmi';
 import { zeroAddress } from 'viem';
-import { AddressTypeSchema } from '@/utils/schema';
-import { isNonZeroAddress } from '@/utils/is-non-zero-address';
-import { substrateToAddress } from '@/utils/substrate-to-address';
-import { useAppContext } from '@/app/app.context';
+import { AddressTypeSchema } from '@/lib/schema';
+import { isNonZeroAddress } from '@/lib/is-non-zero-address';
+import { substrateToAddress } from '@/lib/substrate-to-address';
+import { useAppContext } from '@/app.context';
 
 const WITHDRAW_MANAGER_SLOT =
   '0xb37e8684757599da669b8aea811ee2b3693b2582d2c730fab3f4965fa2ec3e11';

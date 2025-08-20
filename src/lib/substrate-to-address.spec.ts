@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { substrateToAddress } from '@/utils/substrate-to-address';
+import { substrateToAddress } from '@/lib/substrate-to-address';
 import { type Hex, isAddress } from 'viem';
 
 describe('should try to convert substrate to address', () => {

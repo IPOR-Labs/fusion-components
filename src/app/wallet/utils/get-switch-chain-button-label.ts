@@ -1,4 +1,4 @@
-import { chains, type ChainId } from '@/app/wagmi';
+import { chains, type ChainId } from '@/wagmi';
 import { extractChain } from 'viem';
 
 export const getSwitchChainButtonLabel = (chainId: ChainId) => {

@@ -1,8 +1,8 @@
 import { extractChain, type Hash } from 'viem';
-import { truncate } from '@/utils/truncate';
+import { truncate } from '@/lib/truncate';
 import { ExternalLink } from '@/components/ExternalLink/external-link';
-import { useAppContext } from '@/app/app.context';
-import { chains } from '@/app/wagmi';
+import { useAppContext } from '@/app.context';
+import { chains } from '@/wagmi';
 
 interface Props {
   hash: Hash;

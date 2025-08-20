@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeNumberInput } from '@/utils/normalize-number-input';
+import { normalizeNumberInput } from '@/lib/normalize-number-input';
 
 describe('normalizeNumberInput', () => {
   it('returns zero for empty string provided', () => {

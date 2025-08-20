@@ -1,10 +1,10 @@
 import { useReadContract } from 'wagmi';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
-import { isNonZeroAddress } from '@/utils/is-non-zero-address';
+import { isNonZeroAddress } from '@/lib/is-non-zero-address';
 import { useWithdrawManagerAddress } from './use-withdraw-manager-address';
-import { BLOCK_INTERVAL } from '@/utils/constants';
+import { BLOCK_INTERVAL } from '@/lib/constants';
 import { keepPreviousData } from '@tanstack/react-query';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 
 export const useAccountWithdrawRequestInfo = () => {
   const {

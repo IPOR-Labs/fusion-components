@@ -1,4 +1,4 @@
-import { NUMBER_REGEX } from "@/utils/regex";
+import { NUMBER_REGEX } from "@/lib/regex";
 import type { Address } from "viem";
 import { isAddress } from "viem";
 import z from "zod";

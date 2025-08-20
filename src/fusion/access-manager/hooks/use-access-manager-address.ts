@@ -1,8 +1,8 @@
 import { keepPreviousData } from '@tanstack/react-query';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { BLOCK_INTERVAL } from '@/utils/constants';
+import { BLOCK_INTERVAL } from '@/lib/constants';
 import { useReadContract } from 'wagmi';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 
 export const useAccessManagerAddress = () => {
   const {

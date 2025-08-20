@@ -1,8 +1,8 @@
 import { TokenIcon } from '@/components/token-icon';
-import { USDT_ADDRESS } from '@/utils/erc20.addresses';
+import { USDT_ADDRESS } from '@/lib/erc20.addresses';
 import { RevokeAllowance } from '@/app/allowance/revoke-allowance/revoke-allowance';
 import { mainnet } from 'viem/chains';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface Props {

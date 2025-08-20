@@ -1,5 +1,5 @@
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 import { useReadContract } from 'wagmi';
 
 export const useFusionVaultName = () => {

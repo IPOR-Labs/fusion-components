@@ -12,10 +12,10 @@ import { intervalToDuration } from 'date-fns';
 import { formatDuration } from 'date-fns';
 import { addSeconds } from 'date-fns';
 import { format } from 'date-fns';
-import { getNow } from '@/utils/get-now';
-import { DATE_FORMAT_WITH_HOUR } from '@/utils/constants';
+import { getNow } from '@/lib/get-now';
+import { DATE_FORMAT_WITH_HOUR } from '@/lib/constants';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { formatSignificant } from '@/utils/format-significant';
+import { formatSignificant } from '@/lib/format-significant';
 
 const MILLISECONDS_IN_SECOND = 1000n;
 const SIGNIFICANT_DECIMALS = 3;

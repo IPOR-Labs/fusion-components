@@ -8,13 +8,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { getValumeOptions } from '@/utils/get-volume-options';
+import { getValumeOptions } from '@/lib/get-volume-options';
 import { StatusIcon } from '@/components/status-icon';
-import { type ChainId } from '@/app/wagmi';
-import { displayBalance } from '@/utils/display-balance';
+import { type ChainId } from '@/wagmi';
+import { displayBalance } from '@/lib/display-balance';
 import { cn } from '@/lib/utils';
 import { useFormContext } from 'react-hook-form';
-import { normalizeNumberInput } from '@/utils/normalize-number-input';
+import { normalizeNumberInput } from '@/lib/normalize-number-input';
 import { type Address, formatUnits, parseUnits } from 'viem';
 
 interface Props {

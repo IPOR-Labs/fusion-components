@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatSignificant } from '@/utils/format-significant';
+import { formatSignificant } from '@/lib/format-significant';
 
 describe('formatSignificant', () => {
   it('should handle zero', () => {

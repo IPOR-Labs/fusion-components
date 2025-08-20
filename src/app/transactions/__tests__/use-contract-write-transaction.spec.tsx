@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
-import { sleep } from '@/utils/sleep';
+import { sleep } from '@/lib/sleep';
 import { type Hash } from 'viem';
 
 const onErrorSpy = vi.fn();

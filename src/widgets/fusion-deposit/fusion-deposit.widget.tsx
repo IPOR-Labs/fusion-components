@@ -1,11 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { erc20Abi } from 'viem'
 import { useReadContract } from 'wagmi';
-import { Providers } from '@/app/providers';
+import { Providers } from '@/providers';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DepositAsset } from '@/fusion/deposit/deposit-asset/deposit-asset';
 import { HybridWithdraw } from '@/fusion/withdraw/hybrid-withdraw/hybrid-withdraw';
-import { useAppContext, type AppContextValue } from '@/app/app.context';
+import { useAppContext, type AppContextValue } from '@/app.context';
 
 export const FusionDepositWidget = (appContext: AppContextValue) => {
   return (

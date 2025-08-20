@@ -12,7 +12,7 @@ import { useWithdrawWindowInSeconds } from '@/fusion/withdraw/hooks/use-withdraw
 import { useIsScheduledWithdrawal } from '@/fusion/withdraw/hooks/use-is-scheduled-withdrawal';
 import { useIsVaultPublic } from '@/fusion/plasma-vault/hooks/use-is-vault-public';
 import { useFusionVaultMaxDeposit } from '@/fusion/plasma-vault/hooks/use-fusion-vault-max-deposit';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 
 interface Args {
   onConfirm?: () => void;

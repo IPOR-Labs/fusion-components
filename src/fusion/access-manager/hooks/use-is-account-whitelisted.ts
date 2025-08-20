@@ -1,5 +1,5 @@
 import { useHasRole } from '@/fusion/access-manager/hooks/use-has-role';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 
 const WHITELIST_ROLE = 800n;
 

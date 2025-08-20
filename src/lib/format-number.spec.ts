@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { formatNumber } from '@/utils/format-number';
+import { formatNumber } from '@/lib/format-number';
 
 describe('formatNumber', () => {
   it('format 1.23456 to 1.23 with default params', () => {

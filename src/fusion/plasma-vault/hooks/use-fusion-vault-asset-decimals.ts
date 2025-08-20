@@ -1,5 +1,5 @@
 import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 import { erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 

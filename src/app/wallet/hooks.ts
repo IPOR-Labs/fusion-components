@@ -1,4 +1,4 @@
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 
 export const useIsWrongWalletChain = (chainId: number): boolean => {
   const { walletClient } = useAppContext();

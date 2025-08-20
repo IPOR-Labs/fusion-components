@@ -3,8 +3,8 @@ import { useContractWriteTransaction } from '@/app/transactions/use-contract-wri
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { z } from 'zod';
-import { AddressTypeSchema } from '@/utils/schema';
-import type { ChainId } from '@/app/wagmi';
+import { AddressTypeSchema } from '@/lib/schema';
+import type { ChainId } from '@/wagmi';
 
 interface Args {
   chainId: ChainId;

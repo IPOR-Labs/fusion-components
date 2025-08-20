@@ -1,6 +1,6 @@
 import { useDepositAssetContext } from '../deposit-asset.context';
 import { AmountInput } from '@/components/amount-input';
-import { formatSignificant } from '@/utils/format-significant';
+import { formatSignificant } from '@/lib/format-significant';
 import { parseUnits } from 'viem';
 
 export const DepositAssetAmountInput = () => {

@@ -1,5 +1,5 @@
 import { keepPreviousData } from '@tanstack/react-query';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 import { erc4626Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 

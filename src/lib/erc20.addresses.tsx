@@ -1,4 +1,4 @@
-import { type ChainId } from '@/app/wagmi';
+import { type ChainId } from '@/wagmi';
 import { type Address } from 'viem';
 import { arbitrum, base, mainnet } from 'viem/chains';
 

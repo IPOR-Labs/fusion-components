@@ -1,4 +1,4 @@
-import { formatNumber } from '@/utils/format-number';
+import { formatNumber } from '@/lib/format-number';
 import { formatUnits } from 'viem';
 
 /**

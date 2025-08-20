@@ -1,6 +1,6 @@
-import { formatNumber } from '@/utils/format-number';
-import { DEFAULT_DECIMALS, ONE_ETHER } from '@/utils/constants';
-import { formatSignificant } from '@/utils/format-significant';
+import { formatNumber } from '@/lib/format-number';
+import { DEFAULT_DECIMALS, ONE_ETHER } from '@/lib/constants';
+import { formatSignificant } from '@/lib/format-significant';
 import { FullNumber } from '@/components/full-number';
 import { TooltipTrigger, Tooltip, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { InfoIcon } from 'lucide-react';

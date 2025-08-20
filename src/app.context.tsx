@@ -1,4 +1,4 @@
-import type { ChainId } from '@/app/wagmi';
+import type { ChainId } from '@/wagmi';
 import { createContext, useContext } from 'react';
 import type { Address, WalletClient } from 'viem';
 

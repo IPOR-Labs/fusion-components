@@ -7,7 +7,7 @@ import { useIsAccountScheduledWithdraw } from '../hooks/use-is-account-scheduled
 import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
 import { useWithdrawManagerFee } from '../hooks/use-withdraw-manager-fee';
 import { useMaxInstantWithdrawAmount } from '../hooks/use-max-instant-withdraw-amount';
-import { useAppContext } from '@/app/app.context';
+import { useAppContext } from '@/app.context';
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
 
 interface Args {

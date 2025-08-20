@@ -1,5 +1,5 @@
 import { it, expect } from 'vitest';
-import { minBigInt } from '@/utils/min-bigint';
+import { minBigInt } from '@/lib/min-bigint';
 
 it('returns max bigint', () => {
   expect(minBigInt(1n, 2n, 3n)).toBe(1n);

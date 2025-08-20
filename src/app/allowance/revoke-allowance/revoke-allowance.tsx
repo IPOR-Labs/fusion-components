@@ -2,7 +2,7 @@ import { useActions } from './revoke-allowance.actions';
 import { useParams } from './revoke-allowance.params';
 import { RevokeAllowanceContext, useRevokeAllowanceContext } from './revoke-allowance.context';
 import { type Address } from 'viem';
-import { type ChainId } from '@/app/wagmi';
+import { type ChainId } from '@/wagmi';
 import { RevokeAllowanceRevoke } from './components/revoke-allowance-revoke';
 import { useTransactionState } from '@/app/transactions/hooks/use-transaction-state';
 import { TransactionFeedback } from '@/app/transactions/components/transaction-feedback';

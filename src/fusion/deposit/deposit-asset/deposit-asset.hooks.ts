@@ -1,10 +1,10 @@
 import { formSchema } from '@/fusion/deposit/deposit-asset/deposit-asset.form';
 import { useDepositAssetContext } from './deposit-asset.context';
 import { parseUnits } from 'viem';
-import { calcNeedsApproval } from '@/utils/calc-needs-approval';
+import { calcNeedsApproval } from '@/lib/calc-needs-approval';
 import { getNeedsRevokeApproval } from '@/app/allowance/utils/get-needs-revoke-approval';
 import { mainnet } from 'viem/chains';
-import { USDT_ADDRESS } from '@/utils/erc20.addresses';
+import { USDT_ADDRESS } from '@/lib/erc20.addresses';
 
 const useNeedsRevokeBeforeApproval = () => {
   const {

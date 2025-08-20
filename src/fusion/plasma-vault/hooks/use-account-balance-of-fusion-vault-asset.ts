@@ -1,7 +1,7 @@
 import { erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
-import { useAppContext } from '@/app/app.context';
-import { BLOCK_INTERVAL } from '@/utils/constants';
+import { useAppContext } from '@/app.context';
+import { BLOCK_INTERVAL } from '@/lib/constants';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
 
