@@ -3,6 +3,7 @@ import { FullNumber } from '@/components/full-number';
 import { formatNumber } from '@/lib/format-number';
 import { LoaderIcon } from 'lucide-react';
 import { type Address, parseUnits } from 'viem';
+import styles from './approval-text.module.css';
 
 const MAX_ALLOWANCE_BEFORE_UNLIMITED = '1000000000000000';
 
@@ -33,11 +34,11 @@ export const ApprovalText = (props: ApprovalTextProps) => {
   const formattedAllowance = formatNumber(allowance, decimals, visibleDecimals);
 
   return (
-    <div className="flex flex-col items-center mb-2">
-      <div data-testid="approval-text" className="text-white font-medium">
+    <div className={styles.container}>
+      <div data-testid="approval-text" className={styles.approvalText}>
         {state === 'pending' && (
-          <div className="flex gap-3">
-            <LoaderIcon className="h-4 w-4 animate-spin" />
+          <div className={styles.pendingContainer}>
+            <LoaderIcon className={styles.loaderIcon} />
             <span>Approving</span>
           </div>
         )}
@@ -45,7 +46,7 @@ export const ApprovalText = (props: ApprovalTextProps) => {
           <>
             Approved:{' '}
             {!isUnlimited && (
-              <span className="text-lg">
+              <span className={styles.approvedAmount}>
                 <FullNumber value={allowance} decimals={decimals}>
                   {formattedAllowance}
                 </FullNumber>
@@ -56,7 +57,7 @@ export const ApprovalText = (props: ApprovalTextProps) => {
         )}
       </div>
       {!isZero && accountAddress && state === 'approved' && (
-        <div className="text-xs">
+        <div className={styles.revokeLink}>
           <RevokeCashLink accountAddress={accountAddress} />
         </div>
       )}

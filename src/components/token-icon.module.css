@@ -1,0 +1,21 @@
+.icon {
+  border-radius: 50%;
+}
+
+.placeholder {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background-color: var(--muted);
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.symbol {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

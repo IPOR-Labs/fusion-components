@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { CheckIcon } from 'lucide-react';
+import styles from './approval-steps.module.css';
 
 interface ApprovalStepsProps {
   needsApproval: boolean;
@@ -11,9 +12,9 @@ export const ApprovalSteps = (props: ApprovalStepsProps) => {
   const { needsApproval, isApproving } = props;
 
   return (
-    <div className="w-full flex items-center" data-testid="approval-steps">
+    <div className={styles.container} data-testid="approval-steps">
       {!needsApproval && (
-        <CheckIcon className="h-6 w-6" />
+        <CheckIcon className={styles.checkIcon} />
       )}
       {needsApproval && <Circle approved={!needsApproval}>1</Circle>}
       <Line />
@@ -23,7 +24,7 @@ export const ApprovalSteps = (props: ApprovalStepsProps) => {
 };
 
 const Line = () => {
-  return <div className="h-0.5 bg-ipor-asset/40 flex-1" />;
+  return <div className={styles.line} />;
 };
 
 const Circle = (props: {
@@ -33,13 +34,10 @@ const Circle = (props: {
 }) => {
   return (
     <div
-      className={cn(
-        'flex items-center justify-center w-6 h-6 rounded-full text-ipor-asset font-semi-bold border border-ipor-asset text-xs',
-        {
-          'border-none': props.approved,
-          'text-ipor-grey-7 bg-ipor-asset/20  border-none': props.disabled,
-        },
-      )}
+      className={cn(styles.circle, {
+        [styles.circleApproved]: props.approved,
+        [styles.circleDisabled]: props.disabled,
+      })}
     >
       {props.children}
     </div>

@@ -1,5 +1,6 @@
 import { cn } from '@/lib/utils';
 import { type ReactNode } from 'react';
+import styles from './number-display.module.css';
 
 interface Props {
   children: ReactNode;
@@ -8,10 +9,7 @@ interface Props {
 }
 
 export const NumberDisplay = ({ children, isSvg, className }: Props) => {
-  const classNames = cn(
-    'font-source-sans-pro lining-nums tabular-nums',
-    className,
-  );
+  const classNames = cn(styles.root, className);
 
   if (isSvg) {
     return <tspan className={classNames}>{children}</tspan>;
