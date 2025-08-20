@@ -11,13 +11,13 @@ pnpm install
 pnpm build
 ```
 
-The build emits `fusion-widget.[hash].js` and `fusion-widget.[hash].css` in `dist/`.
+The build emits simple HTML page with JavaScript files in `dist/assets`.
 
 Use it on a host page
 
 ```html
 <fusion-deposit />
-<script src="/path/to/fusion-widget.[hash].js"></script>
+<script src="/path/to/build-[hash].js"></script>
 ```
 
 # Development
@@ -27,11 +27,4 @@ Install dependencies, then run in dev mode
 ```bash
 pnpm install
 pnpm dev
-```
-
-Or run in Storybook
-
-```bash
-pnpm install
-pnpm sb
 ```
