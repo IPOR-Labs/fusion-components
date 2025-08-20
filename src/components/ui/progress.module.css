@@ -1,0 +1,16 @@
+.root {
+  position: relative;
+  height: 0.5rem;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: color-mix(in oklch, var(--primary), transparent 80%);
+}
+
+.indicator {
+  background-color: var(--primary);
+  height: 100%;
+  width: 100%;
+  flex: 1;
+  transition: all 120ms ease;
+}
