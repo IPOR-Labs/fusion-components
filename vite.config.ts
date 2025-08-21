@@ -19,8 +19,14 @@ export default defineConfig(() => {
     },
     root: '.',
     build: {
+      cssCodeSplit: false,
       rollupOptions: {
         input: 'build.html',
+        output: {
+          inlineDynamicImports: true,
+          entryFileNames: 'fusion-deposit-widget.js',
+          assetFileNames: 'fusion-deposit-widget[extname]',
+        },
       },
     },
   }
