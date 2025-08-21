@@ -69,7 +69,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-/* Base styles to replace Tailwind's base layer */
 * {
   box-sizing: border-box;
   border-color: var(--border);

@@ -127,18 +127,6 @@ Per-component checklist:
 - Remove any leftover Tailwind classes/imports (none should remain by this point).
 - Keep `class-variance-authority`.
 
-#### Phase 7 — `components.json` and rules
-- Keep `components.json` but add a comment that Tailwind is not used and new components must be manually converted to CSS Modules.
-- Add `/.cursor/rules/shadcn-css-modules.mdc` with high-level guidance:
-  - Convert utilities to tokens + rem in `.module.css`.
-  - Keep `cva`.
-  - Map variant/state selectors to module classes.
-  - Preserve `data-slot`.
-  - Prefer media queries (Tailwind breakpoints), no container queries.
-  - Inline only used animations.
-  - No global utility classes.
-  - Use filenames like `component-name.module.css`.
-
 #### Acceptance criteria
 - All files under `src/components/ui`, `src/components/*`, `src/fusion/deposit/*`, `src/fusion/withdraw/*` use CSS Modules; no Tailwind utilities remain.
 - `src/index.css` contains tokens/dark theme and base rules; no Tailwind directives.
