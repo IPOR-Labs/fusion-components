@@ -4,6 +4,7 @@ import { RevokeAllowance } from '@/app/allowance/revoke-allowance/revoke-allowan
 import { mainnet } from 'viem/chains';
 import { useAppContext } from '@/app.context';
 import { Card, CardContent } from '@/components/ui/card';
+import styles from './deposit-asset-revoke-usdt-allowance.module.css';
 
 interface Props {
   newUsdtAllowance: bigint;
@@ -24,7 +25,7 @@ export const DepositAssetRevokeUsdtAllowance = ({
   return (
     <Card>
       <CardContent>
-        <div className="flex items-center gap-4">
+        <div className={styles.content}>
           <TokenIcon chainId={mainnet.id} address={USDT_ADDRESS_MAINNET} />
           USDT requires revoking approval before approving higher value
         </div>

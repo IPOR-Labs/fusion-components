@@ -1,0 +1,10 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.message {
+  color: var(--muted-foreground);
+  text-align: center;
+}
