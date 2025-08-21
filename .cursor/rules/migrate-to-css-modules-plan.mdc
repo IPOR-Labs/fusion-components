@@ -17,7 +17,7 @@ alwaysApply: false
 
 - **Component API and variants**
   - **Public API**: Keep as-is, including `className` passthrough and variant prop names/values.
-  - **Libraries**: Keep `class-variance-authority` and `tailwind-merge` for compatibility.
+  - **Libraries**: Keep `class-variance-authority` for compatibility.
 
 - **CSS Modules structure and naming**
   - **Colocation**: One module per component, colocated.
@@ -61,7 +61,7 @@ alwaysApply: false
 
 ### Crucial aspects and considerations
 
-- **Compatibility vs. purity**: Keeping `tailwind-merge` and `cva` preserves call sites and variant ergonomics, but `tailwind-merge` adds limited value with non-Tailwind class names. It’s harmless and maintains compatibility.
+- **Compatibility vs. purity**: Keeping `cva` preserves call sites and variant ergonomics. It’s harmless and maintains compatibility.
 - **Token-first styling**: By retaining your CSS variables, component CSS stays stable and themable. This eases future refactors and reduces churn across components.
 - **Maintainable variants**: Map `cva` variants to CSS Module class maps for readability and low runtime cost; avoid long utility strings.
 - **Reset in Shadow DOM**: Ensure modern-normalize is included inside the shadow root so host page styles don’t leak.
@@ -92,7 +92,7 @@ Per-component checklist:
 - Create colocated kebab-case file: `component-name.module.css`.
 - Translate Tailwind utilities to CSS using tokens and rem units. Keep responsive behavior via media queries (Tailwind breakpoints). Skip container queries.
 - Keep `data-slot` attributes unchanged.
-- Keep `cva` and `tailwind-merge`. Map `cva` variants to module class names:
+- Keep `cva`. Map `cva` variants to module class names:
   - Base class: `.root`
   - Elements: `.header`, `.content`, `.footer`, `.icon`
   - Variants: `.variantDefault`, `.variantDestructive`, `.variantOutline`, `.sizeSm`, `.sizeDefault`, `.sizeLg`, `.sizeIcon`
@@ -125,13 +125,13 @@ Per-component checklist:
 - Remove Tailwind and related deps: `tailwindcss`, `@tailwindcss/vite`, `tw-animate-css`.
 - Update `vite.config.ts`: remove the Tailwind plugin import and invocation.
 - Remove any leftover Tailwind classes/imports (none should remain by this point).
-- Keep `class-variance-authority` and `tailwind-merge`.
+- Keep `class-variance-authority`.
 
 #### Phase 7 — `components.json` and rules
 - Keep `components.json` but add a comment that Tailwind is not used and new components must be manually converted to CSS Modules.
 - Add `/.cursor/rules/shadcn-css-modules.mdc` with high-level guidance:
   - Convert utilities to tokens + rem in `.module.css`.
-  - Keep `cva` and `tailwind-merge`.
+  - Keep `cva`.
   - Map variant/state selectors to module classes.
   - Preserve `data-slot`.
   - Prefer media queries (Tailwind breakpoints), no container queries.
@@ -143,7 +143,7 @@ Per-component checklist:
 - All files under `src/components/ui`, `src/components/*`, `src/fusion/deposit/*`, `src/fusion/withdraw/*` use CSS Modules; no Tailwind utilities remain.
 - `src/index.css` contains tokens/dark theme and base rules; no Tailwind directives.
 - Tailwind and related plugins removed from `package.json` and `vite.config.ts`.
-- Variants still controlled by `cva`; `className` passthrough intact; `tailwind-merge` remains.
+- Variants still controlled by `cva`; `className` passthrough intact.
 - Animations exist only where used; names may differ.
 - Responsive behavior preserved via the specified breakpoints.
 - `/examples/*` untouched.

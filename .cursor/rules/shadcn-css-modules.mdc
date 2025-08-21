@@ -5,7 +5,7 @@ This document defines how we manually convert shadcn components to CSS Modules i
 ### Goals
 - Drop Tailwind entirely for app code; use CSS Modules everywhere.
 - Keep component APIs intact (props, `className` passthrough, variant names/values).
-- Retain `class-variance-authority` (cva) and `tailwind-merge` usage for compatibility.
+- Retain `class-variance-authority` (cva) usage for compatibility.
 - Preserve design tokens and dark theme via `src/index.css` CSS variables.
 - Scope styles to components (no global utility classes). The app runs in Shadow DOM.
 
@@ -82,7 +82,7 @@ This document defines how we manually convert shadcn components to CSS Modules i
 - Install the component normally, then immediately convert:
   - Remove Tailwind utility class strings from the TSX.
   - Create a colocated CSS Module and move styles into it using tokens and rem units.
-  - Keep `cva` and `tailwind-merge`; map variants to module classes.
+  - Keep `cva`; map variants to module classes.
   - Preserve `data-slot` and responsive behavior via media queries.
   - Inline only required keyframes.
 
