@@ -1,0 +1,18 @@
+.message {
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  padding-bottom: 1rem;
+}
+
+.withdrawInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  padding-bottom: 1rem;
+}
+
+.tooltipContent {
+  max-width: 20rem;
+}

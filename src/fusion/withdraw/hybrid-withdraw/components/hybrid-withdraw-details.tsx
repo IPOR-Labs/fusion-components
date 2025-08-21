@@ -1,13 +1,13 @@
 import { type PropsWithChildren } from 'react';
 import { HybridWithdrawFees } from './hybrid-withdraw-fees';
 import { HybridWithdrawTypeOfWithdraw } from './hybrid-withdraw-type-of-withdraw';
-import { cn } from '@/lib/utils';
 import {
   useIsScheduledWithdrawal,
   useIsSubmitDisabled,
   useAssetAmount,
 } from '../hybrid-withdraw.hooks';
 import { InfoIcon } from 'lucide-react';
+import styles from './hybrid-withdraw-details.module.css';
 
 export const HybridWithdrawDetails = () => {
   const isScheduledWithdrawal = useIsScheduledWithdrawal();
@@ -37,20 +37,14 @@ export const HybridWithdrawDetails = () => {
 
 const Placeholder = (props: PropsWithChildren) => {
   const hasChildren = Boolean(props.children);
-  const defaultClassName = 'h-32 space-y-6';
 
   if (hasChildren) {
-    return <div className={defaultClassName}>{props.children}</div>;
+    return <div className={styles.root}>{props.children}</div>;
   }
 
   return (
-    <div
-      className={cn(
-        defaultClassName,
-        'border border-dashed border-border rounded-md p-2 flex items-center justify-center',
-      )}
-    >
-      <div className="flex items-center gap-x-2 text-xs text-muted-foreground">
+    <div className={styles.placeholder}>
+      <div className={styles.placeholderContent}>
         <InfoIcon className="h-4 w-4" />
         <p>Please fill in the amount to see the details.</p>
       </div>

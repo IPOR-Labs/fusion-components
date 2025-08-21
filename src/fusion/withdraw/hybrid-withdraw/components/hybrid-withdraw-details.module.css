@@ -1,0 +1,27 @@
+.root {
+  height: 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.placeholder {
+  height: 8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1px dashed var(--border);
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholderContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}

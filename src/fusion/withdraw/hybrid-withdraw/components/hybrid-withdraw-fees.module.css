@@ -1,0 +1,22 @@
+.root {
+  display: flex;
+  gap: 1rem;
+}
+
+.label {
+  display: flex;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+
+.amount {
+  color: var(--muted-foreground);
+}
+
+.tooltipContent {
+  max-width: 24rem;
+}
+
+.tooltipText {
+  color: var(--muted-foreground);
+}

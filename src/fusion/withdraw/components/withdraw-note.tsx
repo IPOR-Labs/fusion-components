@@ -14,6 +14,7 @@ import {
 import { InfoIcon } from 'lucide-react';
 import { DATE_FORMAT_WITH_HOUR } from '@/lib/constants';
 import { getNow } from '@/lib/get-now';
+import styles from './withdraw-note.module.css';
 
 const MILLISECONDS_IN_SECOND = 1000n;
 
@@ -34,7 +35,7 @@ export const WithdrawNote = ({
 
   if (isScheduledWithdrawal === false) {
     return (
-      <p className="text-sm text-muted-foreground pb-4">
+      <p className={styles.message}>
         You can withdraw assets at any time
       </p>
     );
@@ -60,13 +61,13 @@ export const WithdrawNote = ({
 
   return (
     <TooltipProvider delayDuration={100} skipDelayDuration={100}>
-      <p className="flex items-center gap-1 text-sm text-muted-foreground pb-4">
+      <p className={styles.withdrawInfo}>
         <span>Withdraw: Scheduled ({formatedDuration})</span>
         <Tooltip>
           <TooltipTrigger>
             <InfoIcon size={16} />
           </TooltipTrigger>
-          <TooltipContent className="max-w-80">
+          <TooltipContent className={styles.tooltipContent}>
             <p>
               This vault has a 2-step redemption process. First you need to
               request withdrawal, after that the vault manager has

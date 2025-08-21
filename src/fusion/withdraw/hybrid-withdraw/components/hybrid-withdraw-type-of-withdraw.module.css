@@ -1,0 +1,32 @@
+.alertTitle {
+  display: flex;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.withdrawButton {
+  color: var(--ipor-asset);
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.instantAlert {
+  background-color: color-mix(in oklch, var(--ipor-asset), transparent 90%);
+  border-color: var(--ipor-asset);
+}
+
+.tooltipContent {
+  max-width: 24rem;
+}
+
+.tooltipText {
+  color: var(--muted-foreground);
+}
+
+.primaryText {
+  color: var(--primary);
+}
+
+.smallText {
+  font-size: 0.75rem;
+}
