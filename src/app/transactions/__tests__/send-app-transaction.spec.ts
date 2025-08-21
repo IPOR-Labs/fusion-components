@@ -2,9 +2,9 @@ import { describe, it, expect, vi, type Mock } from 'vitest';
 import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { erc20Abi } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
-import { getGasPriceBlockNative } from '@/lib/get-gas-price-block-native';
+import { getGasPriceBlockNative } from '@/app/transactions/utils/get-gas-price-block-native';
 
-vi.mock('@/utils/get-gas-price-block-native');
+vi.mock('@/app/transactions/utils/get-gas-price-block-native');
 vi.mock('viem/actions');
 
 const GAS_PRICE_RESULT_MOCK = [
