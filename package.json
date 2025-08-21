@@ -12,7 +12,9 @@
     "test:ci": "vitest run --config ./vitest.config.jsdom.ts",
     "test:watch": "vitest watch --config ./vitest.config.jsdom.ts",
     "t": "pnpm test:watch",
-    "find-unused-exports": "pnpm ts-unused-exports ./tsconfig.app.json"
+    "find-unused-exports": "pnpm ts-unused-exports ./tsconfig.app.json",
+    "copy-widget-files": "node scripts/copy-widget-files.js",
+    "build-and-copy": "pnpm build && pnpm copy-widget-files"
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.1",

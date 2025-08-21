@@ -24,8 +24,8 @@ export default defineConfig(() => {
         input: 'build.html',
         output: {
           inlineDynamicImports: true,
-          entryFileNames: 'fusion-deposit-widget.js',
-          assetFileNames: 'fusion-deposit-widget[extname]',
+          entryFileNames: 'public/fusion-deposit-widget.js',
+          assetFileNames: 'public/fusion-deposit-widget[extname]',
         },
       },
     },
