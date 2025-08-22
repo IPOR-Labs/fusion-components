@@ -4,14 +4,16 @@ import { createRoot, type Root } from 'react-dom/client';
 import { FusionDepositWidget } from './fusion-deposit.widget';
 import type { AppConfig } from '@/app.context';
 import type { ChainId } from '@/wagmi';
-import styles from '@/index.css?inline';
+import globalStyles from '@/index.css?inline';
+
+const OUTPUT_FILE_NAME = import.meta.env.VITE_OUTPUT_FILE_NAME;
 
 export class FusionDepositWebComponent extends HTMLElement {
   private root: Root;
   private address: Address | undefined = undefined;
   private chainId: ChainId | undefined = undefined;
   private config: AppConfig;
-  
+
   constructor() {
     super();
     this.config = {
@@ -60,28 +62,33 @@ export class FusionDepositWebComponent extends HTMLElement {
     this.root.render(element);
   }
 
-  private applyStyles() {
+  private async applyStyles() {
     if (!this.shadowRoot) {
       throw new Error('Shadow root not found');
     };
 
-		try {
-			if ('adoptedStyleSheets' in Document.prototype && 'replaceSync' in CSSStyleSheet.prototype) {
-				const sheet = new CSSStyleSheet();
-				sheet.replaceSync(styles);
-				this.shadowRoot.adoptedStyleSheets = [
-          ...this.shadowRoot.adoptedStyleSheets, 
+    const componentStyles = await fetch(`/${OUTPUT_FILE_NAME}.css`)
+      .then(res => res.text());
+
+    const styles = globalStyles.concat(componentStyles);
+
+    try {
+      if ('adoptedStyleSheets' in Document.prototype && 'replaceSync' in CSSStyleSheet.prototype) {
+        const sheet = new CSSStyleSheet();
+        sheet.replaceSync(styles);
+        this.shadowRoot.adoptedStyleSheets = [
+          ...this.shadowRoot.adoptedStyleSheets,
           sheet,
         ];
-			} else {
-				this.legacyApplyStyles();
-			}
-		} catch {
-			this.legacyApplyStyles();
-		}
+      } else {
+        this.legacyApplyStyles(styles);
+      }
+    } catch {
+      this.legacyApplyStyles(styles);
+    }
   }
 
-  private legacyApplyStyles() {
+  private legacyApplyStyles(styles: string) {
     if (!this.shadowRoot) {
       throw new Error('Shadow root not found');
     };

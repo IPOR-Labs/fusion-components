@@ -5,6 +5,8 @@ import checker from 'vite-plugin-checker';
 
 // https://vite.dev/config/
 export default defineConfig(() => {
+  const outputFileName = process.env.VITE_OUTPUT_FILE_NAME || 'fusion-deposit-widget';
+  
   return {
     plugins: [
       react(), 
@@ -24,8 +26,8 @@ export default defineConfig(() => {
         input: 'build.html',
         output: {
           inlineDynamicImports: true,
-          entryFileNames: 'public/fusion-deposit-widget.js',
-          assetFileNames: 'public/fusion-deposit-widget[extname]',
+          entryFileNames: `public/${outputFileName}.js`,
+          assetFileNames: `public/${outputFileName}[extname]`,
         },
       },
     },

@@ -3,8 +3,9 @@
 /**
  * Copy Widget Files Script
  * 
- * This script copies the built fusion-deposit-widget.js and fusion-deposit-widget.css files
- * from dist/public/ to the public/ directory of each example in the examples/ folder.
+ * This script copies the built widget files from dist/public/ to the public/ directory 
+ * of each example in the examples/ folder. The file names are determined by the 
+ * VITE_OUTPUT_FILE_NAME environment variable.
  * 
  * Usage:
  *   node scripts/copy-widget-files.js
@@ -13,6 +14,7 @@
  * 
  * Prerequisites:
  *   - Run 'pnpm build' first to generate the files in dist/public/
+ *   - Set VITE_OUTPUT_FILE_NAME environment variable (defaults to 'fusion-deposit-widget')
  */
 
 import fs from 'fs';
@@ -26,10 +28,13 @@ const __dirname = path.dirname(__filename);
 // Get project root directory (parent of scripts directory)
 const projectRoot = path.resolve(__dirname, '..');
 
+// Get output file name from environment variable
+const outputFileName = process.env.VITE_OUTPUT_FILE_NAME || 'fusion-deposit-widget';
+
 // Source files to copy (from dist/public where they are built)
 const sourceFiles = [
-  path.join(projectRoot, 'dist/public/fusion-deposit-widget.js'),
-  path.join(projectRoot, 'dist/public/fusion-deposit-widget.css')
+  path.join(projectRoot, 'dist/public', `${outputFileName}.js`),
+  path.join(projectRoot, 'dist/public', `${outputFileName}.css`)
 ];
 
 // Get all example directories
@@ -39,6 +44,7 @@ const exampleDirs = fs.readdirSync(examplesDir, { withFileTypes: true })
   .map(dirent => dirent.name);
 
 console.log('Found example directories:', exampleDirs);
+console.log(`Using output file name: ${outputFileName}`);
 
 // Copy files to each example's public directory
 exampleDirs.forEach(exampleDirName => {
