@@ -47,9 +47,6 @@ dependencies:
   lucide-react:
     specifier: 0.540.0
     version: 0.540.0(react@19.1.0)
-  modern-normalize:
-    specifier: 3.0.1
-    version: 3.0.1
   react:
     specifier: 19.1.0
     version: 19.1.0
@@ -4988,11 +4985,6 @@ packages:
         optional: true
     dependencies:
       typescript: 5.8.3
-    dev: false
-
-  /modern-normalize@3.0.1:
-    resolution: {integrity: sha512-VqlMdYi59Uch6fnUPxnpijWUQe+TW6zeWCvyr6Mb7JibheHzSuAAoJi2c71ZwIaWKpECpGpYHoaaBp6rBRr+/g==}
-    engines: {node: '>=6'}
     dev: false
 
   /mrmime@2.0.1:
