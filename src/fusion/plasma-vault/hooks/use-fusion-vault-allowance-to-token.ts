@@ -3,6 +3,7 @@ import { BLOCK_INTERVAL } from '@/lib/constants';
 import { type Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import { useAppContext } from '@/app.context';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 
 interface Args {
   tokenAddress: Address | undefined;
@@ -14,11 +15,10 @@ export const useFusionVaultAllowanceToToken = ({
   enabled = true,
 }: Args) => {
   const {
-    walletClient,
     chainId,
     fusionVaultAddress,
   } = useAppContext();
-  const accountAddress = walletClient?.account?.address;
+  const accountAddress = useWalletAccountAddress();
 
   const { data } = useReadContract({
     address: tokenAddress,

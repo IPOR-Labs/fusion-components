@@ -3,14 +3,14 @@ import { BLOCK_INTERVAL } from '@/lib/constants';
 import { erc4626Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 import { useAppContext } from '@/app.context';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 
 export const useAccountSharesInFusionVault = () => {
   const {
-    walletClient,
     chainId,
     fusionVaultAddress,
   } = useAppContext();
-  const accountAddress = walletClient?.account?.address;
+  const accountAddress = useWalletAccountAddress();
 
   const { data } = useReadContract({
     address: fusionVaultAddress,

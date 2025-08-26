@@ -4,13 +4,13 @@ import { useAppContext } from '@/app.context';
 import { BLOCK_INTERVAL } from '@/lib/constants';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 
 export const useAccountBalanceOfFusionVaultAsset = () => {
   const {
-    walletClient,
     chainId,
   } = useAppContext();
-  const accountAddress = walletClient?.account?.address;
+  const accountAddress = useWalletAccountAddress();
   const assetAddress = useFusionVaultAssetAddress();
 
   const { data } = useReadContract({

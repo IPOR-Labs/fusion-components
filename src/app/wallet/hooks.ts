@@ -1,10 +1,9 @@
-import { useAppContext } from '@/app.context';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
+import { useWalletChainId } from '@/app/wallet/hooks/use-wallet-chain-id';
 
 export const useIsWrongWalletChain = (chainId: number): boolean => {
-  const { walletClient } = useAppContext();
-
-  const walletChainId = walletClient?.chain?.id;
-  const accountAddress = walletClient?.account?.address;
+  const walletChainId = useWalletChainId();
+  const accountAddress = useWalletAccountAddress();
 
   if (!accountAddress) return false;
   if (!walletChainId) return false;

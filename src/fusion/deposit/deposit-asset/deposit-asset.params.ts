@@ -13,6 +13,8 @@ import { useIsScheduledWithdrawal } from '@/fusion/withdraw/hooks/use-is-schedul
 import { useIsVaultPublic } from '@/fusion/plasma-vault/hooks/use-is-vault-public';
 import { useFusionVaultMaxDeposit } from '@/fusion/plasma-vault/hooks/use-fusion-vault-max-deposit';
 import { useAppContext } from '@/app.context';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
+import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
 
 interface Args {
   onConfirm?: () => void;
@@ -21,13 +23,12 @@ interface Args {
 
 export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
   const {
-    walletClient,
     connect,
     chainId,
     fusionVaultAddress,
   } = useAppContext();
-  const accountAddress = walletClient?.account?.address;
-  const switchChain = walletClient?.switchChain;
+  const accountAddress = useWalletAccountAddress();
+  const switchChain = useWalletSwitchChain();
 
   const isWrongWalletChain = useIsWrongWalletChain(chainId);
 
@@ -69,10 +70,7 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
     assetBalance,
     canDeposit: isVaultPublic || isAccountWhitelisted,
     isWrongWalletChain,
-    switchChain: () =>
-      switchChain?.({
-        id: chainId,
-      }),
+    switchChain,
     accountAddress,
     connect,
     onConfirm,

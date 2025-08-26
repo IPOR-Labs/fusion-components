@@ -6,6 +6,7 @@ import { type ChainId } from '@/wagmi';
 import { useAppContext } from '@/app.context';
 import { useIsSafeWallet } from '@/app/wallet/hooks/use-is-safe-wallet';
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 
 interface WriteAsyncArgs {
   publicClient: ReturnType<typeof usePublicClient>;
@@ -35,7 +36,7 @@ export const useContractWriteTransaction = <TSchema extends Schema>({
   const { walletClient } = useAppContext();
   const _payloadSchema = payloadSchema || z.undefined();
   const publicClient = usePublicClient({ chainId });
-  const accountAddress = walletClient?.account?.address;
+  const accountAddress = useWalletAccountAddress();
   const isWrongWalletChain = useIsWrongWalletChain(chainId);
   const isSafeWallet = useIsSafeWallet();
 

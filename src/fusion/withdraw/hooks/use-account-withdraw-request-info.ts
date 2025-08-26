@@ -5,13 +5,13 @@ import { useWithdrawManagerAddress } from './use-withdraw-manager-address';
 import { BLOCK_INTERVAL } from '@/lib/constants';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useAppContext } from '@/app.context';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 
 export const useAccountWithdrawRequestInfo = () => {
   const {
     chainId,
-    walletClient,
   } = useAppContext();
-  const accountAddress = walletClient?.account?.address;
+  const accountAddress = useWalletAccountAddress();
 
   const withdrawManagerAddress = useWithdrawManagerAddress();
 

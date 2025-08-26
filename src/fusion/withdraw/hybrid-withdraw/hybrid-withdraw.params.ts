@@ -9,6 +9,8 @@ import { useWithdrawManagerFee } from '../hooks/use-withdraw-manager-fee';
 import { useMaxInstantWithdrawAmount } from '../hooks/use-max-instant-withdraw-amount';
 import { useAppContext } from '@/app.context';
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
+import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
 
 interface Args {
   onConfirm?: () => void;
@@ -19,11 +21,10 @@ export const useParams = ({ onConfirm }: Args) => {
     chainId,
     fusionVaultAddress,
     connect,
-    walletClient,
   } = useAppContext();
   const isWrongWalletChain = useIsWrongWalletChain(chainId);
-  const accountAddress = walletClient?.account?.address;
-  const switchChain = walletClient?.switchChain;
+  const accountAddress = useWalletAccountAddress();
+  const switchChain = useWalletSwitchChain();
 
   const assetDecimals = useFusionVaultAssetDecimals();
   const assetSymbol = useFusionVaultAssetSymbol();
@@ -49,7 +50,7 @@ export const useParams = ({ onConfirm }: Args) => {
     assetSymbol,
     balanceToWithdraw,
     isWrongWalletChain,
-    switchChain: () => switchChain?.({ id: chainId }),
+    switchChain,
     accountAddress,
     connect,
     onConfirm,
