@@ -9,17 +9,24 @@ const buttonVariants = cva(styles.root, {
   variants: {
     variant: {
       default: styles.variantDefault,
+      solid: styles.variantSolid,
       destructive: styles.variantDestructive,
       outline: styles.variantOutline,
+      primary: styles.variantPrimary,
       secondary: styles.variantSecondary,
       ghost: styles.variantGhost,
       link: styles.variantLink,
+      inputlike: styles.variantInputlike,
+      listItem: styles.variantListItem,
+      listItemSelected: styles.variantListItemSelected,
     },
     size: {
       default: styles.sizeDefault,
       sm: styles.sizeSm,
       lg: styles.sizeLg,
       icon: styles.sizeIcon,
+      inputlike: styles.sizeInputlike,
+      listItem: styles.sizeListItem,
     },
   },
   defaultVariants: {

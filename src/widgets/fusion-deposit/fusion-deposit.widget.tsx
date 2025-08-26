@@ -9,7 +9,7 @@ import { useAppContext, type AppContextValue } from '@/app.context';
 
 export const FusionDepositWidget = (appContext: AppContextValue) => {
   return (
-    <div className="dark">
+    <div className="theme-fusion">
       <Providers appContext={appContext}>
         <Content />
       </Providers>

@@ -46,7 +46,7 @@ select {
   background: transparent;
 }
 
-/* Fully reset button styles while preserving accessibility */
+
 button {
   -webkit-appearance: none;
   -moz-appearance: none;

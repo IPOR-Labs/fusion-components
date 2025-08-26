@@ -156,6 +156,7 @@ export const AmountInput = ({
                   return (
                     <Button
                       key={option}
+                      variant="inputlike"
                       type="button"
                       onClick={() => {
                         onInteract?.();

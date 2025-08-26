@@ -5,14 +5,14 @@
 }
 
 .withdrawButton {
-  color: var(--ipor-asset);
+  color: var(--brand-1);
   text-decoration: underline;
   font-weight: 600;
 }
 
 .instantAlert {
-  background-color: color-mix(in oklch, var(--ipor-asset), transparent 90%);
-  border-color: var(--ipor-asset);
+  background-color: color-mix(in oklch, var(--brand-1), transparent 90%);
+  border-color: var(--brand-1);
 }
 
 .tooltipContent {

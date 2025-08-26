@@ -1,4 +1,4 @@
-:root {
+.theme-ocean {
   --radius: 0.625rem;
   
   --background: oklch(0.985 0.01 220);
@@ -29,7 +29,7 @@
   --ring: oklch(0.7 0.03 240);
 }
 
-.dark {
+.theme-ocean.dark {
   --background: oklch(0.16 0.02 250);
   --foreground: oklch(0.98 0.01 220);
   

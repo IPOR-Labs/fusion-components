@@ -1,6 +1,5 @@
 import { type ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { CheckIcon } from 'lucide-react';
 import styles from './approval-steps.module.css';
 
 interface ApprovalStepsProps {
@@ -14,7 +13,9 @@ export const ApprovalSteps = (props: ApprovalStepsProps) => {
   return (
     <div className={styles.container} data-testid="approval-steps">
       {!needsApproval && (
-        <CheckIcon className={styles.checkIcon} />
+        <div className={styles.checkIcon}>
+          <ApprovedIcon />
+        </div>
       )}
       {needsApproval && <Circle approved={!needsApproval}>1</Circle>}
       <Line />
@@ -43,3 +44,29 @@ const Circle = (props: {
     </div>
   );
 };
+
+const ApprovedIcon = () => {
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 17 17">
+      <g transform="translate(-436 -710)">
+        <circle
+          cx="8.5"
+          cy="8.5"
+          r="7.5"
+          transform="translate(436 710)"
+          fill="#244148"
+          stroke="#68AD96"
+          strokeWidth="1"
+        />
+        <path
+          d="M1239.024,125.079l2.612,2.613,5.849-6"
+          transform="translate(-798.754 593.808)"
+          fill="none"
+          stroke="#68AD96"
+          strokeWidth="1"
+        />
+      </g>
+    </svg>
+  );
+};
+

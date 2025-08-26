@@ -11,7 +11,7 @@
 
 .line {
   height: 0.125rem;
-  background-color: color-mix(in oklch, var(--primary), transparent 60%);
+  background-color: color-mix(in oklch, var(--brand-1), transparent 60%);
   flex: 1;
 }
 
@@ -22,9 +22,9 @@
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
-  color: var(--primary);
+  color: var(--brand-1);
   font-weight: 600;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--brand-1);
   font-size: 0.75rem;
 }
 
@@ -34,6 +34,6 @@
 
 .circleDisabled {
   color: var(--muted-foreground);
-  background-color: color-mix(in oklch, var(--primary), transparent 80%);
+  background-color: color-mix(in oklch, var(--brand-1), transparent 80%);
   border: none;
 }

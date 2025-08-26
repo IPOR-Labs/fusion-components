@@ -72,7 +72,7 @@ const Buttons = ({
   if (!isWalletConnected) {
     return (
       <>
-        <Button type="button" onClick={selectWallet}>
+        <Button type="button" onClick={selectWallet} variant="primary">
           Connect wallet
         </Button>
         {placeholderSubmitButton}
@@ -83,7 +83,7 @@ const Buttons = ({
   if (isWrongWalletChain) {
     return (
       <>
-        <Button type="button" onClick={switchChain}>
+        <Button type="button" onClick={switchChain} variant="primary">
           {getSwitchChainButtonLabel(chainId)}
         </Button>
         {placeholderSubmitButton}
@@ -118,7 +118,7 @@ const Buttons = ({
 
     return (
       <>
-        <Button type="submit" disabled={isSubmitDisabled}>
+        <Button type="submit" disabled={isSubmitDisabled} variant="primary">
           {hasApproval ? 'Update Approval' : 'Approve'}
         </Button>
         {placeholderSubmitButton}
@@ -146,6 +146,7 @@ const Buttons = ({
       )}
       <Button
         type="submit"
+        variant="primary"
         disabled={isSubmitDisabled || isLoading}
         className={cn({
           [styles.submitButton]: !approvalProps,
