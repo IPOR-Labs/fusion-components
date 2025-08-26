@@ -112,10 +112,7 @@ select {
 }
 
 /* Fully reset button styles while preserving accessibility */
-button,
-[type="button"],
-[type="submit"],
-[type="reset"] {
+button {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
