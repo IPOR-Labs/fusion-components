@@ -1,5 +1,5 @@
 import { keepPreviousData } from '@tanstack/react-query';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 import { BLOCK_INTERVAL } from '@/lib/constants';
 import { erc4626Abi } from 'viem';
 import { useReadContract } from 'wagmi';
@@ -12,7 +12,7 @@ export const useFusionVaultConvertToShares = ({ assets }: Args) => {
   const {
     chainId,
     fusionVaultAddress,
-  } = useAppContext();
+  } = useConfigContext();
 
   const { data } = useReadContract({
     address: fusionVaultAddress,

@@ -5,7 +5,7 @@ import { useWithdrawManagerAddress } from './use-withdraw-manager-address';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
 import { type WithdrawManagerFeeType } from '../withdraw.types';
 import { assertNever } from '@/lib/assert-never';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 
 interface Args {
   feeType: WithdrawManagerFeeType;
@@ -17,7 +17,7 @@ export const useWithdrawManagerFee = ({
   const withdrawManagerAddress = useWithdrawManagerAddress();
   const {
     chainId,
-  } = useAppContext();
+  } = useConfigContext();
 
   const { data: feeAmount } = useReadContract({
     chainId,

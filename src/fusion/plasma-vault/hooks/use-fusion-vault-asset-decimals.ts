@@ -1,12 +1,12 @@
 import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 import { erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 
 export const useFusionVaultAssetDecimals = () => {
   const {
     chainId,
-  } = useAppContext();
+  } = useConfigContext();
   const assetAddress = useFusionVaultAssetAddress();
 
   const { data } = useReadContract({

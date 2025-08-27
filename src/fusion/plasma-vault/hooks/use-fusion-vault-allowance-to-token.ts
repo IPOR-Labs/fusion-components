@@ -2,7 +2,7 @@ import { keepPreviousData } from '@tanstack/react-query';
 import { BLOCK_INTERVAL } from '@/lib/constants';
 import { type Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 
 interface Args {
@@ -17,7 +17,7 @@ export const useFusionVaultAllowanceToToken = ({
   const {
     chainId,
     fusionVaultAddress,
-  } = useAppContext();
+  } = useConfigContext();
   const accountAddress = useWalletAccountAddress();
 
   const { data } = useReadContract({

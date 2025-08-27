@@ -1,9 +1,9 @@
-import { useAppContext } from "@/app.context";
+import { useConfigContext } from "@/app/config/config.context";
 import { useAppChain } from "@/app/config/hooks/use-app-chain";
 import { createWalletClient, custom } from "viem";
 
 export const useAppWalletClient = () => {
-  const { provider } = useAppContext();
+  const { provider } = useConfigContext();
 
   const chain = useAppChain();
 

@@ -2,8 +2,8 @@ import { createElement, type ReactElement } from 'react';
 import type { Address } from 'viem';
 import { createRoot, type Root } from 'react-dom/client';
 import { FusionDepositWidget } from './fusion-deposit.widget';
-import type { AppConfig } from '@/app.context';
-import type { ChainId } from '@/wagmi';
+import type { AppConfig } from '@/app/config/config.context';
+import { type ChainId } from '@/app/config/wagmi';
 import globalStyles from '@/index.css?inline';
 
 const OUTPUT_FILE_NAME = import.meta.env.VITE_OUTPUT_FILE_NAME;

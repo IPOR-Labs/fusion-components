@@ -2,7 +2,7 @@ import { useContractWriteTransaction } from '@/app/transactions/use-contract-wri
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { type ChainId } from '@/wagmi';
+import { type ChainId } from '@/app/config/wagmi';
 import { type Address } from 'viem';
 import { z } from 'zod';
 import { addressSchema } from '@/lib/schema';

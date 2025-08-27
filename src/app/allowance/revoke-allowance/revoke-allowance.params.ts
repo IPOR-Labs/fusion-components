@@ -1,4 +1,4 @@
-import { type ChainId } from '@/wagmi';
+import { type ChainId } from '@/app/config/wagmi';
 import { useRevokeTokenAllowance } from '@/app/allowance/hooks/use-revoke-token-allowance';
 import { useState } from 'react';
 import { parseEventLogs, erc20Abi, type Address, type TransactionReceipt } from 'viem';

@@ -1,4 +1,4 @@
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 import { erc4626Abi } from 'viem';
 import { useReadContract } from 'wagmi';
 
@@ -6,7 +6,7 @@ export const useFusionVaultAssetAddress = () => {
   const {
     chainId,
     fusionVaultAddress,
-  } = useAppContext();
+  } = useConfigContext();
 
   const { data } = useReadContract({
     chainId,

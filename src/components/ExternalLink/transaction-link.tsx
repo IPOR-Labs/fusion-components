@@ -1,8 +1,8 @@
 import { extractChain, type Hash } from 'viem';
 import { truncate } from '@/lib/truncate';
 import { ExternalLink } from '@/components/ExternalLink/external-link';
-import { useAppContext } from '@/app.context';
-import { chains } from '@/wagmi';
+import { useConfigContext } from "@/app/config/config.context";
+import { chains } from '@/app/config/wagmi';
 
 interface Props {
   hash: Hash;
@@ -12,7 +12,7 @@ interface Props {
 export const TransactionLink = ({ hash, className }: Props) => {
   const {
     chainId,
-  } = useAppContext();
+  } = useConfigContext();
   const chain = extractChain({
     id: chainId,
     chains,

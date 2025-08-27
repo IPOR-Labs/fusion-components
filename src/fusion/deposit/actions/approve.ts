@@ -4,7 +4,7 @@ import { type TransactionStateHandlers } from '@/app/transactions/transactions.t
 import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { z } from 'zod';
 import { addressSchema } from '@/lib/schema';
-import type { ChainId } from '@/wagmi';
+import { type ChainId } from '@/app/config/wagmi';
 
 interface Args {
   chainId: ChainId;

@@ -1,4 +1,4 @@
-import { type ChainId } from '@/wagmi';
+import { type ChainId } from '@/app/config/wagmi';
 import { CircleXIcon, Loader2Icon } from 'lucide-react';
 import { TokenIcon } from '@/components/token-icon';
 import { type Address } from 'viem';

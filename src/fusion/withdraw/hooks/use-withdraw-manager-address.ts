@@ -4,7 +4,7 @@ import { zeroAddress } from 'viem';
 import { addressSchema } from '@/lib/schema';
 import { isNonZeroAddress } from '@/lib/is-non-zero-address';
 import { substrateToAddress } from '@/lib/substrate-to-address';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 
 const WITHDRAW_MANAGER_SLOT =
   '0xb37e8684757599da669b8aea811ee2b3693b2582d2c730fab3f4965fa2ec3e11';
@@ -13,7 +13,7 @@ export const useWithdrawManagerAddress = () => {
   const {
     chainId,
     fusionVaultAddress,
-  } = useAppContext();
+  } = useConfigContext();
   const publicClient = usePublicClient({ chainId });
 
   const { data: withdrawManagerAddress } = useQuery({

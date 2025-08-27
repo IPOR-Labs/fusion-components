@@ -1,12 +1,12 @@
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 import { useReadContract } from 'wagmi';
 
 export const useFusionVaultName = () => {
   const {
     chainId,
     fusionVaultAddress,
-  } = useAppContext();
+  } = useConfigContext();
 
   return useReadContract({
     address: fusionVaultAddress,

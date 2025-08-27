@@ -1,4 +1,4 @@
-import type { ChainId } from '@/wagmi';
+import type { ChainId } from '@/app/config/wagmi';
 import { createContext, useContext } from 'react';
 import type { Address, EIP1193Provider } from 'viem';
 
@@ -11,19 +11,19 @@ export interface AppConfig {
   onError?: (err: unknown) => void
 }
 
-export interface AppContextValue extends AppConfig {
+export interface ConfigContextValue extends AppConfig {
   chainId: ChainId;
   fusionVaultAddress: Address;
 }
 
-export const AppContext = createContext<AppContextValue | null>(null);
+export const ConfigContext = createContext<ConfigContextValue | null>(null);
 
-export const useAppContext = () => {
-  const context = useContext(AppContext);
+export const useConfigContext = () => {
+  const context = useContext(ConfigContext);
 
   if (!context) {
     throw new Error(
-      'useAppContext must be used inside AppContext.Provider',
+      'useConfigContext must be used inside ConfigContext.Provider',
     );
   }
 

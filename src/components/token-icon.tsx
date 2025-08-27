@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { type ChainId } from '@/wagmi';
+import { type ChainId } from '@/app/config/wagmi';
 import { cn } from "@/lib/utils"
 import { type Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';

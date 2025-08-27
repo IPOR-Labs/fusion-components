@@ -2,7 +2,7 @@ import { TokenIcon } from '@/components/token-icon';
 import { USDT_ADDRESS_MAINNET } from '@/lib/constants';
 import { RevokeAllowance } from '@/app/allowance/revoke-allowance/revoke-allowance';
 import { mainnet } from 'viem/chains';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 import { Card, CardContent } from '@/components/ui/card';
 import styles from './deposit-asset-revoke-usdt-allowance.module.css';
 
@@ -20,7 +20,7 @@ export const DepositAssetRevokeUsdtAllowance = ({
   const {
     chainId,
     fusionVaultAddress,
-  } = useAppContext();
+  } = useConfigContext();
 
   return (
     <Card>

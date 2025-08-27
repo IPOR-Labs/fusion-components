@@ -1,6 +1,6 @@
 import { erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 import { BLOCK_INTERVAL } from '@/lib/constants';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
@@ -9,7 +9,7 @@ import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-a
 export const useAccountBalanceOfFusionVaultAsset = () => {
   const {
     chainId,
-  } = useAppContext();
+  } = useConfigContext();
   const accountAddress = useWalletAccountAddress();
   const assetAddress = useFusionVaultAssetAddress();
 

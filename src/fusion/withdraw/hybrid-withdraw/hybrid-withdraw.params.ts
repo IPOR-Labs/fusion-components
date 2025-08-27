@@ -7,7 +7,7 @@ import { useIsAccountScheduledWithdraw } from '../hooks/use-is-account-scheduled
 import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
 import { useWithdrawManagerFee } from '../hooks/use-withdraw-manager-fee';
 import { useMaxInstantWithdrawAmount } from '../hooks/use-max-instant-withdraw-amount';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
@@ -21,7 +21,7 @@ export const useParams = ({ onConfirm }: Args) => {
     chainId,
     fusionVaultAddress,
     connect,
-  } = useAppContext();
+  } = useConfigContext();
   const isWrongWalletChain = useIsWrongWalletChain(chainId);
   const accountAddress = useWalletAccountAddress();
   const switchChain = useWalletSwitchChain();

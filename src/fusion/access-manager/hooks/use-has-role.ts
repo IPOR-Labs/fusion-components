@@ -4,7 +4,7 @@ import { useAccessManagerAddress } from '@/fusion/access-manager/hooks/use-acces
 import { BLOCK_INTERVAL } from '@/lib/constants';
 import { type Address } from 'viem';
 import { useReadContract } from 'wagmi';
-import { useAppContext } from '@/app.context';
+import { useConfigContext } from "@/app/config/config.context";
 
 interface Args {
   accountAddress: Address | undefined;
@@ -14,7 +14,7 @@ interface Args {
 export const useHasRole = ({ accountAddress, role }: Args) => {
   const {
     chainId,
-  } = useAppContext();
+  } = useConfigContext();
 
   const { data: accessManagerAddress } = useAccessManagerAddress();
 

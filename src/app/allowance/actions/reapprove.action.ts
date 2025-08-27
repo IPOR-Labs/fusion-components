@@ -2,7 +2,7 @@ import { useContractWriteTransaction } from '@/app/transactions/use-contract-wri
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
 import { type Address } from 'viem';
-import { type ChainId } from '@/wagmi';
+import { type ChainId } from '@/app/config/wagmi';
 import { getTokenAbi } from '../utils/get-token-abi';
 
 interface Args {

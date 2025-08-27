@@ -1,9 +1,9 @@
-import { useAppContext } from "@/app.context";
+import { useConfigContext } from "@/app/config/config.context";
 import { useAppWalletClient } from "@/app/wallet/hooks/use-app-wallet-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useWalletSwitchChain = () => {
-  const { chainId } = useAppContext();
+  const { chainId } = useConfigContext();
   const walletClient = useAppWalletClient();
   const queryClient = useQueryClient();
   
