@@ -1,10 +1,10 @@
 import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { FusionDepositWidget } from '@/widgets/fusion-deposit/fusion-deposit.widget';
-import Onboard from '@web3-onboard/core'
+import Onboard, { type EIP1193Provider } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets'
 import '@/index.css';
-import { createWalletClient, custom, toHex, type WalletClient } from 'viem';
+import { toHex } from 'viem';
 import { arbitrum, base, mainnet } from 'viem/chains';
 
 const injected = injectedModule()
@@ -34,7 +34,7 @@ const onboard = Onboard({
 })
 
 const AppWrapper = () => {
-  const [walletClient, setWalletClient] = useState<WalletClient | undefined>(undefined);
+  const [provider, setProvider] = useState<EIP1193Provider | undefined>(undefined);
 
   return (
     <FusionDepositWidget
@@ -42,13 +42,11 @@ const AppWrapper = () => {
       chainId={base.id}
       connect={async () => {
         const wallets = await onboard.connectWallet();
-        const walletClient = createWalletClient({
-          chain: base,
-          transport: custom(wallets[0].provider),
-        });
-        setWalletClient(walletClient);
+        setProvider(wallets[0].provider);
       }}
-      walletClient={walletClient}
+      // Type EIP1193Provider in viem and @web3-onboard have not compatible types
+      // @ts-expect-error
+      provider={provider}
     />
   );
 }

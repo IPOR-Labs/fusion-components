@@ -3,7 +3,7 @@ import { type Address, type Hash, type TransactionReceipt, type WalletClient } f
 import { Schema, z } from 'zod';
 import { usePublicClient } from 'wagmi';
 import { type ChainId } from '@/wagmi';
-import { useAppContext } from '@/app.context';
+import { useAppWalletClient } from '@/app/wallet/hooks/use-app-wallet-client';
 import { useIsSafeWallet } from '@/app/wallet/hooks/use-is-safe-wallet';
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
@@ -33,7 +33,7 @@ export const useContractWriteTransaction = <TSchema extends Schema>({
   enabled = true,
   payloadSchema,
 }: UseContractWriteTransactionArgs<TSchema>) => {
-  const { walletClient } = useAppContext();
+  const walletClient = useAppWalletClient();
   const _payloadSchema = payloadSchema || z.undefined();
   const publicClient = usePublicClient({ chainId });
   const accountAddress = useWalletAccountAddress();

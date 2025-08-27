@@ -1,8 +1,8 @@
-import { useAppContext } from "@/app.context";
+import { useAppWalletClient } from "@/app/wallet/hooks/use-app-wallet-client";
 import { useQuery } from "@tanstack/react-query";
 
 export const useWalletAccountAddress = () => {
-  const { walletClient } = useAppContext();
+  const walletClient = useAppWalletClient();
 
   const { data: address } = useQuery({
     queryKey: ['wallet-account-address'],

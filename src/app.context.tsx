@@ -1,10 +1,10 @@
 import type { ChainId } from '@/wagmi';
 import { createContext, useContext } from 'react';
-import type { Address, WalletClient } from 'viem';
+import type { Address, EIP1193Provider } from 'viem';
 
 export interface AppConfig {
-  /** Optional viem WalletClient for wallet operations */
-  walletClient?: WalletClient | undefined
+  /** Optional EIP1193Provider for wallet operations */
+  provider?: EIP1193Provider | undefined
   /** Function to call when wallet connection is requested */
   connect?: () => Promise<void>
   /** Error handler for user-impacting failures */

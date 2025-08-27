@@ -17,7 +17,7 @@ export class FusionDepositWebComponent extends HTMLElement {
   constructor() {
     super();
     this.config = {
-      walletClient: undefined,
+      provider: undefined,
       onError: undefined,
       connect: undefined,
     };
