@@ -1,9 +1,8 @@
-import { DepositAssetContext, useDepositAssetContext } from './deposit-asset.context';
+import { DepositAssetContext } from './deposit-asset.context';
 import { DepositAssetBody } from './components/deposit-asset-body';
 import { useParams } from './deposit-asset.params';
 import { useActions } from './deposit-asset.actions';
 import { useDepositForm } from './deposit-asset.form';
-import { WithdrawNote } from '@/fusion/withdraw/components/withdraw-note';
 import { useTransactionState } from '@/app/transactions/hooks/use-transaction-state';
 import { erc20Abi, parseEventLogs } from 'viem';
 
@@ -41,28 +40,7 @@ export const DepositAsset = () => {
         depositTxState,
       }}
     >
-      <Content />
+      <DepositAssetBody />
     </DepositAssetContext.Provider>
   );
 };
-
-const Content = () => {
-  const {
-    params: {
-      isScheduledWithdrawal,
-      withdrawWindowInSeconds,
-      assetSymbol,
-    },
-  } = useDepositAssetContext();
-
-  return (
-    <>
-      <WithdrawNote
-        isScheduledWithdrawal={isScheduledWithdrawal}
-        withdrawWindowInSeconds={withdrawWindowInSeconds}
-        withdrawTokenSymbol={assetSymbol}
-      />
-      <DepositAssetBody />
-    </>
-  )
-}
