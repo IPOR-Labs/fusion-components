@@ -1,6 +1,7 @@
 :host {
   --brand-1: oklch(0.5512 0.278 293.98);
   --brand-2: oklch(0.5096 0.2932 287.35);
+  --success-green: oklch(0.3412 0.211 149.22);
 
   --radius: 0.625rem;
 

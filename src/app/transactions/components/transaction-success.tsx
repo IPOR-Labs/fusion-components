@@ -1,7 +1,8 @@
-import { CircleCheckIcon } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import type { TransactionState } from '@/app/transactions/hooks/use-transaction-state';
 import { TransactionLink } from '@/components/ExternalLink/transaction-link';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { CheckIcon } from 'lucide-react';
+import styles from './transaction-success.module.css';
 
 interface Props {
   transactionState: TransactionState;
@@ -15,13 +16,14 @@ export const TransactionSuccess = ({
   if (txStatus.type !== 'success') return null;
 
   return (
-    <Card>
-      <CardContent>
-        <div className="flex justify-center -mb-4 -mt-8">
-          <CircleCheckIcon className="w-10 h-10 text-destructive" />
-        </div>
-        <TransactionLink hash={txStatus.hash} />
-      </CardContent>
-    </Card>
+    <Alert>
+      <AlertTitle>
+        <span>Transaction successful</span>
+        <CheckIcon className={styles.checkIcon} />
+      </AlertTitle>
+      <AlertDescription>
+        <p>Preview in block explorer: <TransactionLink hash={txStatus.hash} /></p>
+      </AlertDescription>
+    </Alert>
   );
 };
