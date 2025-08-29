@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 tmp
+
+*storybook.log
+storybook-static

@@ -1,4 +1,10 @@
-:host {
+/*
+ * This is the theme for the Fusion Deposit Widget.
+ * It is used in the development environment.
+ * Because the widget is used in a shadow DOM, we need to use the :host selector.
+ * In dev mode, we don't use shadow DOM, so we need to use the :root selector.
+ */
+:root {
   --brand-1: oklch(0.5512 0.278 293.98);
   --brand-2: oklch(0.5096 0.2932 287.35);
 

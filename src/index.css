@@ -1,12 +1,7 @@
-/* @import "./themes/theme-default.css"; */
-/* @import "./themes/theme-ocean.css"; */
-@import "./themes/theme-fusion.css";
-
 /*
  * CSS Reset for shadow DOM.
  * html/body rules are intentionally omitted.
  */
-
 :host {
   background-color: var(--background);
   color: var(--foreground);

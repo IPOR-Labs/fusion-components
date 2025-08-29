@@ -5,6 +5,7 @@ import { FusionDepositWidget } from './fusion-deposit.widget';
 import type { AppConfig } from '@/app/config/config.context';
 import { type ChainId } from '@/app/config/wagmi';
 import globalStyles from '@/index.css?inline';
+import themeStyles from '@/themes/theme-fusion.css?inline';
 
 const OUTPUT_FILE_NAME = import.meta.env.VITE_OUTPUT_FILE_NAME;
 
@@ -70,7 +71,9 @@ export class FusionDepositWebComponent extends HTMLElement {
     const componentStyles = await fetch(`/${OUTPUT_FILE_NAME}.css`)
       .then(res => res.text());
 
-    const styles = globalStyles.concat(componentStyles);
+    const styles = themeStyles
+      .concat(globalStyles)
+      .concat(componentStyles);
 
     try {
       if ('adoptedStyleSheets' in Document.prototype && 'replaceSync' in CSSStyleSheet.prototype) {

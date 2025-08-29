@@ -37,7 +37,7 @@ export const useConfigContext = () => {
 
   if (!context) {
     throw new Error(
-      'useConfigContext must be used inside ConfigContext.Provider',
+      'useConfigContext must be used inside ConfigProvider',
     );
   }
 

@@ -9,11 +9,9 @@ import { Providers } from '@/app/config/providers';
 
 export const FusionDepositWidget = (config: ConfigContextValue) => {
   return (
-    <div className="theme-fusion">
-      <Providers config={config}>
-        <Content />
-      </Providers>
-    </div>
+    <Providers config={config}>
+      <Content />
+    </Providers>
   )
 }
 
