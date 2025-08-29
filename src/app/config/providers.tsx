@@ -1,24 +1,59 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { type ReactNode, useState } from 'react'
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query'
+import { type ReactNode, useEffect, useState } from 'react'
 import { type State, WagmiProvider } from 'wagmi'
 import { getConfig } from './wagmi'
-import { ConfigContext, type ConfigContextValue } from '@/app/config/config.context'
+import { ConfigProvider, useConfigContext, type ConfigContextValue } from '@/app/config/config.context'
 
-export const Providers = (props: {
+export const Providers = ({
+  children,
+  config,
+  initialState,
+}: {
   children: ReactNode;
   config: ConfigContextValue;
   initialState?: State;
 }) => {
-  const [config] = useState(() => getConfig())
-  const [queryClient] = useState(() => new QueryClient())
+  const [wagmiConfig] = useState(() => getConfig());
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <ConfigContext.Provider value={props.config}>
-      <WagmiProvider config={config} initialState={props.initialState}>
+    <ConfigProvider config={config}>
+      <WagmiProvider config={wagmiConfig} initialState={initialState}>
         <QueryClientProvider client={queryClient}>
-          {props.children}
+          <Refresher>
+            {children}
+          </Refresher>
         </QueryClientProvider>
       </WagmiProvider>
-    </ConfigContext.Provider>
+    </ConfigProvider>
   )
+}
+
+const Refresher = ({ children }: { children: ReactNode }) => {
+  const { provider } = useConfigContext();
+  const queryClient = useQueryClient();
+
+  const refresh = () => {
+    queryClient.invalidateQueries();
+  };
+
+  useEffect(() => {
+    refresh();
+
+    if (!provider) return;
+
+    provider.on('accountsChanged', refresh);
+    provider.on('chainChanged', refresh);
+    provider.on('disconnect', refresh);
+    provider.on('connect', refresh);
+
+    return () => {
+      provider.removeListener('accountsChanged', refresh);
+      provider.removeListener('chainChanged', refresh);
+      provider.removeListener('disconnect', refresh);
+      provider.removeListener('connect', refresh);
+    }
+  }, [provider]);
+
+  return children;
 }

@@ -1,5 +1,5 @@
 import type { ChainId } from '@/app/config/wagmi';
-import { createContext, useContext } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import type { Address, EIP1193Provider } from 'viem';
 
 export interface AppConfig {
@@ -17,6 +17,20 @@ export interface ConfigContextValue extends AppConfig {
 }
 
 export const ConfigContext = createContext<ConfigContextValue | null>(null);
+
+export const ConfigProvider = ({
+  children,
+  config,
+}: {
+  children: ReactNode,
+  config: ConfigContextValue
+}) => {
+  return (
+    <ConfigContext.Provider value={config}>
+      {children}
+    </ConfigContext.Provider>
+  )
+}
 
 export const useConfigContext = () => {
   const context = useContext(ConfigContext);
