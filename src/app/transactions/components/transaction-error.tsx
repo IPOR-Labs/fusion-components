@@ -1,6 +1,6 @@
 import { XIcon } from 'lucide-react';
 import type { TransactionState } from '@/app/transactions/hooks/use-transaction-state';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import styles from './transaction-error.module.css';
 
 interface Props {

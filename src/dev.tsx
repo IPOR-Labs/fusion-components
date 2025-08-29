@@ -4,7 +4,7 @@ import { FusionDepositWidget } from '@/widgets/fusion-deposit/fusion-deposit.wid
 import Onboard, { type EIP1193Provider } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets';
 import '@/themes/theme-fusion-dev.css';
-import '@/index.css';
+import '@/index-dev.css';
 import { toHex } from 'viem';
 import { arbitrum, base, mainnet } from 'viem/chains';
 

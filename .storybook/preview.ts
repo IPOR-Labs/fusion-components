@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/react-vite';
-import '../src/themes/theme-fusion.css';
-import '../src/index.css';
+import '../src/themes/theme-fusion-dev.css';
+import '../src/index-dev.css';
 
 const preview: Preview = {
   parameters: {
