@@ -1,4 +1,4 @@
-import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
+import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
 import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';

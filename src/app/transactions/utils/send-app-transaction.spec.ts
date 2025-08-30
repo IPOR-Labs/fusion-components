@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, type Mock } from 'vitest';
-import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
+import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { erc20Abi } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
 import { getGasPriceBlockNative } from '@/app/transactions/utils/get-gas-price-block-native';
@@ -24,34 +24,39 @@ const GAS_PRICE_RESULT_MOCK = [
   },
 ];
 
-const CONTRACT_ADDRESS = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831'; // USDC
+const CONTRACT_ADDRESS = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831';
 const SPENDER_ADDRESS = '0x16d104009964e694761C0bf09d7Be49B7E3C26fd';
 const ACCOUNT_ADDRESS = '0xA6A7B66EbBb5CbfDFf3C83781193618ee4E22f4D';
 
-const writeContractAsyncSpy = vi
-  .fn()
-  .mockResolvedValue('WRITE_CONTRACT_RESULT_MOCK');
+(getGasPriceBlockNative as Mock).mockResolvedValueOnce(
+  GAS_PRICE_RESULT_MOCK,
+);
+const estimateContractGasSpy = vi.fn().mockResolvedValue(44444n);
+const simulateContractSpy = vi.fn().mockResolvedValue({
+  request: '__SIMULATION_REQUEST__',
+});
+const publicClientSpy = {
+  chain: arbitrum,
+  estimateContractGas: estimateContractGasSpy,
+  simulateContract: simulateContractSpy,
+} as any;
+const writeContractAsyncSpy = vi.fn().mockResolvedValue('__WRITE_CONTRACT_RESULT__');
+const walletClientSpy = {
+  writeContract: writeContractAsyncSpy,
+} as any;
 
 describe('sendAppTransaction', () => {
   it('should send a transaction for Ethereum mainnet chainId: 1', async () => {
-    (getGasPriceBlockNative as Mock).mockResolvedValueOnce(
-      GAS_PRICE_RESULT_MOCK,
-    );
-    const estimateContractGasSpy = vi.fn().mockResolvedValue(44444n);
-    const simulateContractSpy = vi.fn().mockResolvedValue({
-      request: 'SIMULATION_REQUEST_MOCK',
-    });
     const publicClientSpy = {
       chain: mainnet,
       estimateContractGas: estimateContractGasSpy,
       simulateContract: simulateContractSpy,
-    };
+    } as any;
 
     const tx = sendAppTransaction({
       config: {
-        // @ts-expect-error
         publicClient: publicClientSpy,
-        writeContractAsync: writeContractAsyncSpy,
+        walletClient: walletClientSpy,
         bypassGasEstimation: false,
       },
       parameters: {
@@ -63,7 +68,7 @@ describe('sendAppTransaction', () => {
       },
     });
 
-    await expect(tx).resolves.toBe('WRITE_CONTRACT_RESULT_MOCK');
+    await expect(tx).resolves.toBe('__WRITE_CONTRACT_RESULT__');
 
     expect(getGasPriceBlockNative).toBeCalledTimes(1);
     expect(estimateContractGasSpy).toBeCalledTimes(1);
@@ -81,25 +86,14 @@ describe('sendAppTransaction', () => {
     });
 
     expect(writeContractAsyncSpy).toBeCalledTimes(1);
-    expect(writeContractAsyncSpy).lastCalledWith('SIMULATION_REQUEST_MOCK');
+    expect(writeContractAsyncSpy).lastCalledWith('__SIMULATION_REQUEST__');
   });
 
   it('should send a transaction for Arbitrum chainId: 42161', async () => {
-    const estimateContractGasSpy = vi.fn().mockResolvedValue(44444n);
-    const simulateContractSpy = vi.fn().mockResolvedValue({
-      request: 'SIMULATION_REQUEST_MOCK',
-    });
-    const publicClientSpy = {
-      chain: arbitrum,
-      estimateContractGas: estimateContractGasSpy,
-      simulateContract: simulateContractSpy,
-    };
-
     const tx = sendAppTransaction({
       config: {
-        // @ts-expect-error
         publicClient: publicClientSpy,
-        writeContractAsync: writeContractAsyncSpy,
+        walletClient: walletClientSpy,
         bypassGasEstimation: false,
       },
       parameters: {
@@ -111,7 +105,7 @@ describe('sendAppTransaction', () => {
       },
     });
 
-    await expect(tx).resolves.toBe('WRITE_CONTRACT_RESULT_MOCK');
+    await expect(tx).resolves.toBe('__WRITE_CONTRACT_RESULT__');
 
     expect(getGasPriceBlockNative).toBeCalledTimes(0);
     expect(estimateContractGasSpy).toBeCalledTimes(1);
@@ -129,28 +123,20 @@ describe('sendAppTransaction', () => {
     });
 
     expect(writeContractAsyncSpy).toBeCalledTimes(1);
-    expect(writeContractAsyncSpy).lastCalledWith('SIMULATION_REQUEST_MOCK');
+    expect(writeContractAsyncSpy).lastCalledWith('__SIMULATION_REQUEST__');
   });
 
-  it('should set gas parameteres to undefined if bypassGasEstimation = true', async () => {
-    (getGasPriceBlockNative as Mock).mockResolvedValueOnce(
-      GAS_PRICE_RESULT_MOCK,
-    );
-    const estimateContractGasSpy = vi.fn().mockResolvedValue(44444n);
-    const simulateContractSpy = vi.fn().mockResolvedValue({
-      request: 'SIMULATION_REQUEST_MOCK',
-    });
+  it('should skip gas estimation and tx simulation if bypassGasEstimation = true', async () => {
     const publicClientSpy = {
       chain: mainnet,
       estimateContractGas: estimateContractGasSpy,
       simulateContract: simulateContractSpy,
-    };
+    } as any;
 
     const tx = sendAppTransaction({
       config: {
-        // @ts-expect-error
         publicClient: publicClientSpy,
-        writeContractAsync: writeContractAsyncSpy,
+        walletClient: walletClientSpy,
         bypassGasEstimation: true,
       },
       parameters: {
@@ -162,7 +148,7 @@ describe('sendAppTransaction', () => {
       },
     });
 
-    await expect(tx).resolves.toBe('WRITE_CONTRACT_RESULT_MOCK');
+    await expect(tx).resolves.toBe('__WRITE_CONTRACT_RESULT__');
 
     expect(getGasPriceBlockNative).toBeCalledTimes(0);
     expect(estimateContractGasSpy).toBeCalledTimes(0);
@@ -170,6 +156,7 @@ describe('sendAppTransaction', () => {
 
     expect(writeContractAsyncSpy).toBeCalledTimes(1);
     expect(writeContractAsyncSpy).lastCalledWith({
+      chain: mainnet,
       abi: erc20Abi,
       account: ACCOUNT_ADDRESS,
       address: CONTRACT_ADDRESS,

@@ -1,7 +1,7 @@
 import { getErc20AbiByAddress } from '@/abi/getErc20abi';
 import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
-import { sendAppTransaction } from '@/app/transactions/send-app-transaction';
+import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { z } from 'zod';
 import { addressSchema } from '@/lib/schema';
 import { type ChainId } from '@/app/config/wagmi';

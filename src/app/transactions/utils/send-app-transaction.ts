@@ -39,6 +39,8 @@ export const sendAppTransaction = async ({
     maxFeePerGas,
     maxPriorityFeePerGas,
   });
+  
+  // extra 10% gas
   const gas = (gasEstimate * 11n) / 10n;
 
   const { request } = await publicClient.simulateContract({
