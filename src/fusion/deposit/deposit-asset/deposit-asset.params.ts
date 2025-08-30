@@ -33,7 +33,7 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
   const isWrongWalletChain = useIsWrongWalletChain(chainId);
 
   const assetAddress = useFusionVaultAssetAddress();
-  const vaultName = useFusionVaultName();
+  const { data: vaultName } = useFusionVaultName();
   const vaultSymbol = useFusionVaultSymbol();
   const assetSymbol = useFusionVaultAssetSymbol();
   const assetDecimals = useFusionVaultAssetDecimals();
@@ -75,7 +75,6 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
     connect,
     onConfirm,
     onDepositSuccess,
-    open,
     allowance,
     setAllowanceFromEvent,
     withdrawWindowInSeconds,

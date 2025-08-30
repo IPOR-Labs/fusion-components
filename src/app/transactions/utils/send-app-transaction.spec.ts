@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, type Mock } from 'vitest';
+import { describe, it, expect, vi, type Mock, beforeEach } from 'vitest';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { erc20Abi } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
@@ -28,9 +28,10 @@ const CONTRACT_ADDRESS = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831';
 const SPENDER_ADDRESS = '0x16d104009964e694761C0bf09d7Be49B7E3C26fd';
 const ACCOUNT_ADDRESS = '0xA6A7B66EbBb5CbfDFf3C83781193618ee4E22f4D';
 
-(getGasPriceBlockNative as Mock).mockResolvedValueOnce(
-  GAS_PRICE_RESULT_MOCK,
-);
+beforeEach(() => {
+  vi.clearAllMocks();
+  (getGasPriceBlockNative as Mock).mockResolvedValue(GAS_PRICE_RESULT_MOCK);
+});
 const estimateContractGasSpy = vi.fn().mockResolvedValue(44444n);
 const simulateContractSpy = vi.fn().mockResolvedValue({
   request: '__SIMULATION_REQUEST__',
