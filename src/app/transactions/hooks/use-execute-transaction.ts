@@ -1,4 +1,4 @@
-import { type TransactionStateHandlers } from './transactions.types';
+import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { type Address, type Hash, type TransactionReceipt, type WalletClient } from 'viem';
 import { Schema, z } from 'zod';
 import { usePublicClient } from 'wagmi';
@@ -15,7 +15,7 @@ interface WriteAsyncArgs {
   accountAddress: Address;
 }
 
-interface UseContractWriteTransactionArgs<TSchema extends Schema> {
+interface Args<TSchema extends Schema> {
   writeAsync: (
     args: WriteAsyncArgs,
     payload: z.TypeOf<TSchema>,
@@ -26,13 +26,13 @@ interface UseContractWriteTransactionArgs<TSchema extends Schema> {
   payloadSchema?: TSchema;
 }
 
-export const useContractWriteTransaction = <TSchema extends Schema>({
+export const useExecuteTransaction = <TSchema extends Schema>({
   writeAsync,
   chainId,
   transactionStateHandlers: { onInit, onConfirm, onSuccess, onError },
   enabled = true,
   payloadSchema,
-}: UseContractWriteTransactionArgs<TSchema>) => {
+}: Args<TSchema>) => {
   const walletClient = useAppWalletClient();
   const _payloadSchema = payloadSchema || z.undefined();
   const publicClient = usePublicClient({ chainId });

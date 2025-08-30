@@ -1,4 +1,4 @@
-import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { type ChainId } from '@/app/config/wagmi';
@@ -22,7 +22,7 @@ export const useRequestMaxShares = ({
 
   const enabled = Boolean(shares);
 
-  return useContractWriteTransaction({
+  return useExecuteTransaction({
     writeAsync: async (config) => {
       if (!isNonZeroAddress(withdrawManagerAddress)) {
         throw new Error('withdrawManagerAddress is invalid');

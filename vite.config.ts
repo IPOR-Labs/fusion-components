@@ -16,6 +16,9 @@ export default defineConfig(() => {
         typescript: true,
       }),
     ],
+    test: {
+      environment: 'jsdom',
+    },
     resolve: {
       alias: {
         "@": resolve(__dirname, "./src"),

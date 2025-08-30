@@ -1,5 +1,5 @@
 import { getErc20AbiByAddress } from '@/abi/getErc20abi';
-import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { z } from 'zod';
@@ -15,7 +15,7 @@ export const usePlasmaVaultApprove = ({
   transactionStateHandlers,
   chainId,
 }: Args) => {
-  return useContractWriteTransaction({
+  return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { fusionVaultAddress, amount, assetAddress } = payloadSchema.parse(payload);
 

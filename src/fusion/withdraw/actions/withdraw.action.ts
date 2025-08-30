@@ -1,4 +1,4 @@
-import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
@@ -18,7 +18,7 @@ export const useWithdraw = ({
   fusionVaultAddress,
   transactionStateHandlers,
 }: Args) => {
-  return useContractWriteTransaction({
+  return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { amount, beneficiary } = payloadSchema.parse(payload);
 

@@ -1,4 +1,4 @@
-import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { type ChainId } from '@/app/config/wagmi';
@@ -18,7 +18,7 @@ export const useRequestShares = ({
   withdrawManagerAddress,
   transactionStateHandlers,
 }: Args) => {
-  return useContractWriteTransaction({
+  return useExecuteTransaction({
     writeAsync: async (config, payload) => {
       const { shares } = payloadSchema.parse(payload);
 

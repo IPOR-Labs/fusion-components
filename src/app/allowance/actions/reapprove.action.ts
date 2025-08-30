@@ -1,4 +1,4 @@
-import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { type Address } from 'viem';
@@ -20,7 +20,7 @@ export const useReapprove = ({
   transactionStateHandlers,
   chainId,
 }: Args) => {
-  return useContractWriteTransaction({
+  return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }) => {
       return await sendAppTransaction({
         config,

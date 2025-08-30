@@ -1,7 +1,7 @@
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
-import { useContractWriteTransaction } from '@/app/transactions/use-contract-write-transaction';
+import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { type ChainId } from '@/app/config/wagmi';
 import type { TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { addressSchema } from '@/lib/schema';
@@ -23,7 +23,7 @@ export const useMaxRedeem = ({
 
   const enabled = Boolean(shares);
 
-  return useContractWriteTransaction({
+  return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { beneficiary } = payloadSchema.parse(payload);
 
