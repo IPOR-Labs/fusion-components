@@ -2,7 +2,6 @@ import type { TransactionState } from '@/app/transactions/hooks/use-transaction-
 import { TransactionLink } from '@/components/ExternalLink/transaction-link';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckIcon } from 'lucide-react';
-import styles from './transaction-success.module.css';
 
 interface Props {
   transactionState: TransactionState;
@@ -17,9 +16,9 @@ export const TransactionSuccess = ({
 
   return (
     <Alert>
+      <CheckIcon className="text-green-800!" />
       <AlertTitle>
-        <span>Transaction successful</span>
-        <CheckIcon className={styles.checkIcon} />
+        Transaction successful
       </AlertTitle>
       <AlertDescription>
         <p>Preview in block explorer: <TransactionLink hash={txStatus.hash} /></p>

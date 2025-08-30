@@ -15,7 +15,6 @@ import { cn } from '@/lib/utils';
 import { useFormContext } from 'react-hook-form';
 import { normalizeNumberInput } from '@/lib/normalize-number-input';
 import { type Address, formatUnits, parseUnits } from 'viem';
-import styles from './amount-input.module.css';
 
 const PERCENTAGE_VOLUME_OPTIONS = ['25', '50', '75', '100'] as const;
 
@@ -97,7 +96,7 @@ export const AmountInput = ({
 
         return (
           <FormItem>
-            <div className={styles.header}>
+            <div className="flex items-center justify-between">
               <FormLabel>{label}</FormLabel>
               <button
                 disabled={isDisabled}
@@ -108,7 +107,7 @@ export const AmountInput = ({
                 }}
                 type="button"
               >
-                <NumberDisplay className={styles.availableText}>
+                <NumberDisplay className="text-xs text-muted-foreground">
                   Available:{' '}
                   {displayBalance({
                     balance,
@@ -119,13 +118,13 @@ export const AmountInput = ({
               </button>
             </div>
             <div
-              className={cn(styles.grid, {
-                [styles.gridNarrow]: isNarrow,
-                [styles.gridWide]: !isNarrow,
+              className={cn('grid gap-2', {
+                'grid-cols-1': isNarrow,
+                'grid-cols-2': !isNarrow,
               })}
             >
-              <div className={styles.inputContainer}>
-                <FormControl className={styles.formControl}>
+              <div className="flex items-center">
+                <FormControl className="-mr-8">
                   <Input
                     placeholder="0"
                     {...field}
@@ -149,22 +148,22 @@ export const AmountInput = ({
                   tokenAddress={tokenAddress}
                 />
               </div>
-              <div className={styles.buttonsContainer}>
+              <div className="flex items-center justify-between gap-2">
                 {volumeOptions.map(({ option, value }) => {
                   const isActive = value === field.value;
 
                   return (
                     <Button
                       key={option}
-                      variant="inputlike"
                       type="button"
                       onClick={() => {
                         onInteract?.();
                         onChange(value);
                         onChangeMax?.(option === '100');
                       }}
-                      className={cn(styles.button, {
-                        [styles.buttonActive]: isActive,
+                      className={cn('flex-grow', {
+                        'bg-primary-foreground text-primary-background':
+                          isActive,
                       })}
                       disabled={isDisabled}
                     >

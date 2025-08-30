@@ -2,11 +2,10 @@ import { extractChain, type Address } from 'viem';
 import { Button } from '@/components/ui/button';
 import { Loader2Icon } from 'lucide-react';
 import { getSwitchChainButtonLabel } from '@/app/wallet/utils/get-switch-chain-button-label';
-import { type ChainId, chains } from '@/app/config/wagmi';
+import { chains, type ChainId } from '@/app/config/wagmi';
 import { cn } from '@/lib/utils';
 import { ApprovalSteps } from '@/components/approval-steps';
 import { ApprovalText } from '@/components/approval-text';
-import styles from './transaction-form-buttons.module.css';
 
 type Props = {
   chainId: ChainId;
@@ -29,8 +28,8 @@ type Props = {
 
 export const TransactionFormButtons = (props: Props) => {
   return (
-    <div className={styles.container}>
-      <div className={styles.approvalStepsContainer}>
+    <div className="space-y-4 -mx-8">
+      <div className="w-1/2 mx-auto">
         <ApprovalSteps
           needsApproval={
             props.approvalProps?.needsApproval ||
@@ -40,7 +39,7 @@ export const TransactionFormButtons = (props: Props) => {
           isApproving={props.approvalProps?.isApproving || false}
         />
       </div>
-      <div className={styles.buttonsGrid}>
+      <div className="grid grid-cols-2 gap-x-4 mx-8 items-center">
         <Buttons {...props} />
       </div>
     </div>
@@ -72,7 +71,7 @@ const Buttons = ({
   if (!isWalletConnected) {
     return (
       <>
-        <Button type="button" onClick={selectWallet} variant="primary">
+        <Button type="button" onClick={selectWallet}>
           Connect wallet
         </Button>
         {placeholderSubmitButton}
@@ -83,7 +82,7 @@ const Buttons = ({
   if (isWrongWalletChain) {
     return (
       <>
-        <Button type="button" onClick={switchChain} variant="primary">
+        <Button type="button" onClick={switchChain}>
           {getSwitchChainButtonLabel(chainId)}
         </Button>
         {placeholderSubmitButton}
@@ -118,7 +117,7 @@ const Buttons = ({
 
     return (
       <>
-        <Button type="submit" disabled={isSubmitDisabled} variant="primary">
+        <Button type="submit" disabled={isSubmitDisabled}>
           {hasApproval ? 'Update Approval' : 'Approve'}
         </Button>
         {placeholderSubmitButton}
@@ -137,23 +136,22 @@ const Buttons = ({
           accountAddress={approvalProps.accountAddress}
         />
       ) : (
-        <div className={styles.walletConnectedContainer}>
-          <div className={styles.walletConnectedText}>Wallet connected</div>
-          <div className={styles.chainText}>
+        <div className="flex flex-col items-center mb-2">
+          <div className="text-white font-medium text-lg">Wallet connected</div>
+          <div className="text-white/50 text-xs">
             Chain: {chain.name}
           </div>
         </div>
       )}
       <Button
         type="submit"
-        variant="primary"
         disabled={isSubmitDisabled || isLoading}
         className={cn({
-          [styles.submitButton]: !approvalProps,
-          [styles.submitButtonLoading]: isLoading,
+          'col-start-2': !approvalProps,
+          'gap-2': isLoading,
         })}
       >
-        {isLoading && <Loader2Icon className={styles.loaderIcon} />}
+        {isLoading && <Loader2Icon className="w-6 h-6 animate-spin" />}
         {transactionSubmitButtonText}
       </Button>
     </>

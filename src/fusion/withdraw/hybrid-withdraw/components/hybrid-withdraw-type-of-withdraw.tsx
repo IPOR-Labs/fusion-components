@@ -16,7 +16,6 @@ import { getNow } from '@/lib/get-now';
 import { DATE_FORMAT_WITH_HOUR } from '@/lib/constants';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { formatSignificant } from '@/lib/format-significant';
-import styles from './hybrid-withdraw-type-of-withdraw.module.css';
 
 const MILLISECONDS_IN_SECOND = 1000n;
 const SIGNIFICANT_DECIMALS = 3;
@@ -46,9 +45,9 @@ const InstantWithdraw = () => {
 
   return (
     <TooltipProvider delayDuration={100} skipDelayDuration={100}>
-      <Alert className={styles.instantAlert}>
+      <Alert className="bg-[var(--brand-1)]/10 border-[var(--brand-1)]">
         <ZapIcon className="h-4 w-4 !text-yellow-500" />
-        <AlertTitle className={styles.alertTitle}>
+        <AlertTitle className="flex gap-x-1 text-sm">
           <span>Withdrawal type: Instant</span>
           <Tooltip>
             <TooltipTrigger type="button">
@@ -69,7 +68,7 @@ const InstantWithdraw = () => {
             </TooltipContent>
           </Tooltip>
         </AlertTitle>
-        <AlertDescription className={styles.smallText}>
+        <AlertDescription className="text-xs">
           You can withdraw your assets instantly.
         </AlertDescription>
       </Alert>
@@ -102,17 +101,17 @@ const ScheduledWithdraw = () => {
     <TooltipProvider delayDuration={100} skipDelayDuration={100}>
       <Alert className="">
         <Clock4Icon className="h-4 w-4" />
-        <AlertTitle className={styles.alertTitle}>
+        <AlertTitle className="flex gap-x-1 text-sm">
           Withdrawal type: Scheduled ({formatedDuration})
           <Tooltip>
             <TooltipTrigger type="button">
               <InfoIcon size={16} />
             </TooltipTrigger>
-            <TooltipContent className={styles.tooltipContent}>
-              <p className={styles.tooltipText}>
+            <TooltipContent className="max-w-sm">
+              <p className="text-muted-foreground">
                 That's a 2-step redemption process. First you need to request
                 withdrawal, after that the vault manager has{' '}
-                <strong className={styles.primaryText}>
+                <strong className="text-primary">
                   at most {formatedDuration}
                 </strong>{' '}
                 to fulfill your request. In the second step you can withdraw the
@@ -121,7 +120,7 @@ const ScheduledWithdraw = () => {
                 {assetSymbol && (
                   <>
                     When withdrawing you will receive{' '}
-                    <strong className={styles.primaryText}>{assetSymbol}</strong>.
+                    <strong className="text-primary">{assetSymbol}</strong>.
                   </>
                 )}
               </p>
@@ -148,11 +147,11 @@ const ScheduledWithdrawAlertDescription = () => {
 
   if (instantWithdrawAmount > 0n) {
     return (
-      <AlertDescription className={styles.smallText}>
+      <AlertDescription className="text-xs">
         <span>or</span>{' '}
         <button
           onClick={handleMaxInstantWithdrawAmount}
-          className={styles.withdrawButton}
+          className="text-ipor-asset underline font-semibold"
         >
           withdraw{' '}
           {formatSignificant(
@@ -172,7 +171,7 @@ const ScheduledWithdrawAlertDescription = () => {
   );
 
   return (
-    <AlertDescription className={styles.smallText}>
+    <AlertDescription className="text-xs">
       Request redemption now and withdraw it by {redeemByDate}.
     </AlertDescription>
   );

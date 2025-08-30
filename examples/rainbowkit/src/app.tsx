@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { ConnectButton, useConnectModal } from '@rainbow-me/rainbowkit';
-import { useAccountEffect, useWalletClient } from 'wagmi';
+import { useAccount, useAccountEffect } from 'wagmi';
 import { FusionDepositWebComponent } from '../../../src/widgets/fusion-deposit/fusion-deposit.web-component';
 
 export const App = () => {
   const widgetRef = useRef<FusionDepositWebComponent | null>(null);
   const [lastError, setLastError] = useState<unknown>(null);
 
-  const { data: walletClient } = useWalletClient();
+  const { connector } = useAccount();
   const { openConnectModal } = useConnectModal();
 
   useAccountEffect({
@@ -19,14 +19,19 @@ export const App = () => {
   })
 
   useEffect(() => {
-    widgetRef.current?.update({
-      walletClient,
-      onError: (e: unknown) => setLastError(e),
-      connect: async () => {
-        openConnectModal?.();
-      },
-    });
-  }, [widgetRef.current, walletClient]);
+    if (!connector?.getProvider) return;
+
+    (async () => {
+      const provider = await connector.getProvider();
+      widgetRef.current?.update({
+        provider,
+        onError: (e: unknown) => setLastError(e),
+        connect: async () => {
+          openConnectModal?.();
+        },
+      });
+    })();
+  }, [widgetRef.current, connector]);
 
   return (
     <div style={{ padding: 16 }}>

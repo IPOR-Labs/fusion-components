@@ -2,7 +2,6 @@ import { Progress } from '@/components/ui/progress';
 import { formatSignificant } from '@/lib/format-significant';
 import { formatUnits, parseUnits } from 'viem';
 import { cn } from '@/lib/utils';
-import styles from './capacity.module.css';
 
 interface Props {
   max: bigint;
@@ -51,7 +50,7 @@ export const Capacity = ({
       onClick={onClickMax}
       disabled={!onClickMax}
       className={cn({
-        [styles.maxButton]: onClickMax,
+        'underline cursor-pointer': onClickMax,
       })}
     >
       {maxLabelDisplay}
@@ -61,8 +60,8 @@ export const Capacity = ({
   );
 
   return (
-    <div className={styles.container}>
-      <p className={styles.header}>
+    <div className="space-y-1 w-full">
+      <p className="flex flex-col md:flex-row justify-between text-xs text-muted-foreground gap-x-4">
         <span>
           {currentLabel}:{' '}
           {formatSignificant(current, decimals, significantDecimals)} {symbol}
@@ -71,10 +70,10 @@ export const Capacity = ({
       </p>
       <Progress
         value={percentFilledNumber}
-        className={styles.progress}
+        className={cn('h-2')}
       />
-      <p className={styles.footer}>
-        <span className={styles.remainingAmount}>
+      <p className="text-xs text-muted-foreground">
+        <span className="font-bold text-sm text-primary">
           {formatSignificant(remainingOrZero, decimals, significantDecimals)}{' '}
           {symbol}
         </span>{' '}

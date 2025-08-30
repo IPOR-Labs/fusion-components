@@ -4,7 +4,6 @@ import { type ChainId } from '@/app/config/wagmi';
 import { cn } from "@/lib/utils"
 import { type Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
-import styles from './token-icon.module.css';
 
 interface TokenPathProps {
   chainId: ChainId;
@@ -99,7 +98,7 @@ const TokenIconDisplay = (props: ContentProps) => {
 
     return (
       <img
-        className={cn(styles.icon, className)}
+        className={cn('rounded-full', className)}
         src={`${BASE_URL}/${path}`}
         alt={symbol}
         title={showTitle ? symbol : undefined}
@@ -131,9 +130,12 @@ const TokenIconPlaceholder = ({
 
   return (
     <div
-      className={cn(styles.placeholder, className)}
+      className={cn(
+        'w-5 h-5 rounded-full bg-muted text-xs text-muted-foreground flex items-center justify-center',
+        className,
+      )}
     >
-      {symbol && <p className={styles.symbol}>{symbol}</p>}
+      {symbol && <p className="truncate">{symbol}</p>}
     </div>
   );
 };

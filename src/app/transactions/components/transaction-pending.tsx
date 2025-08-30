@@ -2,7 +2,6 @@ import type { TransactionState } from '@/app/transactions/hooks/use-transaction-
 import { TransactionLink } from '@/components/ExternalLink/transaction-link';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Loader2Icon } from 'lucide-react';
-import styles from './transaction-pending.module.css';
 
 interface Props {
   transactionState: TransactionState;
@@ -17,9 +16,9 @@ export const TransactionPending = ({
 
   return (
     <Alert>
+      <Loader2Icon className="animate-spin" />
       <AlertTitle>
         <span>Transaction pending</span>
-        <Loader2Icon className={styles.loaderIcon} />
       </AlertTitle>
       <AlertDescription>
         <p>Preview in block explorer: <TransactionLink hash={txStatus.hash} /></p>

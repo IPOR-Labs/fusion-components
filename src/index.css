@@ -1,132 +1,54 @@
-/*
- * CSS Reset for shadow DOM.
- * html/body rules are intentionally omitted.
- */
-:host {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Variables added manually */
+  --tw-border-style: solid;
 }
 
-* {
-  box-sizing: border-box;
-  border-color: var(--border);
-  outline-color: color-mix(in oklch, var(--ring), transparent 50%);
-  margin: 0;
-}
-
-img,
-picture,
-video,
-canvas {
-  display: block;
-  max-width: 100%;
-}
-
-svg {
-  vertical-align: middle;
-  max-width: 100%;
-}
-
-input,
-button,
-textarea,
-select {
-  font: inherit;
-  color: inherit;
-  background: transparent;
-}
-
-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  margin: 0;
-  color: inherit;
-  font: inherit;
-  line-height: inherit;
-  letter-spacing: inherit;
-  text-align: inherit;
-  text-decoration: none;
-  display: inline-block;
-  box-shadow: none;
-  cursor: pointer;
-}
-
-button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-
-a[href]:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible,
-button:focus-visible,
-[type="button"]:focus-visible,
-[type="submit"]:focus-visible,
-[type="reset"]:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
-
-button:disabled,
-[type="button"]:disabled,
-[type="submit"]:disabled,
-[type="reset"]:disabled {
-  cursor: not-allowed;
-}
-
-ul[role="list"],
-ol[role="list"] {
-  list-style: none;
-  padding: 0;
-}
-
-a:not([class]) {
-  color: inherit;
-  text-decoration-skip-ink: auto;
-}
-
-[hidden] {
-  display: none !important;
-}
-
-[aria-disabled="true"] {
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
-table {
-  border-collapse: collapse;
-  border-color: inherit;
-}
-
-fieldset,
-legend {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  min-width: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

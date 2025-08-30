@@ -4,7 +4,6 @@ import { HybridWithdrawFooter } from './hybrid-withdraw-footer';
 import { HybridWithdrawAmountInput } from './hybrid-withdraw-amount-input';
 import { useSubmit } from '../hybrid-withdraw.hooks';
 import { HybridWithdrawDetails } from './hybrid-withdraw-details';
-import styles from './hybrid-withdraw-form.module.css';
 
 export const HybridWithdrawForm = () => {
   const {
@@ -14,7 +13,7 @@ export const HybridWithdrawForm = () => {
 
   return (
     <Form {...form}>
-      <form className={styles.root} onSubmit={form.handleSubmit(submit)}>
+      <form className="space-y-8" onSubmit={form.handleSubmit(submit)}>
         <HybridWithdrawAmountInput />
         <HybridWithdrawDetails />
         <HybridWithdrawFooter />

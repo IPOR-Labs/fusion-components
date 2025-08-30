@@ -1,7 +1,7 @@
-import { XIcon } from 'lucide-react';
+import { AlertCircleIcon, XIcon } from 'lucide-react';
 import type { TransactionState } from '@/app/transactions/hooks/use-transaction-state';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import styles from './transaction-error.module.css';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   transactionState: TransactionState;
@@ -21,17 +21,23 @@ export const TransactionError = ({
 
   return (
     <Alert>
+      <AlertCircleIcon />
       <AlertTitle>
-        <span>Can't perform this transaction</span>
-        <button onClick={resetTransactionState}>
-          <XIcon />
-        </button>
+        Can't perform this transaction
       </AlertTitle>
       {Boolean(error) && (
         <AlertDescription>
-          <pre className={styles.errorPreview}>
+          <pre className="overflow-auto pb-4">
             <code>{getErrorLog(error)}</code>
           </pre>
+          <Button
+            onClick={resetTransactionState}
+            variant="outline"
+            size="sm"
+          >
+            <XIcon />
+            Dismiss
+          </Button>
         </AlertDescription>
       )}
     </Alert>

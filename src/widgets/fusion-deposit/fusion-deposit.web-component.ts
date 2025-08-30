@@ -7,8 +7,6 @@ import { type ChainId } from '@/app/config/wagmi';
 import globalStyles from '@/index.css?inline';
 import themeStyles from '@/themes/theme-fusion.css?inline';
 
-const OUTPUT_FILE_NAME = import.meta.env.VITE_OUTPUT_FILE_NAME;
-
 export class FusionDepositWebComponent extends HTMLElement {
   private root: Root;
   private address: Address | undefined = undefined;
@@ -67,13 +65,11 @@ export class FusionDepositWebComponent extends HTMLElement {
     if (!this.shadowRoot) {
       throw new Error('Shadow root not found');
     };
-
-    const componentStyles = await fetch(`/${OUTPUT_FILE_NAME}.css`)
-      .then(res => res.text());
-
-    const styles = themeStyles
-      .concat(globalStyles)
-      .concat(componentStyles);
+    // Scope theme variables to the host
+    const themeScoped = themeStyles
+      // @ts-expect-error
+      .replaceAll(':root', ':host');
+    const styles = globalStyles.concat(themeScoped);
 
     try {
       if ('adoptedStyleSheets' in Document.prototype && 'replaceSync' in CSSStyleSheet.prototype) {

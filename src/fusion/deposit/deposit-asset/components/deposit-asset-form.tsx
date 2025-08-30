@@ -3,7 +3,6 @@ import { useDepositAssetContext } from '../deposit-asset.context';
 import { DepositAssetFooter } from './deposit-asset-footer';
 import { DepositAssetAmountInput } from './deposit-asset-amount-input';
 import { useSubmit } from '../deposit-asset.hooks';
-import styles from './deposit-asset-form.module.css';
 
 export const DepositAssetForm = () => {
   const { form } = useDepositAssetContext();
@@ -13,7 +12,7 @@ export const DepositAssetForm = () => {
   return (
     <Form {...form}>
       <form
-        className={styles.root}
+        className="flex flex-col gap-8 justify-between h-full"
         onSubmit={form.handleSubmit(submit)}
       >
         <DepositAssetAmountInput />

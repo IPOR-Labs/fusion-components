@@ -3,7 +3,6 @@ import { useDepositAssetContext } from '../deposit-asset.context';
 import { calcNeedsApproval } from '@/app/allowance/utils/calc-needs-approval';
 import { useIsSubmitDisabled } from '../deposit-asset.hooks';
 import { TransactionFormButtons } from '@/components/transaction-form-buttons';
-import styles from './deposit-asset-footer.module.css';
 
 export const DepositAssetFooter = () => {
   const {
@@ -36,9 +35,9 @@ export const DepositAssetFooter = () => {
   });
 
   return (
-    <div className={styles.root}>
+    <div className="space-y-4">
       {canDeposit === false && (
-        <p className={styles.message}>
+        <p className="text-muted-foreground text-center">
           You are not whitelisted
         </p>
       )}

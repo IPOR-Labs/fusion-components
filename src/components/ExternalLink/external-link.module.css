@@ -1,9 +1,0 @@
-.root {
-  color: var(--primary);
-  text-decoration: none;
-  transition: text-decoration 150ms ease;
-}
-
-.root:hover {
-  text-decoration: underline;
-}

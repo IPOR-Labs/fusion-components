@@ -9,7 +9,6 @@ import {
   useAssetAmount,
   useIsScheduledWithdrawal,
 } from '../hybrid-withdraw.hooks';
-import styles from './hybrid-withdraw-fees.module.css';
 
 const REQUEST_FEE_MESSAGE = `Fee is charged immediately after scheduling a withdraw. Canceling or updating scheduled withdrawal will result in the loss of fee amount. Shares charged as fee are burned increasing value of remaining shares.`;
 
@@ -94,8 +93,8 @@ const Fee = ({
   const amountAfterFee = ((baseAmount || 0n) * fee) / ONE_ETHER;
 
   return (
-    <div className={styles.root} data-testid={testId}>
-      <div className={styles.label}>
+    <div className="flex space-x-4" data-testid={testId}>
+      <div className="flex space-x-2 font-medium">
         <span>
           {formatNumber(feeInPercentage, DEFAULT_DECIMALS, 2)}% {label}
         </span>
@@ -105,14 +104,14 @@ const Fee = ({
               <TooltipTrigger>
                 <InfoIcon size={16} />
               </TooltipTrigger>
-              <TooltipContent className={styles.tooltipContent}>
-                <p className={styles.tooltipText}>{tooltip}</p>
+              <TooltipContent className="max-w-sm">
+                <p className="text-muted-foreground">{tooltip}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         )}
       </div>
-      <div className={styles.amount}>
+      <div className="text-muted-foreground">
         <FullNumber value={amountAfterFee}>
           {formatSignificant(amountAfterFee, assetDecimals)}
         </FullNumber>{' '}

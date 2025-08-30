@@ -5,8 +5,6 @@ import { parseUnits } from 'viem';
 import { TransactionFeedback } from '@/app/transactions/components/transaction-feedback';
 import { WithdrawNote } from '@/fusion/withdraw/components/withdraw-note';
 
-import styles from './deposit-asset-body.module.css';
-
 export const DepositAssetBody = () => {
   const {
     params: {
@@ -44,7 +42,7 @@ export const DepositAssetBody = () => {
           onUpdateAllowance={setAllowanceFromEvent}
         />
       )}
-      <div className={styles.transactionFeedback}>
+      <div className="space-y-2">
         <TransactionFeedback transactionState={approveTxState} />
         <TransactionFeedback transactionState={depositTxState} />
       </div>
