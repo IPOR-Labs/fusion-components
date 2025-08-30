@@ -1,6 +1,6 @@
 import type { TransactionState } from '@/app/transactions/hooks/use-transaction-state';
-import { usePlasmaVaultApprove } from '@/fusion/deposit/actions/approve';
-import { usePlasmaVaultDeposit } from '@/fusion/deposit/actions/deposit';
+import { usePlasmaVaultApprove } from '@/fusion/deposit/actions/approve.action';
+import { usePlasmaVaultDeposit } from '@/fusion/deposit/actions/deposit.action';
 import { type Params } from '@/fusion/deposit/deposit-asset/deposit-asset.params';
 
 interface Args {
