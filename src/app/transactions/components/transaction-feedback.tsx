@@ -1,5 +1,5 @@
 import type { TransactionState } from '@/app/transactions/hooks/use-transaction-state';
-import { TransactionLink } from '@/components/ExternalLink/transaction-link';
+import { TransactionLink } from '@/components/transaction-link';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckIcon, Loader2Icon } from 'lucide-react';
 import { AlertCircleIcon, XIcon } from 'lucide-react';

@@ -1,6 +1,6 @@
 import { extractChain, type Hash } from 'viem';
 import { truncate } from '@/lib/truncate';
-import { ExternalLink } from '@/components/ExternalLink/external-link';
+import { ExternalLink } from '@/components/external-link';
 import { useConfigContext } from "@/app/config/config.context";
 import { chains } from '@/app/config/wagmi';
 
