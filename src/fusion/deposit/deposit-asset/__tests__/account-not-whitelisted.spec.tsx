@@ -2,33 +2,12 @@ import { useParams } from '../deposit-asset.params';
 import { describe, expect, it, type Mock, vi } from 'vitest';
 import { render, screen, act, fireEvent } from '@testing-library/react';
 import { DepositAsset } from '../deposit-asset';
-import { type Address } from 'viem';
 import { mainnet } from 'viem/chains';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
 import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
 
-// vi.mock('../params');
-// vi.mock('transactions/setup', () => {
-//   return {
-//     useSetup: () => {
-//       return {
-//         publicClient: {},
-//         writeContractAsync: vi.fn(),
-//         isSafeWallet: false,
-//         accountAddress: '0x123',
-//         queryClient: { invalidateQueries: vi.fn() },
-//         addTransaction: vi.fn(),
-//         updateTransaction: vi.fn(),
-//         getReceipt: async () => ({ status: 'success' }),
-//         getTransaction: async () => ({}),
-//       };
-//     },
-//   };
-// });
-
 vi.mock('../deposit-asset.params');
 vi.mock('@/app/config/config.context');
-vi.mock('@/app/transactions/utils/send-app-transaction');
 vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
 
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
