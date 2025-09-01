@@ -12,7 +12,7 @@ export const DepositAssetFooter = () => {
       chainId,
       isWrongWalletChain,
       assetDecimals,
-      canDeposit,
+      isWhitelisted,
       connect,
       switchChain,
     },
@@ -36,7 +36,7 @@ export const DepositAssetFooter = () => {
 
   return (
     <div className="space-y-4">
-      {canDeposit === false && (
+      {isWhitelisted === false && (
         <p className="text-muted-foreground text-center">
           You are not whitelisted
         </p>

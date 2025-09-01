@@ -90,12 +90,12 @@ export const useSubmit = () => {
 
 export const useIsSubmitDisabled = () => {
   const {
-    params: { canDeposit },
+    params: { isWhitelisted },
     form,
   } = useDepositAssetContext();
   const { isDirty, isValid } = form.formState;
 
-  if (canDeposit === false) {
+  if (isWhitelisted === false) {
     return true;
   }
 

@@ -68,7 +68,7 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
     assetSymbol,
     assetDecimals,
     assetBalance,
-    canDeposit: isVaultPublic || isAccountWhitelisted,
+    isWhitelisted: isVaultPublic || isAccountWhitelisted,
     isWrongWalletChain,
     switchChain,
     accountAddress,
