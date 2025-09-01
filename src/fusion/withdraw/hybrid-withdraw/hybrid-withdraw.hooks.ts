@@ -1,6 +1,5 @@
 import { formatUnits, parseUnits } from 'viem';
 import { useHybridWithdrawContext } from './hybrid-withdraw.context';
-import { useFusionVaultConvertToShares } from '@/fusion/plasma-vault/hooks/use-fusion-vault-convert-to-shares';
 import { minBigInt } from '@/lib/min-bigint';
 
 export const useIsScheduledWithdrawal = () => {
@@ -45,54 +44,59 @@ export const useAssetAmount = () => {
 
 export const useSubmit = () => {
   const {
-    params: { accountAddress },
+    params: { 
+      convertToShares,
+      sharesBalance,
+    },
     actions: {
       executeWithdraw,
       executeRequestShares,
-      executeRequestMaxShares,
-      executeMaxRedeem,
+      executeRedeem,
     },
     form,
   } = useHybridWithdrawContext();
   const amount = useAssetAmount();
-  const shares = useFusionVaultConvertToShares({
-    assets: amount,
-  });
   const isScheduledWithdrawal = useIsScheduledWithdrawal();
 
   const submit = async () => {
-    if (amount === undefined) return undefined;
-    if (isScheduledWithdrawal === undefined) return undefined;
+    if (amount === undefined) {
+      throw new Error('amount is undefined');
+    };
+    if (isScheduledWithdrawal === undefined) {
+      throw new Error('isScheduledWithdrawal is undefined');
+    };
 
     if (isScheduledWithdrawal) {
       if (form.getValues('isMax')) {
-        await executeRequestMaxShares?.();
+        if (sharesBalance === undefined) {
+          throw new Error('sharesBalance is undefined');
+        }
+        await executeRequestShares?.({
+          shares: sharesBalance,
+        });
         form.reset();
         return;
       }
 
-      if (shares === undefined) {
-        return;
-      }
-
+      const shares = await convertToShares(amount);
       await executeRequestShares?.({ shares });
       form.reset();
       return;
     }
 
     if (form.getValues('isMax')) {
-      await executeMaxRedeem?.();
+      if (sharesBalance === undefined) {
+        throw new Error('sharesBalance is undefined');
+      }
+      await executeRedeem?.({
+        shares: sharesBalance,
+      });
       form.reset();
       return;
     }
 
-    if (accountAddress === undefined) {
-      throw new Error('accountAddress is undefined');
-    };
-
     await executeWithdraw?.({ 
       amount,
-      beneficiary: accountAddress,
     });
     form.reset();
   };

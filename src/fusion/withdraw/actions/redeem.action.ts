@@ -1,10 +1,8 @@
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
 import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { type ChainId } from '@/app/config/wagmi';
 import type { TransactionStateHandlers } from '@/app/transactions/transactions.types';
-import { addressSchema } from '@/lib/schema';
 import { z } from 'zod';
 import type { Address } from 'viem';
 
@@ -14,18 +12,14 @@ interface Args {
   transactionStateHandlers: TransactionStateHandlers;
 }
 
-export const useMaxRedeem = ({
+export const useRedeem = ({
   chainId,
   fusionVaultAddress,
   transactionStateHandlers,
 }: Args) => {
-  const shares = useAccountSharesInFusionVault();
-
-  const enabled = Boolean(shares);
-
   return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
-      const { beneficiary } = payloadSchema.parse(payload);
+      const { shares } = payloadSchema.parse(payload);
 
       return await sendAppTransaction({
         config,
@@ -33,20 +27,19 @@ export const useMaxRedeem = ({
           address: fusionVaultAddress,
           abi: plasmaVaultAbi,
           functionName: 'redeem',
-          args: [shares, beneficiary, beneficiary],
+          args: [shares, accountAddress, accountAddress],
           account: accountAddress,
         },
       });
     },
     transactionStateHandlers,
     chainId,
-    enabled,
     payloadSchema,
   });
 };
 
 const payloadSchema = z.object({
-  beneficiary: addressSchema,
+  shares: z.bigint().positive(),
 });
 
 

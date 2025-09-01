@@ -1,8 +1,7 @@
 import { type Params } from './hybrid-withdraw.params';
 import { useWithdraw } from '../actions/withdraw.action';
-import { useMaxRedeem } from '../actions/max-redeem.action';
+import { useRedeem } from '../actions/redeem.action';
 import { useRequestShares } from '../actions/request-shares.action';
-import { useRequestMaxShares } from '../actions/request-max-shares.action';
 import { type TransactionState } from '@/app/transactions/hooks/use-transaction-state';
 
 interface Args {
@@ -14,7 +13,7 @@ export const useActions = ({
   txState: { transactionStateHandlers },
   params: { chainId, fusionVaultAddress, withdrawManagerAddress },
 }: Args) => {
-  const { execute: executeMaxRedeem } = useMaxRedeem({
+  const { execute: executeRedeem } = useRedeem({
     chainId,
     fusionVaultAddress,
     transactionStateHandlers,
@@ -29,17 +28,11 @@ export const useActions = ({
     withdrawManagerAddress,
     transactionStateHandlers,
   });
-  const { execute: executeRequestMaxShares } = useRequestMaxShares({
-    chainId,
-    withdrawManagerAddress,
-    transactionStateHandlers,
-  });
 
   return {
+    executeRedeem,
     executeWithdraw,
     executeRequestShares,
-    executeRequestMaxShares,
-    executeMaxRedeem,
   };
 };
 

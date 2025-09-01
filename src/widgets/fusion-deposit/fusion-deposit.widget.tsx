@@ -33,7 +33,7 @@ const Content = () => {
         <CardTitle>{name}</CardTitle>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="deposit">
+        <Tabs defaultValue="withdraw">
           <TabsList>
             <TabsTrigger value="deposit">Deposit</TabsTrigger>
             <TabsTrigger value="withdraw">Withdraw</TabsTrigger>

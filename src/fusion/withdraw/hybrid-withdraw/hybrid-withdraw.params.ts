@@ -11,6 +11,9 @@ import { useConfigContext } from "@/app/config/config.context";
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
+import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
+import { usePublicClient } from 'wagmi';
+import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 
 interface Args {
   onConfirm?: () => void;
@@ -41,6 +44,19 @@ export const useParams = ({ onConfirm }: Args) => {
   });
 
   const maxInstantWithdrawAmount = useMaxInstantWithdrawAmount();
+  const sharesBalance = useAccountSharesInFusionVault();
+
+  const publicClient = usePublicClient({ chainId });
+  const convertToShares = async (assets: bigint) => {
+    const shares = await publicClient.readContract({
+      address: fusionVaultAddress,
+      abi: plasmaVaultAbi,
+      functionName: 'convertToShares',
+      args: [assets],
+    });
+
+    return shares;
+  };
 
   return {
     chainId,
@@ -60,6 +76,8 @@ export const useParams = ({ onConfirm }: Args) => {
     withdrawFee,
     requestFee,
     maxInstantWithdrawAmount,
+    sharesBalance,
+    convertToShares,
   };
 };
 

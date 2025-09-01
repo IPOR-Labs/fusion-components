@@ -19,7 +19,7 @@ export const useRequestShares = ({
   transactionStateHandlers,
 }: Args) => {
   return useExecuteTransaction({
-    writeAsync: async (config, payload) => {
+    writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { shares } = payloadSchema.parse(payload);
 
       if (!isNonZeroAddress(withdrawManagerAddress)) {
@@ -33,7 +33,7 @@ export const useRequestShares = ({
           abi: withdrawManagerAbi,
           functionName: 'requestShares',
           args: [shares],
-          account: config.accountAddress,
+          account: accountAddress,
         },
       });
     },

@@ -5,7 +5,6 @@ import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { type ChainId } from '@/app/config/wagmi';
 import { type Address } from 'viem';
 import { z } from 'zod';
-import { addressSchema } from '@/lib/schema';
 
 interface Args {
   chainId: ChainId;
@@ -20,7 +19,7 @@ export const useWithdraw = ({
 }: Args) => {
   return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
-      const { amount, beneficiary } = payloadSchema.parse(payload);
+      const { amount } = payloadSchema.parse(payload);
 
       return await sendAppTransaction({
         config,
@@ -28,7 +27,7 @@ export const useWithdraw = ({
           address: fusionVaultAddress,
           abi: plasmaVaultAbi,
           functionName: 'withdraw',
-          args: [amount, beneficiary, beneficiary],
+          args: [amount, accountAddress, accountAddress],
           account: accountAddress,
         },
       });
@@ -41,5 +40,4 @@ export const useWithdraw = ({
 
 const payloadSchema = z.object({
   amount: z.bigint(),
-  beneficiary: addressSchema,
 });

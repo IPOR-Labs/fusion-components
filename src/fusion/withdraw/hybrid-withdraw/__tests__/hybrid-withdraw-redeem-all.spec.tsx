@@ -1,26 +1,28 @@
-import { useParams } from '../deposit-asset.params';
+import { useParams } from '../hybrid-withdraw.params';
 import { describe, expect, it, type Mock, vi } from 'vitest';
 import { render, screen, act, fireEvent } from '@testing-library/react';
-import { DepositAsset } from '../deposit-asset';
-import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
+import userEvent from '@testing-library/user-event';
+import { HybridWithdraw } from '../hybrid-withdraw';
 import { mainnet } from 'viem/chains';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
-import { useConfigContext } from '@/app/config/config.context';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { sleep } from '@/lib/sleep';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
+import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useConfigContext } from '@/app/config/config.context';
 
-vi.mock('../deposit-asset.params');
+vi.mock('../hybrid-withdraw.params');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
 vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
 
+const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
 const ACCOUNT_ADDRESS = ANVIL_TEST_ACCOUNT[1].address;
 const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
 
-describe('Deposit asset to Plasma Vault', () => {
-  it('should allow user to deposit assets successfuly', async () => {
+describe('Withdraw ALL shares from Plasma Vault', () => {
+  it('should allow user to withdraw ALL shares successfuly', async () => {
     (useExecuteTransactionSetup as Mock<typeof useExecuteTransactionSetup>).mockReturnValue({
       publicClient: {
         waitForTransactionReceipt: vi.fn().mockResolvedValue({ status: 'success' }),
@@ -31,54 +33,56 @@ describe('Deposit asset to Plasma Vault', () => {
       walletClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
-      chainId: mainnet.id,
+      chainId: CHAIN.id,
       fusionVaultAddress: PLASMA_VAULT_ADDRESS,
     });
     (useParams as Mock<typeof useParams>).mockReturnValue({
-      chainId: mainnet.id,
+      chainId: CHAIN.id,
       fusionVaultAddress: PLASMA_VAULT_ADDRESS,
-      vaultName: 'IPOR Fusion Plasma Vault USDC',
+      assetDecimals: 6,
       assetSymbol: 'USDC',
       assetAddress: ASSET_ADDRESS,
-      assetDecimals: 6,
-      assetBalance: 2000_000000n,
-      isWhitelisted: true,
+      balanceToWithdraw: 3000_000000n,
       isWrongWalletChain: false,
+      accountAddress: '0x123',
       switchChain: vi.fn(),
-      accountAddress: ACCOUNT_ADDRESS,
       connect: vi.fn(),
       onConfirm: vi.fn(),
-      onDepositSuccess: vi.fn(),
-      allowance: 2000_000000n,
-      setAllowanceFromEvent: vi.fn(),
-      withdrawWindowInSeconds: 0n,
-      isScheduledWithdrawal: false,
-      maxDeposit: 2000_000000n,
-      vaultSymbol: 'ipfUSDC',
+      isWithdrawRequestPending: false,
+      withdrawManagerAddress: undefined,
+      withdrawWindowInSeconds: undefined,
+      withdrawFee: undefined,
+      requestFee: undefined,
+      maxInstantWithdrawAmount: 10000_000000n,
+      sharesBalance: 2333_00000000n,
+      convertToShares: () => Promise.resolve(2333_00000000n),
     });
     (sendAppTransaction as Mock).mockResolvedValue('__TX_HASH__');
 
-    render(<DepositAsset />);
+    render(<HybridWithdraw />);
 
-    const depositAmountInput = screen.getByRole('textbox');
-    expect(depositAmountInput).toHaveValue('');
+    const user = userEvent.setup();
 
-    act(() => {
-      fireEvent.change(depositAmountInput, { target: { value: '2000' } });
+    const redeemAmountInput = screen.getByRole('textbox');
+    expect(redeemAmountInput).toHaveValue('');
+
+    const _100PercentButton = screen.getByRole('button', {
+      name: '100%',
     });
-    expect(depositAmountInput).toHaveValue('2000');
+    await user.click(_100PercentButton);
+    expect(redeemAmountInput).toHaveValue('3000');
 
-    await sleep(100);
+    await sleep(500);
 
-    const transferDepositButton = screen.getByRole('button', {
-      name: 'Deposit',
+    const withdrawButton = screen.getByRole('button', {
+      name: 'Withdraw All Now',
     });
-    expect(transferDepositButton).toBeEnabled();
+    expect(withdrawButton).toBeEnabled();
 
     expect(sendAppTransaction).toBeCalledTimes(0);
 
     act(() => {
-      fireEvent.click(transferDepositButton);
+      fireEvent.click(withdrawButton);
     });
 
     await sleep(100);
@@ -95,8 +99,8 @@ describe('Deposit asset to Plasma Vault', () => {
         abi: plasmaVaultAbi,
         account: ACCOUNT_ADDRESS,
         address: PLASMA_VAULT_ADDRESS,
-        args: [2000000000n, ACCOUNT_ADDRESS],
-        functionName: 'deposit',
+        args: [2333_00000000n, ACCOUNT_ADDRESS, ACCOUNT_ADDRESS],
+        functionName: 'redeem',
       },
     });
   });
