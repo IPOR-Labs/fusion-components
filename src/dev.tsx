@@ -1,14 +1,16 @@
-import { StrictMode, useState } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { FusionDepositWidget } from '@/widgets/fusion-deposit/fusion-deposit.widget';
 import Onboard, { type EIP1193Provider } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets';
 import '@/themes/theme-fusion.css';
 import '@/index.css';
-import { toHex, type Address } from 'viem';
+import { toHex } from 'viem';
 import { arbitrum, base, mainnet } from 'viem/chains';
-import type { ChainId } from '@/app/config/wagmi';
 import { PlasmaVaultPicker, type PlasmaVaultValue } from '@/fusion/vaults/components/plasma-vault-picker';
+import { PLASMA_VAULTS_LIST } from '@/lib/plasma-vaults-list';
+
+const DEFAULT_PLASMA_VAULT: PlasmaVaultValue = PLASMA_VAULTS_LIST.at(0)!;
 
 const injected = injectedModule()
 
@@ -36,15 +38,28 @@ const onboard = Onboard({
   ]
 });
 
-
-
 const AppWrapper = () => {
   const [provider, setProvider] = useState<EIP1193Provider | undefined>(undefined);
-  const [plasmaVault, setPlasmaVault] = useState<PlasmaVaultValue | undefined>(undefined);
+  const [plasmaVault, setPlasmaVault] = useState<PlasmaVaultValue>(DEFAULT_PLASMA_VAULT);
+
+  const handleSetPlasmaVault = (plasmaVault: PlasmaVaultValue) => {
+    setPlasmaVault(plasmaVault);
+    localStorage.setItem('PLASMA_VAULT', JSON.stringify(plasmaVault));
+  }
+
+  useEffect(() => {
+    const savedPlasmaVault = localStorage.getItem('PLASMA_VAULT');
+    if (savedPlasmaVault) {
+      setPlasmaVault(JSON.parse(savedPlasmaVault));
+    }
+  }, []);
 
   return (
     <div className="space-y-10">
-      <PlasmaVaultPicker setPlasmaVault={setPlasmaVault} />
+      <PlasmaVaultPicker
+        value={plasmaVault}
+        setPlasmaVault={handleSetPlasmaVault}
+      />
       {plasmaVault && (
         <FusionDepositWidget
           fusionVaultAddress={plasmaVault.vaultAddress}

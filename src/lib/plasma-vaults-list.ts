@@ -13,13 +13,13 @@ export const PLASMA_VAULTS_LIST = [
     "chainId": 1,
     "vaultAddress": "0xe9385eff3f937fcb0f0085da9a3f53d6c2b4fb5f"
   },
-  {
-    "name": "K3 Capital ETH Maxi",
-    "strategy": "Leveraged Looping",
-    "link": "https://app.ipor.io/fusion/unichain/0x2af2146e6722b80a0a455f405edff3993715e417",
-    "chainId": 130,
-    "vaultAddress": "0x2af2146e6722b80a0a455f405edff3993715e417"
-  },
+  // {
+  //   "name": "K3 Capital ETH Maxi",
+  //   "strategy": "Leveraged Looping",
+  //   "link": "https://app.ipor.io/fusion/unichain/0x2af2146e6722b80a0a455f405edff3993715e417",
+  //   "chainId": 130,
+  //   "vaultAddress": "0x2af2146e6722b80a0a455f405edff3993715e417"
+  // },
   {
     "name": "Leveraged sUSDf",
     "strategy": "Leveraged Looping",
@@ -125,4 +125,4 @@ export const PLASMA_VAULTS_LIST = [
     "chainId": 8453,
     "vaultAddress": "0xf2f8386b88cb15c5ceade069c44f57fd2fd35e95"
   }
-];
+] as const;
