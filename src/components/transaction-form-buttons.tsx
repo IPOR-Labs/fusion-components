@@ -6,6 +6,8 @@ import { chains, type ChainId } from '@/app/config/wagmi';
 import { cn } from '@/lib/utils';
 import { ApprovalSteps } from '@/components/approval-steps';
 import { ApprovalText } from '@/components/approval-text';
+import { TokenIcon } from '@/components/token-icon';
+import { Alert, AlertTitle } from '@/components/ui/alert';
 
 type Props = {
   chainId: ChainId;
@@ -23,23 +25,42 @@ type Props = {
     needsApproval: boolean;
     allowance: bigint | undefined;
     visibleDecimals: number | undefined;
+    needsRevokeBeforeApproval: boolean;
+    assetAddress: Address;
+    assetSymbol: string;
   };
 };
 
 export const TransactionFormButtons = (props: Props) => {
   return (
-    <div className="space-y-4 -mx-8">
-      <div className="w-1/2 mx-auto">
-        <ApprovalSteps
-          needsApproval={
-            props.approvalProps?.needsApproval ||
-            props.isWrongWalletChain ||
-            !props.isWalletConnected
-          }
-          isApproving={props.approvalProps?.isApproving || false}
-        />
+    <div className="space-y-4 ">
+      {props.approvalProps?.needsApproval && props.approvalProps?.needsRevokeBeforeApproval && (
+        <Alert>
+          <AlertTitle className="flex items-center gap-2">
+            <TokenIcon
+              chainId={props.chainId}
+              address={props.approvalProps?.assetAddress}
+              className='h-4 w-4'
+            />
+            <span>
+              {props.approvalProps?.assetSymbol} requires revoking approval before approving higher value
+            </span>
+          </AlertTitle>
+        </Alert>
+      )}
+      <div className="-mx-8">
+        <div className="w-1/2 mx-auto">
+          <ApprovalSteps
+            needsApproval={
+              props.approvalProps?.needsApproval ||
+              props.isWrongWalletChain ||
+              !props.isWalletConnected
+            }
+            isApproving={props.approvalProps?.isApproving || false}
+          />
+        </div>
       </div>
-      <div className="grid grid-cols-2 gap-x-4 mx-8 items-center">
+      <div className="grid grid-cols-2 gap-x-4 items-center">
         <Buttons {...props} />
       </div>
     </div>
@@ -114,6 +135,19 @@ const Buttons = ({
     const { allowance } = approvalProps;
 
     const hasApproval = allowance === undefined ? false : allowance > 0n;
+
+    if (approvalProps?.needsRevokeBeforeApproval) {
+      return (
+        <>
+          <Button type="submit" disabled={isSubmitDisabled}>
+            Revoke Approval
+          </Button>
+          <Button type="button" disabled variant="secondary">
+            Approve
+          </Button>
+        </>
+      );
+    }
 
     return (
       <>

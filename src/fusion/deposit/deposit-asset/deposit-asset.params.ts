@@ -51,14 +51,6 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
 
   const { data: maxDeposit } = useFusionVaultMaxDeposit();
 
-  const [isRevokingUsdtAllowance, setIsRevokingUsdtAllowance] = useState(false);
-  const showRevokingUsdtAllowance = () => {
-    setIsRevokingUsdtAllowance(true);
-  };
-  const hideRevokingUsdtAllowance = () => {
-    setIsRevokingUsdtAllowance(false);
-  };
-
   return {
     chainId,
     fusionVaultAddress,
@@ -80,9 +72,6 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
     withdrawWindowInSeconds,
     isScheduledWithdrawal,
     maxDeposit,
-    isRevokingUsdtAllowance,
-    showRevokingUsdtAllowance,
-    hideRevokingUsdtAllowance,
   };
 };
 

@@ -1,7 +1,7 @@
 import { parseUnits } from 'viem';
 import { useDepositAssetContext } from '../deposit-asset.context';
 import { calcNeedsApproval } from '@/app/allowance/utils/calc-needs-approval';
-import { useIsSubmitDisabled } from '../deposit-asset.hooks';
+import { useIsSubmitDisabled, useNeedsRevokeBeforeApproval } from '../deposit-asset.hooks';
 import { TransactionFormButtons } from '@/components/transaction-form-buttons';
 
 export const DepositAssetFooter = () => {
@@ -15,6 +15,8 @@ export const DepositAssetFooter = () => {
       isWhitelisted,
       connect,
       switchChain,
+      assetAddress,
+      assetSymbol,
     },
     form,
     approveTxState,
@@ -33,6 +35,11 @@ export const DepositAssetFooter = () => {
     allowance,
     amount,
   });
+
+  const needsRevokeBeforeApproval = useNeedsRevokeBeforeApproval();
+
+  if (assetAddress === undefined) return null;
+  if (assetSymbol === undefined) return null;
 
   return (
     <div className="space-y-4">
@@ -57,6 +64,9 @@ export const DepositAssetFooter = () => {
           allowance,
           needsApproval,
           isApproving,
+          needsRevokeBeforeApproval,
+          assetAddress,
+          assetSymbol,
         }}
       />
     </div>

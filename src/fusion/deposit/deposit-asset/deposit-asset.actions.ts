@@ -1,5 +1,5 @@
 import type { TransactionState } from '@/app/transactions/hooks/use-transaction-state';
-import { usePlasmaVaultApprove } from '@/fusion/deposit/actions/approve.action';
+import { useApprove } from '@/app/allowance/actions/approve.action';
 import { usePlasmaVaultDeposit } from '@/fusion/deposit/actions/deposit.action';
 import { type Params } from '@/fusion/deposit/deposit-asset/deposit-asset.params';
 
@@ -16,7 +16,7 @@ export const useActions = ({
 }: Args) => {
   const { chainId } = params;
 
-  const { execute: executeApprove } = usePlasmaVaultApprove({
+  const { execute: executeApprove } = useApprove({
     chainId,
     transactionStateHandlers: approveTxState.transactionStateHandlers,
   });

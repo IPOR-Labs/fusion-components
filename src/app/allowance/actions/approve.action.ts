@@ -1,31 +1,31 @@
-import { getErc20AbiByAddress } from '@/abi/getErc20abi';
 import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { z } from 'zod';
 import { addressSchema } from '@/lib/schema';
 import { type ChainId } from '@/app/config/wagmi';
+import { getErc20Abi } from '@/abi/get-erc20-abi';
 
 interface Args {
   chainId: ChainId;
   transactionStateHandlers: TransactionStateHandlers;
 }
 
-export const usePlasmaVaultApprove = ({
+export const useApprove = ({
   transactionStateHandlers,
   chainId,
 }: Args) => {
   return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
-      const { fusionVaultAddress, amount, assetAddress } = payloadSchema.parse(payload);
+      const { spender, amount, assetAddress } = payloadSchema.parse(payload);
 
       return await sendAppTransaction({
         config,
         parameters: {
-          address: assetAddress!,
-          abi: getErc20AbiByAddress(assetAddress),
+          address: assetAddress,
+          abi: getErc20Abi(assetAddress),
           functionName: 'approve',
-          args: [fusionVaultAddress, amount],
+          args: [spender, amount],
           account: accountAddress,
         },
       });
@@ -37,7 +37,7 @@ export const usePlasmaVaultApprove = ({
 };
 
 const payloadSchema = z.object({
-  fusionVaultAddress: addressSchema,
+  spender: addressSchema,
   assetAddress: addressSchema,
   amount: z.bigint(),
 });

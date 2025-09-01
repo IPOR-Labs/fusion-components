@@ -1,26 +1,24 @@
 import { formSchema } from '@/fusion/deposit/deposit-asset/deposit-asset.form';
 import { useDepositAssetContext } from './deposit-asset.context';
-import { parseUnits } from 'viem';
+import { isAddressEqual, parseUnits } from 'viem';
 import { calcNeedsApproval } from '@/app/allowance/utils/calc-needs-approval';
 import { getNeedsRevokeApproval } from '@/app/allowance/utils/get-needs-revoke-approval';
-import { mainnet } from 'viem/chains';
-import { USDT_ADDRESS_MAINNET } from '@/lib/constants';
+import { ERC20_TOKENS_TO_REVOKE_BEFORE_APPROVE } from '@/lib/constants';
 
-const useNeedsRevokeBeforeApproval = () => {
+export const useNeedsRevokeBeforeApproval = () => {
   const {
     params: { chainId, assetAddress, allowance, assetDecimals },
     form,
   } = useDepositAssetContext();
 
-  if (chainId !== mainnet.id) {
-    return false;
-  }
-  if (assetAddress !== USDT_ADDRESS_MAINNET) {
-    return false;
-  }
-  if (assetDecimals === undefined) {
-    return false;
-  }
+  if (assetDecimals === undefined) return false;
+  if (assetAddress === undefined) return false;
+
+  const isRevokeToken = assetAddress && ERC20_TOKENS_TO_REVOKE_BEFORE_APPROVE.some((token) => {
+    return token.chainId === chainId && isAddressEqual(token.address, assetAddress);
+  });
+
+  if (!isRevokeToken) return false;
 
   const newAllowance = parseUnits(form.getValues('amount'), assetDecimals);
 
@@ -32,7 +30,7 @@ const useNeedsRevokeBeforeApproval = () => {
 
 export const useSubmit = () => {
   const {
-    params: { fusionVaultAddress, allowance, assetAddress, assetDecimals, accountAddress, showRevokingUsdtAllowance },
+    params: { fusionVaultAddress, allowance, assetAddress, assetDecimals, accountAddress },
     actions: { executeApprove, executeDeposit },
     form,
   } = useDepositAssetContext();
@@ -61,14 +59,18 @@ export const useSubmit = () => {
       }
 
       if (needsRevokeBeforeApproval) {
-        showRevokingUsdtAllowance();
+        await executeApprove?.({
+          amount: 0n,
+          assetAddress,
+          spender: fusionVaultAddress,
+        });
         return;
       }
 
       await executeApprove?.({
         amount,
         assetAddress,
-        fusionVaultAddress,
+        spender: fusionVaultAddress,
       });
       return;
     }

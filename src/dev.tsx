@@ -5,8 +5,17 @@ import Onboard, { type EIP1193Provider } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets';
 import '@/themes/theme-fusion.css';
 import '@/index.css';
-import { toHex } from 'viem';
+import { toHex, type Address } from 'viem';
 import { arbitrum, base, mainnet } from 'viem/chains';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { PLASMA_VAULTS_LIST } from '@/lib/plasma-vaults-list';
+import type { ChainId } from '@/app/config/wagmi';
 
 const injected = injectedModule()
 
@@ -32,23 +41,60 @@ const onboard = Onboard({
       rpcUrl: import.meta.env.VITE_ARBITRUM_RPC_URL,
     }
   ]
-})
+});
+
+type PlasmaVaultValue = {
+  chainId: ChainId;
+  vaultAddress: Address;
+};
 
 const AppWrapper = () => {
   const [provider, setProvider] = useState<EIP1193Provider | undefined>(undefined);
+  const [plasmaVault, setPlasmaVault] = useState<PlasmaVaultValue | undefined>(undefined);
 
   return (
-    <FusionDepositWidget
-      fusionVaultAddress="0x0d877dc7c8fa3ad980dfdb18b48ec9f8768359c4"
-      chainId={base.id}
-      connect={async () => {
-        const wallets = await onboard.connectWallet();
-        setProvider(wallets[0].provider);
-      }}
-      // Type EIP1193Provider in viem and @web3-onboard have not compatible types
-      // @ts-expect-error
-      provider={provider}
-    />
+    <div className="space-y-10">
+      <Select
+        onValueChange={(value) => {
+          const [chainId, vaultAddress] = value.split('-');
+          setPlasmaVault({
+            chainId: +chainId as ChainId,
+            vaultAddress: vaultAddress as Address,
+          });
+        }}
+      >
+        <SelectTrigger className="w-96">
+          <SelectValue placeholder="Plasma Vault" />
+        </SelectTrigger>
+        <SelectContent>
+          {PLASMA_VAULTS_LIST.map(({
+            name,
+            chainId,
+            vaultAddress
+          }) => {
+            const value = `${chainId}-${vaultAddress}`;
+            return (
+              <SelectItem key={value} value={value}>
+                {name}
+              </SelectItem>
+            )
+          })}
+        </SelectContent>
+      </Select>
+      {plasmaVault && (
+        <FusionDepositWidget
+          fusionVaultAddress={plasmaVault.vaultAddress}
+          chainId={plasmaVault.chainId}
+          connect={async () => {
+            const wallets = await onboard.connectWallet();
+            setProvider(wallets[0].provider);
+          }}
+          // Type EIP1193Provider in viem and @web3-onboard have not compatible types
+          // @ts-expect-error
+          provider={provider}
+        />
+      )}
+    </div>
   );
 }
 
@@ -57,5 +103,3 @@ createRoot(document.getElementById('root')!).render(
     <AppWrapper />
   </StrictMode>
 );
-
-

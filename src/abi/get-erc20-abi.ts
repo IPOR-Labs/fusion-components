@@ -1,10 +1,8 @@
-import { type Address, erc20Abi } from 'viem';
+import { USDT_ADDRESS_MAINNET } from '@/lib/constants';
+import { type Address, erc20Abi, isAddressEqual } from 'viem';
 
-const USDT_MAINNET_ADDRESS =
-  '0xdAC17F958D2ee523a2206206994597C13D831ec7' as const;
-
-export const getErc20AbiByAddress = (address: Address | undefined) => {
-  if (USDT_MAINNET_ADDRESS === address) {
+export const getErc20Abi = (address: Address | undefined) => {
+  if (address && isAddressEqual(address, USDT_ADDRESS_MAINNET)) {
     return usdtAbi;
   }
 
