@@ -6,14 +6,14 @@ import { sendAppTransaction } from '@/app/transactions/utils/send-app-transactio
 import { mainnet } from 'viem/chains';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
 import { useConfigContext } from '@/app/config/config.context';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useAppSetup } from '@/app/use-app-setup';
 import { sleep } from '@/lib/sleep';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 
 vi.mock('../deposit-asset.params');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
-vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
+vi.mock('@/app/use-app-setup');
 
 const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
@@ -22,7 +22,7 @@ const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
 
 describe('Deposit asset to Plasma Vault', () => {
   it('should allow user to deposit assets successfuly', async () => {
-    (useExecuteTransactionSetup as Mock<typeof useExecuteTransactionSetup>).mockReturnValue({
+    (useAppSetup as Mock<typeof useAppSetup>).mockReturnValue({
       publicClient: {
         waitForTransactionReceipt: vi.fn().mockResolvedValue({ status: 'success' }),
       } as any,
@@ -30,6 +30,8 @@ describe('Deposit asset to Plasma Vault', () => {
       isWrongWalletChain: false,
       isSafeWallet: false,
       walletClient: vi.fn() as any,
+      switchChain: vi.fn(),
+      queryClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
       chainId: CHAIN.id,
@@ -43,7 +45,6 @@ describe('Deposit asset to Plasma Vault', () => {
       assetBalance: 2000_000000n,
       isWhitelisted: true,
       isWrongWalletChain: false,
-      switchChain: vi.fn(),
       accountAddress: ACCOUNT_ADDRESS,
       allowance: 2000_000000n,
       setAllowanceFromEvent: vi.fn(),

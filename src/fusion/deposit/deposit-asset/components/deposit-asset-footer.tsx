@@ -17,7 +17,6 @@ export const DepositAssetFooter = () => {
       isWrongWalletChain,
       assetDecimals,
       isWhitelisted,
-      switchChain,
       assetAddress,
       assetSymbol,
     },
@@ -58,7 +57,6 @@ export const DepositAssetFooter = () => {
         isWrongWalletChain={isWrongWalletChain}
         chainId={chainId}
         selectWallet={connect}
-        switchChain={switchChain}
         isLoading={isPending}
         approvalProps={{
           accountAddress: accountAddress,

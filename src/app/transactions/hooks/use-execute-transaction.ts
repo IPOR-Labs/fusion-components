@@ -2,7 +2,7 @@ import { type TransactionStateHandlers } from '@/app/transactions/transactions.t
 import { type Address, type Hash, type TransactionReceipt, type WalletClient } from 'viem';
 import { Schema, z } from 'zod';
 import { usePublicClient } from 'wagmi';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useAppSetup } from '@/app/use-app-setup';
 
 interface WriteAsyncArgs {
   publicClient: ReturnType<typeof usePublicClient>;
@@ -33,7 +33,7 @@ export const useExecuteTransaction = <TSchema extends Schema>({
     isWrongWalletChain,
     isSafeWallet,
     walletClient,
-  } = useExecuteTransactionSetup();
+  } = useAppSetup();
   const _payloadSchema = payloadSchema || z.undefined();
 
   const execute = async (payload?: z.infer<typeof _payloadSchema>) => {

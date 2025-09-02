@@ -8,13 +8,13 @@ import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { sleep } from '@/lib/sleep';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useAppSetup } from '@/app/use-app-setup';
 import { useConfigContext } from '@/app/config/config.context';
 
 vi.mock('../hybrid-withdraw.params');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
-vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
+vi.mock('@/app/use-app-setup');
 
 const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
@@ -23,7 +23,7 @@ const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
 
 describe('Withdraw ALL shares from Plasma Vault', () => {
   it('should allow user to withdraw ALL shares successfuly', async () => {
-    (useExecuteTransactionSetup as Mock<typeof useExecuteTransactionSetup>).mockReturnValue({
+    (useAppSetup as Mock<typeof useAppSetup>).mockReturnValue({
       publicClient: {
         waitForTransactionReceipt: vi.fn().mockResolvedValue({ status: 'success' }),
       } as any,
@@ -31,6 +31,8 @@ describe('Withdraw ALL shares from Plasma Vault', () => {
       isWrongWalletChain: false,
       isSafeWallet: false,
       walletClient: vi.fn() as any,
+      switchChain: vi.fn(),
+      queryClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
       chainId: CHAIN.id,
@@ -42,9 +44,7 @@ describe('Withdraw ALL shares from Plasma Vault', () => {
       assetAddress: ASSET_ADDRESS,
       balanceToWithdraw: 3000_000000n,
       isWrongWalletChain: false,
-      accountAddress: '0x123',
-      switchChain: vi.fn(),
-      onConfirm: vi.fn(),
+      accountAddress: ACCOUNT_ADDRESS,
       isWithdrawRequestPending: false,
       withdrawManagerAddress: undefined,
       withdrawWindowInSeconds: undefined,

@@ -17,9 +17,9 @@ export const useWalletSwitchChain = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wallet-chain-id'] });
+      queryClient.invalidateQueries();
     },
   });
 
-  return switchChain;
+  return () => switchChain();
 };

@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useConfigContext } from '@/app/config/config.context';
 import { binarySearchWithdrawalSimulation } from '@/fusion/withdraw/lib/binary-search-withdrawal-simulation';
 import { erc20Abi, erc4626Abi } from 'viem';
-import { useAccount, useReadContract } from 'wagmi';
+import { useReadContract } from 'wagmi';
 import { useAppPublicClient } from '@/app/wallet/hooks/use-app-public-client';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 
 const MAX_SIMULATION_COUNT = 6;
 
@@ -17,7 +18,7 @@ export const useMaxInstantWithdrawAmount = () => {
     chainId,
   } = useConfigContext();
   const publicClient = useAppPublicClient();
-  const { address: accountAddress } = useAccount();
+  const accountAddress = useWalletAccountAddress();
 
   const { data: accountBalanceShares } = useReadContract({
     chainId,

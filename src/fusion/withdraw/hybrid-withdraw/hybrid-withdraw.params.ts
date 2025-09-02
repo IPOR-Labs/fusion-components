@@ -9,19 +9,13 @@ import { useWithdrawManagerFee } from '../hooks/use-withdraw-manager-fee';
 import { useMaxInstantWithdrawAmount } from '../hooks/use-max-instant-withdraw-amount';
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
-import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
 import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
 import { useIsFunctionPaused } from '@/fusion/prehooks/hooks/use-is-function-paused';
 import { useConvertToShares } from '@/fusion/withdraw/hooks/use-convert-to-shares';
 
-interface Args {
-  onConfirm?: () => void;
-}
-
-export const useParams = ({ onConfirm }: Args) => {
+export const useParams = () => {
   const isWrongWalletChain = useIsWrongWalletChain();
   const accountAddress = useWalletAccountAddress();
-  const switchChain = useWalletSwitchChain();
 
   const assetDecimals = useFusionVaultAssetDecimals();
   const assetSymbol = useFusionVaultAssetSymbol();
@@ -53,25 +47,28 @@ export const useParams = ({ onConfirm }: Args) => {
   });
 
   return {
+    // vault
     assetAddress,
     assetDecimals,
     assetSymbol,
-    balanceToWithdraw,
-    isWrongWalletChain,
-    switchChain,
-    accountAddress,
-    onConfirm,
     withdrawManagerAddress,
     withdrawWindowInSeconds,
-    isWithdrawRequestPending,
     withdrawFee,
     requestFee,
-    maxInstantWithdrawAmount,
-    sharesBalance,
     convertToShares,
     isRedeemPaused,
     isRequestSharesPaused,
     isWithdrawPaused,
+    
+    // account
+    balanceToWithdraw,
+    accountAddress,
+    isWithdrawRequestPending,
+    maxInstantWithdrawAmount,
+    sharesBalance,
+
+    // wallet
+    isWrongWalletChain,
   };
 };
 

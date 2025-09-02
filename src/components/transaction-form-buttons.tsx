@@ -8,11 +8,11 @@ import { ApprovalSteps } from '@/components/approval-steps';
 import { ApprovalText } from '@/components/approval-text';
 import { TokenIcon } from '@/components/token-icon';
 import { Alert, AlertTitle } from '@/components/ui/alert';
+import { useAppSetup } from '@/app/use-app-setup';
 
 type Props = {
   chainId: ChainId;
   selectWallet: (() => void) | undefined;
-  switchChain: () => void;
   isSubmitDisabled: boolean;
   isWalletConnected: boolean;
   transactionSubmitButtonText: string;
@@ -38,7 +38,6 @@ export const TransactionFormButtons = (props: Props) => {
         <Alert>
           <AlertTitle className="flex items-center gap-2">
             <TokenIcon
-              chainId={props.chainId}
               address={props.approvalProps?.assetAddress}
               className='h-4 w-4'
             />
@@ -70,7 +69,6 @@ export const TransactionFormButtons = (props: Props) => {
 const Buttons = ({
   selectWallet,
   chainId,
-  switchChain,
   isWrongWalletChain,
   isWalletConnected,
   transactionSubmitButtonText,
@@ -78,6 +76,8 @@ const Buttons = ({
   isLoading,
   approvalProps,
 }: Props) => {
+  const { switchChain } = useAppSetup();
+
   const chain = extractChain({
     chains: chains,
     id: chainId,

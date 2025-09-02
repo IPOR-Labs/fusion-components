@@ -1,48 +1,30 @@
 import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
-import { type Address, type Hash } from 'viem';
-import { type ChainId } from '@/app/config/wagmi';
+import { type Hash } from 'viem';
 import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
 import { useConfigContext } from '@/app/config/config.context';
 import { mainnet } from 'viem/chains';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
+import { useAppSetup } from '@/app/use-app-setup';
 
 const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
-
-// Reconfigurable mocks
-const useIsWrongWalletChainMock = vi
-  .fn<(chainId: ChainId) => boolean>()
-  .mockReturnValue(false);
-
-// Module mocks
-vi.mock('wagmi', () => {
-  const waitForTransactionReceipt = vi
-    .fn()
-    .mockResolvedValue({ status: 'success' });
-  return {
-    usePublicClient: vi.fn(() => ({ waitForTransactionReceipt })),
-  } as any;
-});
-
-vi.mock('@/app/wallet/hooks/use-app-wallet-client', () => ({
-  useAppWalletClient: () => ({} as any),
-}));
-
-vi.mock('@/app/wallet/hooks/use-is-safe-wallet', () => ({
-  useIsSafeWallet: () => false,
-}));
-
-vi.mock('@/app/wallet/hooks', () => ({
-  useIsWrongWalletChain: (chainId: ChainId) => useIsWrongWalletChainMock(chainId),
-}));
-
-vi.mock('@/app/wallet/hooks/use-wallet-account-address', () => ({
-  useWalletAccountAddress: () =>
-    '0x1111111111111111111111111111111111111111' as Address,
-}));
+const ACCOUNT_ADDRESS = ANVIL_TEST_ACCOUNT[1].address;
 
 vi.mock('@/app/config/config.context');
+vi.mock('@/app/use-app-setup');
+
+const defaultExecuteTransactionSetup = {
+  publicClient: {
+    waitForTransactionReceipt: vi.fn().mockResolvedValue({ status: 'success' }),
+  } as any,
+  accountAddress: ACCOUNT_ADDRESS,
+  isWrongWalletChain: false,
+  isSafeWallet: false,
+  walletClient: vi.fn() as any,
+  switchChain: vi.fn(),
+  queryClient: vi.fn() as any,
+}
 
 describe('useExecuteTransaction', () => {
   const onInit = vi.fn();
@@ -52,11 +34,12 @@ describe('useExecuteTransaction', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    useIsWrongWalletChainMock.mockReturnValue(false);
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
       chainId: CHAIN.id,
       fusionVaultAddress: PLASMA_VAULT_ADDRESS,
     });
+    (useAppSetup as Mock<typeof useAppSetup>)
+      .mockReturnValue(defaultExecuteTransactionSetup);
   });
 
   afterEach(() => {
@@ -87,7 +70,11 @@ describe('useExecuteTransaction', () => {
   });
 
   it('throws and reports when wallet is on wrong chain', async () => {
-    useIsWrongWalletChainMock.mockReturnValue(true);
+    (useAppSetup as Mock<typeof useAppSetup>)
+      .mockReturnValue({
+        ...defaultExecuteTransactionSetup,
+        isWrongWalletChain: true,
+      });
 
     const writeAsync = vi.fn(async () => '__TEST_HASH__' as Hash);
     const { result } = renderHook(() =>

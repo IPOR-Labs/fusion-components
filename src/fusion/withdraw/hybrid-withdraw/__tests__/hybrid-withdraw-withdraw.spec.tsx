@@ -8,14 +8,14 @@ import { mainnet } from 'viem/chains';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { useConfigContext } from '@/app/config/config.context';
 import { sleep } from '@/lib/sleep';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useAppSetup } from '@/app/use-app-setup';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 
 vi.mock('../hybrid-withdraw.params');
 vi.mock('@/lib/get-now');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
-vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
+vi.mock('@/app/use-app-setup');
 
 const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
@@ -24,7 +24,7 @@ const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
 
 describe('Withdraw asset from Plasma Vault', () => {
   it('should allow user to withdraw assets successfuly', async () => {
-    (useExecuteTransactionSetup as Mock<typeof useExecuteTransactionSetup>).mockReturnValue({
+    (useAppSetup as Mock<typeof useAppSetup>).mockReturnValue({
       publicClient: {
         waitForTransactionReceipt: vi.fn().mockResolvedValue({ status: 'success' }),
       } as any,
@@ -32,6 +32,8 @@ describe('Withdraw asset from Plasma Vault', () => {
       isWrongWalletChain: false,
       isSafeWallet: false,
       walletClient: vi.fn() as any,
+      switchChain: vi.fn(),
+      queryClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
       chainId: CHAIN.id,
@@ -44,8 +46,6 @@ describe('Withdraw asset from Plasma Vault', () => {
       balanceToWithdraw: 3000_000000n,
       isWrongWalletChain: false,
       accountAddress: ACCOUNT_ADDRESS,
-      switchChain: vi.fn(),
-      onConfirm: vi.fn(),
       isWithdrawRequestPending: false,
       withdrawManagerAddress: undefined,
       withdrawWindowInSeconds: undefined,

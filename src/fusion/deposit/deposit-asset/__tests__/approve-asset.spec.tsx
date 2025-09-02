@@ -3,7 +3,7 @@ import { describe, expect, it, type Mock, vi } from 'vitest';
 import { render, screen, act, fireEvent } from '@testing-library/react';
 import { DepositAsset } from '../deposit-asset';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useAppSetup } from '@/app/use-app-setup';
 import { mainnet } from 'viem/chains';
 import { sleep } from '@/lib/sleep';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
@@ -13,7 +13,7 @@ import { useConfigContext } from '@/app/config/config.context';
 vi.mock('../deposit-asset.params');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
-vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
+vi.mock('@/app/use-app-setup');
 
 const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
@@ -22,7 +22,7 @@ const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
 
 describe('User has to reapprove Plasma Vault when setting custom allowance < total', () => {
   it('should not let user click deposit', async () => {
-    (useExecuteTransactionSetup as Mock<typeof useExecuteTransactionSetup>).mockReturnValue({
+    (useAppSetup as Mock<typeof useAppSetup>).mockReturnValue({
       publicClient: {
         waitForTransactionReceipt: vi.fn().mockResolvedValue({
           status: 'success',
@@ -33,6 +33,8 @@ describe('User has to reapprove Plasma Vault when setting custom allowance < tot
       isWrongWalletChain: false,
       isSafeWallet: false,
       walletClient: vi.fn() as any,
+      switchChain: vi.fn(),
+      queryClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
       chainId: CHAIN.id,
@@ -49,7 +51,6 @@ describe('User has to reapprove Plasma Vault when setting custom allowance < tot
       accountAddress: ACCOUNT_ADDRESS,
       allowance: 0n,
       assetBalance: 1000_000000n,
-      switchChain: vi.fn(),
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,
       isScheduledWithdrawal: false,

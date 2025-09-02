@@ -11,7 +11,6 @@ export const HybridWithdrawFooter = () => {
     params: {
       accountAddress,
       isWrongWalletChain,
-      switchChain,
     },
     txState,
   } = useHybridWithdrawContext();
@@ -32,7 +31,6 @@ export const HybridWithdrawFooter = () => {
       isLoading={isPending}
       chainId={chainId}
       selectWallet={connect}
-      switchChain={switchChain}
     />
   );
 };

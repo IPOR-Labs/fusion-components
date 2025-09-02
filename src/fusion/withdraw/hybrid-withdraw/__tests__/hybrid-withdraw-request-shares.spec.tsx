@@ -9,14 +9,14 @@ import { mainnet } from 'viem/chains';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { useConfigContext } from '@/app/config/config.context';
 import { sleep } from '@/lib/sleep';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useAppSetup } from '@/app/use-app-setup';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
 
 vi.mock('../hybrid-withdraw.params');
 vi.mock('@/lib/get-now');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
-vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
+vi.mock('@/app/use-app-setup');
 
 const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
@@ -31,7 +31,7 @@ const FOUR_DAYS_IN_SECONDS = ONE_DAY_IN_SECONDS * 4n;
 describe('Request withdrawal from Plasma Vault', () => {
   it('should allow user to request withdrawal successfuly', async () => {
     (getNow as Mock).mockReturnValue(NOW_DATE);
-    (useExecuteTransactionSetup as Mock<typeof useExecuteTransactionSetup>).mockReturnValue({
+    (useAppSetup as Mock<typeof useAppSetup>).mockReturnValue({
       publicClient: {
         waitForTransactionReceipt: vi.fn().mockResolvedValue({ status: 'success' }),
       } as any,
@@ -39,6 +39,8 @@ describe('Request withdrawal from Plasma Vault', () => {
       isWrongWalletChain: false,
       isSafeWallet: false,
       walletClient: vi.fn() as any,
+      switchChain: vi.fn(),
+      queryClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
       chainId: CHAIN.id,
@@ -53,8 +55,6 @@ describe('Request withdrawal from Plasma Vault', () => {
       accountAddress: ACCOUNT_ADDRESS,
       withdrawWindowInSeconds: FOUR_DAYS_IN_SECONDS,
       withdrawManagerAddress: WITHDRAW_MANAGER_ADDRESS,
-      switchChain: vi.fn(),
-      onConfirm: vi.fn(),
       isWithdrawRequestPending: false,
       withdrawFee: parseEther('0.0033'),
       requestFee: parseEther('0.00828'),

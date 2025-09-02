@@ -13,12 +13,10 @@ import { useIsScheduledWithdrawal } from '@/fusion/withdraw/hooks/use-is-schedul
 import { useIsVaultPublic } from '@/fusion/plasma-vault/hooks/use-is-vault-public';
 import { useFusionVaultMaxDeposit } from '@/fusion/plasma-vault/hooks/use-fusion-vault-max-deposit';
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
-import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
 import { useIsFunctionPaused } from '@/fusion/prehooks/hooks/use-is-function-paused';
 
 export const useParams = () => {
   const accountAddress = useWalletAccountAddress();
-  const switchChain = useWalletSwitchChain();
 
   const isWrongWalletChain = useIsWrongWalletChain();
 
@@ -44,22 +42,26 @@ export const useParams = () => {
   const isDepositPaused = useIsFunctionPaused({ writeFunctionName: 'deposit' });
 
   return {
+    // vault
     vaultName,
     vaultSymbol,
     assetAddress,
     assetSymbol,
     assetDecimals,
     assetBalance,
-    isWhitelisted: isVaultPublic || isAccountWhitelisted,
-    isWrongWalletChain,
-    switchChain,
-    accountAddress,
-    allowance,
-    setAllowanceFromEvent,
     withdrawWindowInSeconds,
     isScheduledWithdrawal,
     maxDeposit,
     isDepositPaused,
+
+    // account
+    isWhitelisted: isVaultPublic || isAccountWhitelisted,
+    accountAddress,
+    allowance,
+    setAllowanceFromEvent,
+
+    // wallet
+    isWrongWalletChain,
   };
 };
 

@@ -11,14 +11,14 @@ import { mainnet } from 'viem/chains';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
 import { sleep } from '@/lib/sleep';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useAppSetup } from '@/app/use-app-setup';
 import { useConfigContext } from '@/app/config/config.context';
 import { USDT_ADDRESS_MAINNET } from '@/lib/constants';
 
 vi.mock('../deposit-asset.params');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
-vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
+vi.mock('@/app/use-app-setup');
 
 const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
@@ -27,7 +27,7 @@ const ASSET_ADDRESS = USDT_ADDRESS_MAINNET;
 
 describe('User has to revoke Approval before Plasma Vault approve for USDT', () => {
   it('should show revoke approve modal', async () => {
-    (useExecuteTransactionSetup as Mock<typeof useExecuteTransactionSetup>).mockReturnValue({
+    (useAppSetup as Mock<typeof useAppSetup>).mockReturnValue({
       publicClient: {
         waitForTransactionReceipt: vi.fn().mockResolvedValue({ 
           status: 'success',
@@ -38,6 +38,8 @@ describe('User has to revoke Approval before Plasma Vault approve for USDT', () 
       isWrongWalletChain: false,
       isSafeWallet: false,
       walletClient: vi.fn() as any,
+      switchChain: vi.fn(),
+      queryClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
       chainId: CHAIN.id,
@@ -54,7 +56,6 @@ describe('User has to revoke Approval before Plasma Vault approve for USDT', () 
       assetSymbol: 'USDT',
       allowance: 1000_000000n,
       assetBalance: 2000_000000n,
-      switchChain: vi.fn(),
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,
       isScheduledWithdrawal: false,

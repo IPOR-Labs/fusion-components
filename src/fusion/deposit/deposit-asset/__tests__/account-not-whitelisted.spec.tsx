@@ -4,12 +4,12 @@ import { render, screen, act, fireEvent } from '@testing-library/react';
 import { DepositAsset } from '../deposit-asset';
 import { mainnet } from 'viem/chains';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
-import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useAppSetup } from '@/app/use-app-setup';
 import { useConfigContext } from '@/app/config/config.context';
 
 vi.mock('../deposit-asset.params');
 vi.mock('@/app/config/config.context');
-vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
+vi.mock('@/app/use-app-setup');
 
 const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
@@ -18,7 +18,7 @@ const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
 
 describe('Account is not whitelisted to deposit to Plasma Vault', () => {
   it('should NOT allow user to perfom any transaction', async () => {
-    (useExecuteTransactionSetup as Mock<typeof useExecuteTransactionSetup>).mockReturnValue({
+    (useAppSetup as Mock<typeof useAppSetup>).mockReturnValue({
       publicClient: {
         waitForTransactionReceipt: vi.fn().mockResolvedValue({ status: 'success' }),
       } as any,
@@ -26,6 +26,8 @@ describe('Account is not whitelisted to deposit to Plasma Vault', () => {
       isWrongWalletChain: false,
       isSafeWallet: false,
       walletClient: vi.fn() as any,
+      switchChain: vi.fn(),
+      queryClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
       chainId: CHAIN.id,
@@ -42,7 +44,6 @@ describe('Account is not whitelisted to deposit to Plasma Vault', () => {
       allowance: 0n,
       assetBalance: 2000_000000n,
       isWhitelisted: false,
-      switchChain: vi.fn(),
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,
       isScheduledWithdrawal: false,

@@ -1,16 +1,18 @@
-import { useAccount, useReadContract } from 'wagmi';
+import { useConfigContext } from '@/app/config/config.context';
+import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
+import { useReadContract } from 'wagmi';
 
 export const useIsSafeWallet = () => {
-  const { address, chainId } = useAccount();
+  const { chainId } = useConfigContext();
+  const accountAddress = useWalletAccountAddress();
 
   const { data: owners, error } = useReadContract({
-    // @ts-expect-error
     chainId,
-    address,
+    address: accountAddress,
     abi: safeAbiFragment,
     functionName: 'getOwners',
     query: {
-      enabled: address !== undefined && chainId !== undefined,
+      enabled: accountAddress !== undefined,
     },
   });
 

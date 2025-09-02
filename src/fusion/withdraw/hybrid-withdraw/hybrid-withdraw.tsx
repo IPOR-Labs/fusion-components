@@ -6,7 +6,7 @@ import { useHybridWithdrawForm } from './hybrid-withdraw.form';
 import { HybridWithdrawForm } from './components/hybrid-withdraw-form';
 
 export const HybridWithdraw = () => {
-  const params = useParams({});
+  const params = useParams();
   const txState = useTransactionState();
   const actions = useActions({ params, txState });
   const form = useHybridWithdrawForm();
