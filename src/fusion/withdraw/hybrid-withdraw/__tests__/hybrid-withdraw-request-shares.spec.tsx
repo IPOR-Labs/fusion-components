@@ -51,8 +51,6 @@ describe('Request withdrawal from Plasma Vault', () => {
       assetSymbol: 'USDC',
       assetAddress: ASSET_ADDRESS,
       balanceToWithdraw: 3000_000000n,
-      isWrongWalletChain: false,
-      accountAddress: ACCOUNT_ADDRESS,
       withdrawWindowInSeconds: FOUR_DAYS_IN_SECONDS,
       withdrawManagerAddress: WITHDRAW_MANAGER_ADDRESS,
       isWithdrawRequestPending: false,

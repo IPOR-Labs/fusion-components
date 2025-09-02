@@ -39,8 +39,6 @@ describe('Account is not whitelisted to deposit to Plasma Vault', () => {
       vaultName: 'IPOR Fusion Plasma Vault USDC',
       vaultSymbol: 'ipfUSDC',
       assetDecimals: 6,
-      isWrongWalletChain: false,
-      accountAddress: ACCOUNT_ADDRESS,
       allowance: 0n,
       assetBalance: 2000_000000n,
       isWhitelisted: false,

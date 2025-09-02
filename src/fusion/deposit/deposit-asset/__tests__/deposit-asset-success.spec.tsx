@@ -44,8 +44,6 @@ describe('Deposit asset to Plasma Vault', () => {
       assetDecimals: 6,
       assetBalance: 2000_000000n,
       isWhitelisted: true,
-      isWrongWalletChain: false,
-      accountAddress: ACCOUNT_ADDRESS,
       allowance: 2000_000000n,
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,

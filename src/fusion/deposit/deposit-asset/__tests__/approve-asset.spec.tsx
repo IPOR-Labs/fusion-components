@@ -47,8 +47,6 @@ describe('User has to reapprove Plasma Vault when setting custom allowance < tot
       vaultSymbol: 'ipfUSDC',
       assetDecimals: 6,
       isWhitelisted: true,
-      isWrongWalletChain: false,
-      accountAddress: ACCOUNT_ADDRESS,
       allowance: 0n,
       assetBalance: 1000_000000n,
       setAllowanceFromEvent: vi.fn(),

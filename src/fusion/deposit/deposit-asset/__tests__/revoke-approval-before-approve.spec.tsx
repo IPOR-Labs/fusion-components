@@ -50,8 +50,6 @@ describe('User has to revoke Approval before Plasma Vault approve for USDT', () 
       vaultSymbol: 'ipfUSDT',
       assetDecimals: 6,
       isWhitelisted: true,
-      isWrongWalletChain: false,
-      accountAddress: ACCOUNT_ADDRESS,
       assetAddress: ASSET_ADDRESS,
       assetSymbol: 'USDT',
       allowance: 1000_000000n,
