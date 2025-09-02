@@ -1,0 +1,70 @@
+import { type Abi } from 'viem';
+
+export const universalReaderPrehooksInfoAbi = [
+  {
+    type: 'function',
+    name: 'getPreHooksInfo',
+    inputs: [
+      {
+        name: 'plasmaVault_',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [
+      {
+        name: 'preHooksInfo',
+        type: 'tuple[]',
+        internalType: 'struct PreHookInfo[]',
+        components: [
+          {
+            name: 'selector',
+            type: 'bytes4',
+            internalType: 'bytes4',
+          },
+          {
+            name: 'implementation',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'substrates',
+            type: 'bytes32[]',
+            internalType: 'bytes32[]',
+          },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'getPreHooksInfo',
+    inputs: [],
+    outputs: [
+      {
+        name: 'preHooksInfo',
+        type: 'tuple[]',
+        internalType: 'struct PreHookInfo[]',
+        components: [
+          {
+            name: 'selector',
+            type: 'bytes4',
+            internalType: 'bytes4',
+          },
+          {
+            name: 'implementation',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'substrates',
+            type: 'bytes32[]',
+            internalType: 'bytes32[]',
+          },
+        ],
+      },
+    ],
+    stateMutability: 'view',
+  },
+] as const satisfies Abi;

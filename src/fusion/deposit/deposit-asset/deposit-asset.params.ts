@@ -15,6 +15,7 @@ import { useFusionVaultMaxDeposit } from '@/fusion/plasma-vault/hooks/use-fusion
 import { useConfigContext } from "@/app/config/config.context";
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
+import { useIsFunctionPaused } from '@/fusion/prehooks/hooks/use-is-function-paused';
 
 interface Args {
   onConfirm?: () => void;
@@ -51,6 +52,8 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
 
   const { data: maxDeposit } = useFusionVaultMaxDeposit();
 
+  const isDepositPaused = useIsFunctionPaused({ writeFunctionName: 'deposit' });
+
   return {
     chainId,
     fusionVaultAddress,
@@ -72,6 +75,7 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
     withdrawWindowInSeconds,
     isScheduledWithdrawal,
     maxDeposit,
+    isDepositPaused,
   };
 };
 

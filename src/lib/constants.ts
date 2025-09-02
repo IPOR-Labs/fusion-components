@@ -17,3 +17,5 @@ export const ERC20_TOKENS_TO_REVOKE_BEFORE_APPROVE = [
     address: USDT_ADDRESS_MAINNET,
   },
 ] as const;
+
+export const DISCORD_LINK = 'https://discord.com/invite/bSKzq6UMJ3';
