@@ -1,27 +1,26 @@
 import { RevokeCashLink } from '@/components/revoke-cash-link';
 import { FullNumber } from '@/components/full-number';
-import { formatNumber } from '@/lib/format-number';
 import { LoaderIcon } from 'lucide-react';
-import { type Address, parseUnits } from 'viem';
+import { parseUnits } from 'viem';
+import { useAppSetup } from '@/app/use-app-setup';
+import { formatSignificant } from '@/lib/format-significant';
 
 const MAX_ALLOWANCE_BEFORE_UNLIMITED = '1000000000000000';
 
-interface ApprovalTextProps {
+interface Props {
   state: 'pending' | 'approved';
   decimals: number;
   allowance: bigint;
-  accountAddress: Address | undefined;
-  visibleDecimals?: number;
 }
 
-export const ApprovalText = (props: ApprovalTextProps) => {
+export const ApprovalText = ({
+  state,
+  decimals,
+  allowance,
+}: Props) => {
   const {
-    state,
-    decimals,
-    allowance,
-    visibleDecimals = 2,
-    accountAddress,
-  } = props;
+    accountAddress
+  } = useAppSetup();
 
   const allowanceBeforeUnlimitedParsed = parseUnits(
     MAX_ALLOWANCE_BEFORE_UNLIMITED,
@@ -30,7 +29,7 @@ export const ApprovalText = (props: ApprovalTextProps) => {
   const isUnlimited = allowance > allowanceBeforeUnlimitedParsed;
   const isZero = allowance <= 0n;
 
-  const formattedAllowance = formatNumber(allowance, decimals, visibleDecimals);
+  const formattedAllowance = formatSignificant(allowance, decimals);
 
   return (
     <div className="flex flex-col items-center mb-2">

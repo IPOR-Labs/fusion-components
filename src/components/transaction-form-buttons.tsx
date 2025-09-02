@@ -2,29 +2,24 @@ import { extractChain, type Address } from 'viem';
 import { Button } from '@/components/ui/button';
 import { Loader2Icon } from 'lucide-react';
 import { getSwitchChainButtonLabel } from '@/app/wallet/utils/get-switch-chain-button-label';
-import { chains, type ChainId } from '@/app/config/wagmi';
+import { chains } from '@/app/config/wagmi';
 import { cn } from '@/lib/utils';
 import { ApprovalSteps } from '@/components/approval-steps';
 import { ApprovalText } from '@/components/approval-text';
 import { TokenIcon } from '@/components/token-icon';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { useAppSetup } from '@/app/use-app-setup';
+import { useConfigContext } from '@/app/config/config.context';
 
 type Props = {
-  chainId: ChainId;
-  selectWallet: (() => void) | undefined;
   isSubmitDisabled: boolean;
-  isWalletConnected: boolean;
   transactionSubmitButtonText: string;
-  isWrongWalletChain: boolean;
   isLoading: boolean;
   approvalProps?: {
-    accountAddress: Address | undefined;
     decimals: number | undefined;
     isApproving: boolean;
     needsApproval: boolean;
     allowance: bigint | undefined;
-    visibleDecimals: number | undefined;
     needsRevokeBeforeApproval: boolean;
     assetAddress: Address;
     assetSymbol: string;
@@ -32,6 +27,13 @@ type Props = {
 };
 
 export const TransactionFormButtons = (props: Props) => {
+  const {
+    accountAddress,
+    isWrongWalletChain,
+  } = useAppSetup();
+
+  const isWalletConnected = accountAddress !== undefined;
+
   return (
     <div className="space-y-4 ">
       {props.approvalProps?.needsApproval && props.approvalProps?.needsRevokeBeforeApproval && (
@@ -52,8 +54,8 @@ export const TransactionFormButtons = (props: Props) => {
           <ApprovalSteps
             needsApproval={
               props.approvalProps?.needsApproval ||
-              props.isWrongWalletChain ||
-              !props.isWalletConnected
+              isWrongWalletChain ||
+              !isWalletConnected
             }
             isApproving={props.approvalProps?.isApproving || false}
           />
@@ -67,16 +69,22 @@ export const TransactionFormButtons = (props: Props) => {
 };
 
 const Buttons = ({
-  selectWallet,
-  chainId,
-  isWrongWalletChain,
-  isWalletConnected,
   transactionSubmitButtonText,
   isSubmitDisabled,
   isLoading,
   approvalProps,
 }: Props) => {
-  const { switchChain } = useAppSetup();
+  const {
+    switchChain,
+    accountAddress,
+    isWrongWalletChain,
+  } = useAppSetup();
+  const { 
+    chainId,
+    connect,
+  } = useConfigContext();
+
+  const isWalletConnected = accountAddress !== undefined;
 
   const chain = extractChain({
     chains: chains,
@@ -92,7 +100,7 @@ const Buttons = ({
   if (!isWalletConnected) {
     return (
       <>
-        <Button type="button" onClick={selectWallet} variant="brandPrimary" size="lgRounded">
+        <Button type="button" onClick={connect} variant="brandPrimary" size="lgRounded">
           Connect wallet
         </Button>
         {placeholderSubmitButton}
@@ -112,8 +120,7 @@ const Buttons = ({
   }
 
   if (approvalProps?.isApproving) {
-    const { allowance, decimals, visibleDecimals, accountAddress } =
-      approvalProps;
+    const { allowance, decimals } = approvalProps;
 
     return (
       <>
@@ -122,8 +129,6 @@ const Buttons = ({
             state="pending"
             allowance={allowance}
             decimals={decimals}
-            visibleDecimals={visibleDecimals}
-            accountAddress={accountAddress}
           />
         )}
         {placeholderSubmitButton}
@@ -166,8 +171,6 @@ const Buttons = ({
           state="approved"
           allowance={approvalProps.allowance || 0n}
           decimals={approvalProps.decimals || 0}
-          visibleDecimals={approvalProps.visibleDecimals || 0}
-          accountAddress={approvalProps.accountAddress}
         />
       ) : (
         <div className="flex flex-col items-center mb-2">

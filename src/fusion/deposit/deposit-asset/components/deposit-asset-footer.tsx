@@ -3,18 +3,11 @@ import { useDepositAssetContext } from '../deposit-asset.context';
 import { calcNeedsApproval } from '@/app/allowance/utils/calc-needs-approval';
 import { useIsSubmitDisabled, useNeedsRevokeBeforeApproval } from '../deposit-asset.hooks';
 import { TransactionFormButtons } from '@/components/transaction-form-buttons';
-import { useConfigContext } from '@/app/config/config.context';
 
 export const DepositAssetFooter = () => {
-  const { 
-    chainId,
-    connect,
-  } = useConfigContext();
   const {
     params: {
-      accountAddress,
       allowance,
-      isWrongWalletChain,
       assetDecimals,
       isWhitelisted,
       assetAddress,
@@ -51,17 +44,11 @@ export const DepositAssetFooter = () => {
         </p>
       )}
       <TransactionFormButtons
-        isWalletConnected={Boolean(accountAddress)}
         isSubmitDisabled={isSubmitDisabled}
         transactionSubmitButtonText="Deposit"
-        isWrongWalletChain={isWrongWalletChain}
-        chainId={chainId}
-        selectWallet={connect}
         isLoading={isPending}
         approvalProps={{
-          accountAddress: accountAddress,
           decimals: assetDecimals,
-          visibleDecimals: assetDecimals,
           allowance,
           needsApproval,
           isApproving,

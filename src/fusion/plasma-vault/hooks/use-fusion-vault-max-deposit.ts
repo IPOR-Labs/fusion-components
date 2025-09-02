@@ -8,7 +8,7 @@ export const useFusionVaultMaxDeposit = () => {
   const { chainId, fusionVaultAddress } = useConfigContext();
   const accountAddress = useWalletAccountAddress();
 
-  return useReadContract({
+  const { data } = useReadContract({
     address: fusionVaultAddress,
     abi: erc4626Abi,
     functionName: 'maxDeposit',
@@ -19,4 +19,6 @@ export const useFusionVaultMaxDeposit = () => {
       placeholderData: keepPreviousData,
     },
   });
+
+  return data;
 };
