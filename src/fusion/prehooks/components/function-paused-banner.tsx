@@ -19,7 +19,7 @@ export const FunctionPausedBanner = () => {
           href={DISCORD_LINK}
           title="Join discord"
         >
-          <Button asChild variant="secondary">
+          <Button asChild variant="brandPrimary">
             <span>
               <DiscordCircleSvg />
               Discord

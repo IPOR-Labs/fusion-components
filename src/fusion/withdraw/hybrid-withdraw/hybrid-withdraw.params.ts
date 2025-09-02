@@ -14,6 +14,7 @@ import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain
 import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
 import { usePublicClient } from 'wagmi';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
+import { useIsFunctionPaused } from '@/fusion/prehooks/hooks/use-is-function-paused';
 
 interface Args {
   onConfirm?: () => void;
@@ -58,6 +59,18 @@ export const useParams = ({ onConfirm }: Args) => {
     return shares;
   };
 
+  const isRedeemPaused = useIsFunctionPaused({
+    writeFunctionName: 'redeem',
+  });
+
+  const isRequestSharesPaused = useIsFunctionPaused({
+    writeFunctionName: 'requestShares',
+  });
+
+  const isWithdrawPaused = useIsFunctionPaused({
+    writeFunctionName: 'withdraw',
+  });
+
   return {
     chainId,
     fusionVaultAddress,
@@ -78,6 +91,9 @@ export const useParams = ({ onConfirm }: Args) => {
     maxInstantWithdrawAmount,
     sharesBalance,
     convertToShares,
+    isRedeemPaused,
+    isRequestSharesPaused,
+    isWithdrawPaused,
   };
 };
 
