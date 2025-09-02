@@ -15,7 +15,7 @@ export const DepositAssetBody = () => {
   } = useDepositAssetContext();
 
   return (
-    <div>
+    <div className="space-y-8">
       <WithdrawNote
         isScheduledWithdrawal={isScheduledWithdrawal}
         withdrawWindowInSeconds={withdrawWindowInSeconds}

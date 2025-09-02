@@ -84,7 +84,7 @@ const Buttons = ({
   });
 
   const placeholderSubmitButton = (
-    <Button type="button" disabled variant="secondary">
+    <Button type="button" disabled variant="brandSecondary" size="lgRounded">
       {transactionSubmitButtonText}
     </Button>
   );
@@ -92,7 +92,7 @@ const Buttons = ({
   if (!isWalletConnected) {
     return (
       <>
-        <Button type="button" onClick={selectWallet}>
+        <Button type="button" onClick={selectWallet} variant="brandPrimary" size="lgRounded">
           Connect wallet
         </Button>
         {placeholderSubmitButton}
@@ -103,7 +103,7 @@ const Buttons = ({
   if (isWrongWalletChain) {
     return (
       <>
-        <Button type="button" onClick={switchChain}>
+        <Button type="button" onClick={switchChain} variant="brandPrimary" size="lgRounded">
           {getSwitchChainButtonLabel(chainId)}
         </Button>
         {placeholderSubmitButton}
@@ -139,10 +139,10 @@ const Buttons = ({
     if (approvalProps?.needsRevokeBeforeApproval) {
       return (
         <>
-          <Button type="submit" disabled={isSubmitDisabled}>
+          <Button type="submit" disabled={isSubmitDisabled} variant="brandPrimary" size="lgRounded">
             Revoke Approval
           </Button>
-          <Button type="button" disabled variant="secondary">
+          <Button type="button" disabled variant="brandSecondary" size="lgRounded">
             Approve
           </Button>
         </>
@@ -151,7 +151,7 @@ const Buttons = ({
 
     return (
       <>
-        <Button type="submit" disabled={isSubmitDisabled}>
+        <Button type="submit" disabled={isSubmitDisabled} variant="brandPrimary" size="lgRounded">
           {hasApproval ? 'Update Approval' : 'Approve'}
         </Button>
         {placeholderSubmitButton}
@@ -171,8 +171,8 @@ const Buttons = ({
         />
       ) : (
         <div className="flex flex-col items-center mb-2">
-          <div className="text-white font-medium text-lg">Wallet connected</div>
-          <div className="text-white/50 text-xs">
+          <div className="text-primary font-medium text-lg">Wallet connected</div>
+          <div className="text-muted-foreground text-xs">
             Chain: {chain.name}
           </div>
         </div>
@@ -180,6 +180,8 @@ const Buttons = ({
       <Button
         type="submit"
         disabled={isSubmitDisabled || isLoading}
+        variant="brandPrimary" 
+        size="lgRounded"
         className={cn({
           'col-start-2': !approvalProps,
           'gap-2': isLoading,
