@@ -12,29 +12,18 @@ import { useWithdrawWindowInSeconds } from '@/fusion/withdraw/hooks/use-withdraw
 import { useIsScheduledWithdrawal } from '@/fusion/withdraw/hooks/use-is-scheduled-withdrawal';
 import { useIsVaultPublic } from '@/fusion/plasma-vault/hooks/use-is-vault-public';
 import { useFusionVaultMaxDeposit } from '@/fusion/plasma-vault/hooks/use-fusion-vault-max-deposit';
-import { useConfigContext } from "@/app/config/config.context";
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
 import { useIsFunctionPaused } from '@/fusion/prehooks/hooks/use-is-function-paused';
 
-interface Args {
-  onConfirm?: () => void;
-  onDepositSuccess?: () => void;
-}
-
-export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
-  const {
-    connect,
-    chainId,
-    fusionVaultAddress,
-  } = useConfigContext();
+export const useParams = () => {
   const accountAddress = useWalletAccountAddress();
   const switchChain = useWalletSwitchChain();
 
-  const isWrongWalletChain = useIsWrongWalletChain(chainId);
+  const isWrongWalletChain = useIsWrongWalletChain();
 
   const assetAddress = useFusionVaultAssetAddress();
-  const { data: vaultName } = useFusionVaultName();
+  const vaultName = useFusionVaultName();
   const vaultSymbol = useFusionVaultSymbol();
   const assetSymbol = useFusionVaultAssetSymbol();
   const assetDecimals = useFusionVaultAssetDecimals();
@@ -55,8 +44,6 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
   const isDepositPaused = useIsFunctionPaused({ writeFunctionName: 'deposit' });
 
   return {
-    chainId,
-    fusionVaultAddress,
     vaultName,
     vaultSymbol,
     assetAddress,
@@ -67,9 +54,6 @@ export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
     isWrongWalletChain,
     switchChain,
     accountAddress,
-    connect,
-    onConfirm,
-    onDepositSuccess,
     allowance,
     setAllowanceFromEvent,
     withdrawWindowInSeconds,

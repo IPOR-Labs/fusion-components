@@ -5,11 +5,13 @@ import { DepositAsset } from '../deposit-asset';
 import { mainnet } from 'viem/chains';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
 import { useExecuteTransactionSetup } from '@/app/transactions/hooks/use-execute-transaction-setup';
+import { useConfigContext } from '@/app/config/config.context';
 
 vi.mock('../deposit-asset.params');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
 
+const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
 const ACCOUNT_ADDRESS = ANVIL_TEST_ACCOUNT[1].address;
 const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
@@ -25,10 +27,12 @@ describe('Account is not whitelisted to deposit to Plasma Vault', () => {
       isSafeWallet: false,
       walletClient: vi.fn() as any,
     });
-    (useParams as Mock<typeof useParams>).mockReturnValue({
-      chainId: mainnet.id,
-      assetSymbol: 'USDC',
+    (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
+      chainId: CHAIN.id,
       fusionVaultAddress: PLASMA_VAULT_ADDRESS,
+    });
+    (useParams as Mock<typeof useParams>).mockReturnValue({
+      assetSymbol: 'USDC',
       assetAddress: ASSET_ADDRESS,
       vaultName: 'IPOR Fusion Plasma Vault USDC',
       vaultSymbol: 'ipfUSDC',
@@ -38,9 +42,6 @@ describe('Account is not whitelisted to deposit to Plasma Vault', () => {
       allowance: 0n,
       assetBalance: 2000_000000n,
       isWhitelisted: false,
-      connect: vi.fn(),
-      onConfirm: vi.fn(),
-      onDepositSuccess: vi.fn(),
       switchChain: vi.fn(),
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,
@@ -48,6 +49,7 @@ describe('Account is not whitelisted to deposit to Plasma Vault', () => {
       maxDeposit: 2000_000000n,
       isDepositPaused: false,
     });
+    
     render(<DepositAsset />);
 
     const depositAmountInput = screen.getByRole('textbox');

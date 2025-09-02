@@ -2,19 +2,19 @@ import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-tran
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { type ChainId } from '@/app/config/wagmi';
 import { z } from 'zod';
 import { addressSchema } from '@/lib/schema';
+import { useConfigContext } from '@/app/config/config.context';
 
 interface Args {
-  chainId: ChainId;
   transactionStateHandlers: TransactionStateHandlers;
 }
 
 export const usePlasmaVaultDeposit = ({
-  chainId,
   transactionStateHandlers,
 }: Args) => {
+  const { chainId } = useConfigContext();
+
   return useExecuteTransaction({
     chainId,
     writeAsync: async ({ accountAddress, ...config }, payload) => {

@@ -15,6 +15,7 @@ vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
 vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
 
+const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
 const ACCOUNT_ADDRESS = ANVIL_TEST_ACCOUNT[1].address;
 const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
@@ -34,13 +35,11 @@ describe('User has to reapprove Plasma Vault when setting custom allowance < tot
       walletClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
-      chainId: mainnet.id,
+      chainId: CHAIN.id,
       fusionVaultAddress: PLASMA_VAULT_ADDRESS,
     });
     (useParams as Mock<typeof useParams>).mockReturnValue({
-      chainId: mainnet.id,
       assetSymbol: 'USDC',
-      fusionVaultAddress: PLASMA_VAULT_ADDRESS,
       assetAddress: ASSET_ADDRESS,
       vaultName: 'IPOR Fusion Plasma Vault USDC',
       vaultSymbol: 'ipfUSDC',
@@ -50,9 +49,6 @@ describe('User has to reapprove Plasma Vault when setting custom allowance < tot
       accountAddress: ACCOUNT_ADDRESS,
       allowance: 0n,
       assetBalance: 1000_000000n,
-      connect: vi.fn(),
-      onConfirm: vi.fn(),
-      onDepositSuccess: vi.fn(),
       switchChain: vi.fn(),
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,

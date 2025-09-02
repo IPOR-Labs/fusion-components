@@ -3,17 +3,20 @@ import { useDepositAssetContext } from '../deposit-asset.context';
 import { calcNeedsApproval } from '@/app/allowance/utils/calc-needs-approval';
 import { useIsSubmitDisabled, useNeedsRevokeBeforeApproval } from '../deposit-asset.hooks';
 import { TransactionFormButtons } from '@/components/transaction-form-buttons';
+import { useConfigContext } from '@/app/config/config.context';
 
 export const DepositAssetFooter = () => {
+  const { 
+    chainId,
+    connect,
+  } = useConfigContext();
   const {
     params: {
       accountAddress,
       allowance,
-      chainId,
       isWrongWalletChain,
       assetDecimals,
       isWhitelisted,
-      connect,
       switchChain,
       assetAddress,
       assetSymbol,

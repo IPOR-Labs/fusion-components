@@ -7,7 +7,7 @@ import { useTransactionState } from '@/app/transactions/hooks/use-transaction-st
 import { erc20Abi, parseEventLogs } from 'viem';
 
 export const DepositAsset = () => {
-  const params = useParams({});
+  const params = useParams();
   const approveTxState = useTransactionState({
     onSuccess: ({ receipt }) => {
       const logs = parseEventLogs({
@@ -24,7 +24,6 @@ export const DepositAsset = () => {
   },);
   const depositTxState = useTransactionState();
   const actions = useActions({ 
-    params,
     approveTxState,
     depositTxState,
   });

@@ -3,18 +3,18 @@ import { type TransactionStateHandlers } from '@/app/transactions/transactions.t
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { z } from 'zod';
 import { addressSchema } from '@/lib/schema';
-import { type ChainId } from '@/app/config/wagmi';
 import { getErc20Abi } from '@/abi/get-erc20-abi';
+import { useConfigContext } from '@/app/config/config.context';
 
 interface Args {
-  chainId: ChainId;
   transactionStateHandlers: TransactionStateHandlers;
 }
 
 export const useApprove = ({
   transactionStateHandlers,
-  chainId,
 }: Args) => {
+  const { chainId } = useConfigContext();
+  
   return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { spender, amount, assetAddress } = payloadSchema.parse(payload);

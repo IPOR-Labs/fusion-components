@@ -8,7 +8,7 @@ export const useFusionVaultName = () => {
     fusionVaultAddress,
   } = useConfigContext();
 
-  return useReadContract({
+  const { data } = useReadContract({
     address: fusionVaultAddress,
     abi: plasmaVaultAbi,
     functionName: 'name',
@@ -17,4 +17,6 @@ export const useFusionVaultName = () => {
       staleTime: Infinity,
     },
   });
+
+  return data;
 };

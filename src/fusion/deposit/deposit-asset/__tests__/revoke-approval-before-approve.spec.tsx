@@ -20,6 +20,7 @@ vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
 vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
 
+const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
 const ACCOUNT_ADDRESS = ANVIL_TEST_ACCOUNT[1].address;
 const ASSET_ADDRESS = USDT_ADDRESS_MAINNET;
@@ -39,26 +40,21 @@ describe('User has to revoke Approval before Plasma Vault approve for USDT', () 
       walletClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
-      chainId: mainnet.id,
+      chainId: CHAIN.id,
       fusionVaultAddress: PLASMA_VAULT_ADDRESS,
     });
     (useDepositParams as Mock<typeof useDepositParams>).mockReturnValue({
-      fusionVaultAddress: PLASMA_VAULT_ADDRESS,
       vaultName: 'IPOR Fusion Plasma Vault USDT',
       vaultSymbol: 'ipfUSDT',
       assetDecimals: 6,
       isWhitelisted: true,
       isWrongWalletChain: false,
       accountAddress: ACCOUNT_ADDRESS,
-      chainId: mainnet.id,
       assetAddress: ASSET_ADDRESS,
       assetSymbol: 'USDT',
       allowance: 1000_000000n,
       assetBalance: 2000_000000n,
       switchChain: vi.fn(),
-      connect: vi.fn(),
-      onConfirm: vi.fn(),
-      onDepositSuccess: vi.fn(),
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,
       isScheduledWithdrawal: false,

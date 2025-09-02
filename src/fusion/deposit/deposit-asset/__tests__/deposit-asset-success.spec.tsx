@@ -15,6 +15,7 @@ vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
 vi.mock('@/app/transactions/hooks/use-execute-transaction-setup');
 
+const CHAIN = mainnet;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
 const ACCOUNT_ADDRESS = ANVIL_TEST_ACCOUNT[1].address;
 const ASSET_ADDRESS = ANVIL_TEST_ACCOUNT[2].address;
@@ -31,12 +32,10 @@ describe('Deposit asset to Plasma Vault', () => {
       walletClient: vi.fn() as any,
     });
     (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
-      chainId: mainnet.id,
+      chainId: CHAIN.id,
       fusionVaultAddress: PLASMA_VAULT_ADDRESS,
     });
     (useParams as Mock<typeof useParams>).mockReturnValue({
-      chainId: mainnet.id,
-      fusionVaultAddress: PLASMA_VAULT_ADDRESS,
       vaultName: 'IPOR Fusion Plasma Vault USDC',
       assetSymbol: 'USDC',
       assetAddress: ASSET_ADDRESS,
@@ -46,9 +45,6 @@ describe('Deposit asset to Plasma Vault', () => {
       isWrongWalletChain: false,
       switchChain: vi.fn(),
       accountAddress: ACCOUNT_ADDRESS,
-      connect: vi.fn(),
-      onConfirm: vi.fn(),
-      onDepositSuccess: vi.fn(),
       allowance: 2000_000000n,
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,

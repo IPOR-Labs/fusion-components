@@ -1,16 +1,17 @@
+import { useConfigContext } from '@/app/config/config.context';
 import { useDepositAssetContext } from '../deposit-asset.context';
 import { AmountInput } from '@/components/amount-input';
 import { formatSignificant } from '@/lib/format-significant';
 import { parseUnits } from 'viem';
 
 export const DepositAssetAmountInput = () => {
+  const { chainId } = useConfigContext();
   const {
     params: {
       assetBalance,
       assetDecimals,
       assetSymbol,
       assetAddress,
-      chainId,
       maxDeposit,
     },
   } = useDepositAssetContext();
