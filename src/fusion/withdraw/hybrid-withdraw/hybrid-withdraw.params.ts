@@ -7,26 +7,19 @@ import { useIsAccountScheduledWithdraw } from '../hooks/use-is-account-scheduled
 import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
 import { useWithdrawManagerFee } from '../hooks/use-withdraw-manager-fee';
 import { useMaxInstantWithdrawAmount } from '../hooks/use-max-instant-withdraw-amount';
-import { useConfigContext } from "@/app/config/config.context";
 import { useIsWrongWalletChain } from '@/app/wallet/hooks';
 import { useWalletAccountAddress } from '@/app/wallet/hooks/use-wallet-account-address';
 import { useWalletSwitchChain } from '@/app/wallet/hooks/use-wallet-switch-chain';
 import { useAccountSharesInFusionVault } from '@/fusion/plasma-vault/hooks/use-account-shares-in-fusion-vault';
-import { usePublicClient } from 'wagmi';
-import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { useIsFunctionPaused } from '@/fusion/prehooks/hooks/use-is-function-paused';
+import { useConvertToShares } from '@/fusion/withdraw/hooks/use-convert-to-shares';
 
 interface Args {
   onConfirm?: () => void;
 }
 
 export const useParams = ({ onConfirm }: Args) => {
-  const {
-    chainId,
-    fusionVaultAddress,
-    connect,
-  } = useConfigContext();
-  const isWrongWalletChain = useIsWrongWalletChain(chainId);
+  const isWrongWalletChain = useIsWrongWalletChain();
   const accountAddress = useWalletAccountAddress();
   const switchChain = useWalletSwitchChain();
 
@@ -47,33 +40,19 @@ export const useParams = ({ onConfirm }: Args) => {
   const maxInstantWithdrawAmount = useMaxInstantWithdrawAmount();
   const sharesBalance = useAccountSharesInFusionVault();
 
-  const publicClient = usePublicClient({ chainId });
-  const convertToShares = async (assets: bigint) => {
-    const shares = await publicClient.readContract({
-      address: fusionVaultAddress,
-      abi: plasmaVaultAbi,
-      functionName: 'convertToShares',
-      args: [assets],
-    });
-
-    return shares;
-  };
+  const convertToShares = useConvertToShares();
 
   const isRedeemPaused = useIsFunctionPaused({
     writeFunctionName: 'redeem',
   });
-
   const isRequestSharesPaused = useIsFunctionPaused({
     writeFunctionName: 'requestShares',
   });
-
   const isWithdrawPaused = useIsFunctionPaused({
     writeFunctionName: 'withdraw',
   });
 
   return {
-    chainId,
-    fusionVaultAddress,
     assetAddress,
     assetDecimals,
     assetSymbol,
@@ -81,7 +60,6 @@ export const useParams = ({ onConfirm }: Args) => {
     isWrongWalletChain,
     switchChain,
     accountAddress,
-    connect,
     onConfirm,
     withdrawManagerAddress,
     withdrawWindowInSeconds,

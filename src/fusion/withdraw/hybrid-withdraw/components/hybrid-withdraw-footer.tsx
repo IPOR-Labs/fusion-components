@@ -4,18 +4,21 @@ import {
 } from '../hybrid-withdraw.hooks';
 import { useHybridWithdrawContext } from '../hybrid-withdraw.context';
 import { TransactionFormButtons } from '@/components/transaction-form-buttons';
+import { useConfigContext } from '@/app/config/config.context';
 
 export const HybridWithdrawFooter = () => {
   const {
     params: {
       accountAddress,
-      chainId,
       isWrongWalletChain,
-      connect,
       switchChain,
     },
     txState,
   } = useHybridWithdrawContext();
+  const {
+    chainId,
+    connect,
+  } = useConfigContext();
   const isSubmitDisabled = useIsSubmitDisabled();
   const submitButtonLabel = useSubmitButtonLabel();
   const isPending = txState.txStatus.type === 'pending';

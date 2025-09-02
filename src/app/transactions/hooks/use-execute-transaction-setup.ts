@@ -1,19 +1,14 @@
-import type { ChainId } from "@/app/config/wagmi";
 import { useIsWrongWalletChain } from "@/app/wallet/hooks";
 import { useAppWalletClient } from "@/app/wallet/hooks/use-app-wallet-client";
 import { useIsSafeWallet } from "@/app/wallet/hooks/use-is-safe-wallet";
 import { useWalletAccountAddress } from "@/app/wallet/hooks/use-wallet-account-address";
-import { usePublicClient } from "wagmi";
+import { useAppPublicClient } from "@/app/wallet/hooks/use-app-public-client";
 
-interface Args {
-  chainId: ChainId;
-}
-
-export const useExecuteTransactionSetup = ({ chainId }: Args) => {
-  const publicClient = usePublicClient({ chainId });
+export const useExecuteTransactionSetup = () => {
+  const publicClient = useAppPublicClient();
   const walletClient = useAppWalletClient();
   const accountAddress = useWalletAccountAddress();
-  const isWrongWalletChain = useIsWrongWalletChain(chainId);
+  const isWrongWalletChain = useIsWrongWalletChain();
   const isSafeWallet = useIsSafeWallet();
 
   return {

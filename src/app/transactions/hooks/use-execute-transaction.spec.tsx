@@ -1,8 +1,14 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { type Address, type Hash } from 'viem';
 import { type ChainId } from '@/app/config/wagmi';
 import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
+import { useConfigContext } from '@/app/config/config.context';
+import { mainnet } from 'viem/chains';
+import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
+
+const CHAIN = mainnet;
+const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
 
 // Reconfigurable mocks
 const useIsWrongWalletChainMock = vi
@@ -36,6 +42,8 @@ vi.mock('@/app/wallet/hooks/use-wallet-account-address', () => ({
     '0x1111111111111111111111111111111111111111' as Address,
 }));
 
+vi.mock('@/app/config/config.context');
+
 describe('useExecuteTransaction', () => {
   const onInit = vi.fn();
   const onConfirm = vi.fn();
@@ -45,6 +53,10 @@ describe('useExecuteTransaction', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     useIsWrongWalletChainMock.mockReturnValue(false);
+    (useConfigContext as Mock<typeof useConfigContext>).mockReturnValue({
+      chainId: CHAIN.id,
+      fusionVaultAddress: PLASMA_VAULT_ADDRESS,
+    });
   });
 
   afterEach(() => {
@@ -56,7 +68,6 @@ describe('useExecuteTransaction', () => {
 
     const { result } = renderHook(() =>
       useExecuteTransaction({
-        chainId: 1 as ChainId,
         writeAsync,
         transactionStateHandlers: { onInit, onConfirm, onSuccess, onError },
       }),
@@ -81,7 +92,6 @@ describe('useExecuteTransaction', () => {
     const writeAsync = vi.fn(async () => '__TEST_HASH__' as Hash);
     const { result } = renderHook(() =>
       useExecuteTransaction({
-        chainId: 1 as ChainId,
         writeAsync,
         transactionStateHandlers: { onInit, onConfirm, onSuccess, onError },
       }),
@@ -99,7 +109,6 @@ describe('useExecuteTransaction', () => {
   it('is disabled when enabled=false', () => {
     const { result } = renderHook(() =>
       useExecuteTransaction({
-        chainId: 1 as ChainId,
         writeAsync: async () => '__TEST_HASH__' as Hash,
         transactionStateHandlers: {},
         enabled: false,

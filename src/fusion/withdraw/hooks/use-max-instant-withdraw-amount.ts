@@ -2,7 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useConfigContext } from '@/app/config/config.context';
 import { binarySearchWithdrawalSimulation } from '@/fusion/withdraw/lib/binary-search-withdrawal-simulation';
 import { erc20Abi, erc4626Abi } from 'viem';
-import { useAccount, usePublicClient, useReadContract } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
+import { useAppPublicClient } from '@/app/wallet/hooks/use-app-public-client';
 
 const MAX_SIMULATION_COUNT = 6;
 
@@ -15,7 +16,7 @@ export const useMaxInstantWithdrawAmount = () => {
     fusionVaultAddress,
     chainId,
   } = useConfigContext();
-  const publicClient = usePublicClient({ chainId });
+  const publicClient = useAppPublicClient();
   const { address: accountAddress } = useAccount();
 
   const { data: accountBalanceShares } = useReadContract({

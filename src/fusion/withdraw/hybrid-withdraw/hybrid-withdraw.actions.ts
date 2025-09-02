@@ -11,20 +11,15 @@ interface Args {
 
 export const useActions = ({
   txState: { transactionStateHandlers },
-  params: { chainId, fusionVaultAddress, withdrawManagerAddress },
+  params: { withdrawManagerAddress },
 }: Args) => {
   const { execute: executeRedeem } = useRedeem({
-    chainId,
-    fusionVaultAddress,
     transactionStateHandlers,
   });
   const { execute: executeWithdraw } = useWithdraw({
-    chainId,
-    fusionVaultAddress,
     transactionStateHandlers,
   });
   const { execute: executeRequestShares } = useRequestShares({
-    chainId,
     withdrawManagerAddress,
     transactionStateHandlers,
   });

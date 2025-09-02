@@ -4,7 +4,6 @@ import { sendAppTransaction } from '@/app/transactions/utils/send-app-transactio
 import { z } from 'zod';
 import { addressSchema } from '@/lib/schema';
 import { getErc20Abi } from '@/abi/get-erc20-abi';
-import { useConfigContext } from '@/app/config/config.context';
 
 interface Args {
   transactionStateHandlers: TransactionStateHandlers;
@@ -12,9 +11,7 @@ interface Args {
 
 export const useApprove = ({
   transactionStateHandlers,
-}: Args) => {
-  const { chainId } = useConfigContext();
-  
+}: Args) => {  
   return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { spender, amount, assetAddress } = payloadSchema.parse(payload);
@@ -31,7 +28,6 @@ export const useApprove = ({
       });
     },
     transactionStateHandlers,
-    chainId,
     payloadSchema,
   });
 };

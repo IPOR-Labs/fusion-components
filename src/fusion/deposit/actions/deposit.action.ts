@@ -4,7 +4,6 @@ import { sendAppTransaction } from '@/app/transactions/utils/send-app-transactio
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
 import { z } from 'zod';
 import { addressSchema } from '@/lib/schema';
-import { useConfigContext } from '@/app/config/config.context';
 
 interface Args {
   transactionStateHandlers: TransactionStateHandlers;
@@ -13,10 +12,7 @@ interface Args {
 export const usePlasmaVaultDeposit = ({
   transactionStateHandlers,
 }: Args) => {
-  const { chainId } = useConfigContext();
-
   return useExecuteTransaction({
-    chainId,
     writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { fusionVaultAddress, amount, beneficiary } = payloadSchema.parse(payload);
 

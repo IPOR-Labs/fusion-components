@@ -2,21 +2,20 @@ import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-tran
 import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { type ChainId } from '@/app/config/wagmi';
-import { type Address } from 'viem';
 import { z } from 'zod';
+import { useConfigContext } from '@/app/config/config.context';
 
 interface Args {
-  chainId: ChainId;
-  fusionVaultAddress: Address;
   transactionStateHandlers: TransactionStateHandlers;
 }
 
 export const useWithdraw = ({
-  chainId,
-  fusionVaultAddress,
   transactionStateHandlers,
 }: Args) => {
+  const {
+    fusionVaultAddress,
+  } = useConfigContext();
+
   return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { amount } = payloadSchema.parse(payload);
@@ -33,7 +32,6 @@ export const useWithdraw = ({
       });
     },
     transactionStateHandlers,
-    chainId,
     payloadSchema,
   });
 };

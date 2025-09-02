@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { usePublicClient } from 'wagmi';
 import { zeroAddress } from 'viem';
 import { addressSchema } from '@/lib/schema';
 import { isNonZeroAddress } from '@/lib/is-non-zero-address';
 import { substrateToAddress } from '@/lib/substrate-to-address';
 import { useConfigContext } from "@/app/config/config.context";
+import { useAppPublicClient } from '@/app/wallet/hooks/use-app-public-client';
 
 const WITHDRAW_MANAGER_SLOT =
   '0xb37e8684757599da669b8aea811ee2b3693b2582d2c730fab3f4965fa2ec3e11';
@@ -14,10 +14,10 @@ export const useWithdrawManagerAddress = () => {
     chainId,
     fusionVaultAddress,
   } = useConfigContext();
-  const publicClient = usePublicClient({ chainId });
+  const publicClient = useAppPublicClient();
 
   const { data: withdrawManagerAddress } = useQuery({
-    queryKey: ['useWithdrawManagerAddress', chainId, fusionVaultAddress],
+    queryKey: ['withdraw-manager-address', chainId, fusionVaultAddress],
     queryFn: async () => {
       if (publicClient === undefined) {
         throw new Error('publicClient is undefined');

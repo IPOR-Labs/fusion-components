@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { StatusIcon } from '@/components/status-icon';
-import { type ChainId } from '@/app/config/wagmi';
 import { displayBalance } from '@/lib/display-balance';
 import { cn } from '@/lib/utils';
 import { useFormContext } from 'react-hook-form';
@@ -22,7 +21,6 @@ interface Props {
   name: string;
   label: string;
   tokenAddress: Address | undefined;
-  chainId: ChainId;
   balance: bigint;
   decimals: number;
   symbol: string;
@@ -44,7 +42,6 @@ export const AmountInput = ({
   name,
   label,
   tokenAddress,
-  chainId,
   balance,
   decimals,
   symbol,
@@ -144,7 +141,6 @@ export const AmountInput = ({
                 <StatusIcon
                   isError={isError}
                   isLoading={isLoading}
-                  chainId={chainId}
                   tokenAddress={tokenAddress}
                 />
               </div>

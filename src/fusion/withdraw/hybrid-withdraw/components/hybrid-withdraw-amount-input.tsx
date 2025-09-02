@@ -8,14 +8,12 @@ export const HybridWithdrawAmountInput = () => {
       assetDecimals,
       assetSymbol,
       assetAddress,
-      chainId,
     },
     form,
   } = useHybridWithdrawContext();
 
   return (
     <AmountInput
-      chainId={chainId}
       tokenAddress={assetAddress}
       balance={balanceToWithdraw || 0n}
       decimals={assetDecimals || 0}

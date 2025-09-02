@@ -12,7 +12,6 @@ import {
 
 const REQUEST_FEE_MESSAGE = `Fee is charged immediately after scheduling a withdraw. Canceling or updating scheduled withdrawal will result in the loss of fee amount. Shares charged as fee are burned increasing value of remaining shares.`;
 
-
 export const HybridWithdrawFees = () => {
   const isScheduledWithdrawal = useIsScheduledWithdrawal();
 

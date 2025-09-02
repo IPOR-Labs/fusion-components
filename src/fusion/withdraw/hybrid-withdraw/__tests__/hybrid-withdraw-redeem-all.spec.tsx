@@ -37,8 +37,6 @@ describe('Withdraw ALL shares from Plasma Vault', () => {
       fusionVaultAddress: PLASMA_VAULT_ADDRESS,
     });
     (useParams as Mock<typeof useParams>).mockReturnValue({
-      chainId: CHAIN.id,
-      fusionVaultAddress: PLASMA_VAULT_ADDRESS,
       assetDecimals: 6,
       assetSymbol: 'USDC',
       assetAddress: ASSET_ADDRESS,
@@ -46,7 +44,6 @@ describe('Withdraw ALL shares from Plasma Vault', () => {
       isWrongWalletChain: false,
       accountAddress: '0x123',
       switchChain: vi.fn(),
-      connect: vi.fn(),
       onConfirm: vi.fn(),
       isWithdrawRequestPending: false,
       withdrawManagerAddress: undefined,
@@ -56,6 +53,9 @@ describe('Withdraw ALL shares from Plasma Vault', () => {
       maxInstantWithdrawAmount: 10000_000000n,
       sharesBalance: 2333_00000000n,
       convertToShares: () => Promise.resolve(2333_00000000n),
+      isRedeemPaused: false,
+      isRequestSharesPaused: false,
+      isWithdrawPaused: false,
     });
     (sendAppTransaction as Mock).mockResolvedValue('__TX_HASH__');
 
