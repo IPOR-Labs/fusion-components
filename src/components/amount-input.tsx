@@ -156,15 +156,14 @@ export const AmountInput = ({
                     <Button
                       key={option}
                       type="button"
+                      variant={isActive ? undefined : 'secondary'}
+                      size="sm"
                       onClick={() => {
                         onInteract?.();
                         onChange(value);
                         onChangeMax?.(option === '100');
                       }}
-                      className={cn('flex-grow', {
-                        'bg-primary-foreground text-primary-background':
-                          isActive,
-                      })}
+                      className="flex-grow"
                       disabled={isDisabled}
                     >
                       {option}%
