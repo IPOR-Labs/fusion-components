@@ -103,6 +103,7 @@ export const AmountInput = ({
                   onChangeMax?.(true);
                 }}
                 type="button"
+                className="cursor-pointer"
               >
                 <NumberDisplay className="text-xs text-muted-foreground">
                   Available:{' '}
@@ -121,7 +122,7 @@ export const AmountInput = ({
               })}
             >
               <div className="flex items-center">
-                <FormControl className="-mr-8">
+                <FormControl className="-mr-14">
                   <Input
                     placeholder="0"
                     {...field}
@@ -136,6 +137,7 @@ export const AmountInput = ({
                     }}
                     disabled={isDisabled}
                     onFocus={onInteract}
+                    className="text-3xl md:text-3xl h-16 rounded-xl font-medium px-5"
                   />
                 </FormControl>
                 <StatusIcon
@@ -146,13 +148,13 @@ export const AmountInput = ({
               </div>
               <div className="flex items-center justify-between gap-2">
                 {volumeOptions.map(({ option, value }) => {
-                  const isActive = value === field.value;
+                  const isActive = value !== '0' && value === field.value;
 
                   return (
                     <Button
                       key={option}
                       type="button"
-                      variant={isActive ? undefined : 'secondary'}
+                      variant={isActive ? 'default' : 'secondary'}
                       size="sm"
                       onClick={() => {
                         onInteract?.();
