@@ -63,6 +63,7 @@ describe('User has to revoke Approval before Plasma Vault approve for USDT', () 
       withdrawWindowInSeconds: 0n,
       isScheduledWithdrawal: false,
       maxDeposit: 2000_000000n,
+      isDepositPaused: false,
     });
     (sendAppTransaction as Mock).mockResolvedValue('__TX_HASH__');
 

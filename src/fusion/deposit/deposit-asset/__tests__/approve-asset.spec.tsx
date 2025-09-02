@@ -54,13 +54,11 @@ describe('User has to reapprove Plasma Vault when setting custom allowance < tot
       onConfirm: vi.fn(),
       onDepositSuccess: vi.fn(),
       switchChain: vi.fn(),
-      hideRevokingUsdtAllowance: vi.fn(),
-      showRevokingUsdtAllowance: vi.fn(),
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,
       isScheduledWithdrawal: false,
       maxDeposit: 1000_000000n,
-      isRevokingUsdtAllowance: false,
+      isDepositPaused: false,
     });
     (sendAppTransaction as Mock).mockResolvedValue('__TX_HASH__');
 

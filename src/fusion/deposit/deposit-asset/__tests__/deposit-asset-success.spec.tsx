@@ -55,6 +55,7 @@ describe('Deposit asset to Plasma Vault', () => {
       isScheduledWithdrawal: false,
       maxDeposit: 2000_000000n,
       vaultSymbol: 'ipfUSDC',
+      isDepositPaused: false,
     });
     (sendAppTransaction as Mock).mockResolvedValue('__TX_HASH__');
 

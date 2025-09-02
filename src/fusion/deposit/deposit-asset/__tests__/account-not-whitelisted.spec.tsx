@@ -42,13 +42,11 @@ describe('Account is not whitelisted to deposit to Plasma Vault', () => {
       onConfirm: vi.fn(),
       onDepositSuccess: vi.fn(),
       switchChain: vi.fn(),
-      hideRevokingUsdtAllowance: vi.fn(),
-      showRevokingUsdtAllowance: vi.fn(),
       setAllowanceFromEvent: vi.fn(),
       withdrawWindowInSeconds: 0n,
       isScheduledWithdrawal: false,
       maxDeposit: 2000_000000n,
-      isRevokingUsdtAllowance: false,
+      isDepositPaused: false,
     });
     render(<DepositAsset />);
 
