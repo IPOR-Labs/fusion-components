@@ -1,11 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { erc20Abi } from 'viem'
-import { useReadContract } from 'wagmi';
+import {
+  Card,
+  CardContent,
+} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DepositAsset } from '@/fusion/deposit/deposit-asset/deposit-asset';
 import { HybridWithdraw } from '@/fusion/withdraw/hybrid-withdraw/hybrid-withdraw';
-import { useConfigContext, type ConfigContextValue } from '@/app/config/config.context';
+import { type ConfigContextValue } from '@/app/config/config.context';
 import { Providers } from '@/app/config/providers';
+import { ArrowDownToLineIcon, ArrowUpFromLineIcon } from 'lucide-react';
 
 export const FusionDepositWidget = (config: ConfigContextValue) => {
   return (
@@ -16,27 +18,19 @@ export const FusionDepositWidget = (config: ConfigContextValue) => {
 }
 
 const Content = () => {
-  const {
-    chainId,
-    fusionVaultAddress,
-  } = useConfigContext();
-  const { data: name } = useReadContract({
-    chainId,
-    address: fusionVaultAddress,
-    abi: erc20Abi,
-    functionName: 'name',
-  });
-
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{name}</CardTitle>
-      </CardHeader>
       <CardContent>
         <Tabs defaultValue="deposit">
-          <TabsList>
-            <TabsTrigger value="deposit">Deposit</TabsTrigger>
-            <TabsTrigger value="withdraw">Withdraw</TabsTrigger>
+          <TabsList className="w-full mb-6">
+            <TabsTrigger value="deposit">
+              <ArrowDownToLineIcon />
+              Deposit
+            </TabsTrigger>
+            <TabsTrigger value="withdraw">
+              <ArrowUpFromLineIcon />
+              Withdraw
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="deposit">
             <DepositAsset />

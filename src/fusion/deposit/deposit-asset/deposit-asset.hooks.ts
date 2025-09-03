@@ -5,6 +5,7 @@ import { calcNeedsApproval } from '@/app/allowance/utils/calc-needs-approval';
 import { getNeedsRevokeApproval } from '@/app/allowance/utils/get-needs-revoke-approval';
 import { ERC20_TOKENS_TO_REVOKE_BEFORE_APPROVE } from '@/lib/constants';
 import { useConfigContext } from '@/app/config/config.context';
+import { useAppSetup } from '@/app/use-app-setup';
 
 export const useNeedsRevokeBeforeApproval = () => {
   const { chainId } = useConfigContext();
@@ -33,10 +34,11 @@ export const useNeedsRevokeBeforeApproval = () => {
 export const useSubmit = () => {
   const { fusionVaultAddress } = useConfigContext();
   const {
-    params: { allowance, assetAddress, assetDecimals, accountAddress },
+    params: { allowance, assetAddress, assetDecimals },
     actions: { executeApprove, executeDeposit },
     form,
   } = useDepositAssetContext();
+  const { accountAddress } = useAppSetup();
 
   const needsRevokeBeforeApproval = useNeedsRevokeBeforeApproval();
 
