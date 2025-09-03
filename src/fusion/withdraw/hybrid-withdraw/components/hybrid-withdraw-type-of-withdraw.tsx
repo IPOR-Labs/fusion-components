@@ -45,7 +45,7 @@ const InstantWithdraw = () => {
 
   return (
     <TooltipProvider delayDuration={100} skipDelayDuration={100}>
-      <Alert className="bg-[var(--brand-1)]/10 border-[var(--brand-1)]">
+      <Alert className="bg-primary/10 border-primary">
         <ZapIcon className="h-4 w-4 !text-yellow-500" />
         <AlertTitle className="flex gap-x-1 text-sm">
           <span>Withdrawal type: Instant</span>

@@ -1,10 +1,5 @@
 :root {
-  --brand-1: oklch(0.623 0.214 259.815);
-  --brand-2: oklch(0.97 0.014 254.604);
-  --success-green: oklch(0.3412 0.211 149.22);
-
   --radius: 0.65rem;
-  
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);

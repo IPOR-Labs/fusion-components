@@ -29,7 +29,7 @@ export const ExternalLink = (props: Props) => {
       target="_blank"
       {...(!trusted && { rel: 'noopener noreferrer' })}
       className={cn(className, {
-        'text-[var(--brand-1)] hover:underline': !disableDefaultStyles,
+        'text-primary hover:underline': !disableDefaultStyles,
       })}
       data-testid={testId}
     >

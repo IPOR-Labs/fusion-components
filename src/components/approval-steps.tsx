@@ -24,7 +24,7 @@ export const ApprovalSteps = (props: ApprovalStepsProps) => {
 };
 
 const Line = () => {
-  return <div className="h-0.5 bg-[var(--brand-1)]/40 flex-1" />;
+  return <div className="h-0.5 bg-primary/40 flex-1" />;
 };
 
 const Circle = (props: {
@@ -35,10 +35,10 @@ const Circle = (props: {
   return (
     <div
       className={cn(
-        'flex items-center justify-center w-6 h-6 rounded-full text-[var(--brand-1)] font-semi-bold border border-[var(--brand-1)] text-xs',
+        'flex items-center justify-center w-6 h-6 rounded-full text-primary font-semi-bold border border-primary text-xs',
         {
           'border-none': props.approved,
-          'text-[var(--muted-foreground)] bg-[var(--brand-1)]/20 border-none': props.disabled,
+          'text-muted-foreground bg-primary/20 border-none': props.disabled,
         },
       )}
     >
