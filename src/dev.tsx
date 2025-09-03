@@ -3,15 +3,12 @@ import { createRoot } from 'react-dom/client';
 import { FusionDepositWidget } from '@/widgets/fusion-deposit/fusion-deposit.widget';
 import Onboard, { type EIP1193Provider } from '@web3-onboard/core'
 import injectedModule from '@web3-onboard/injected-wallets';
-import '@/themes/theme-fusion.css';
-// import '@/themes/theme-ocean.css';
-// import '@/themes/theme-default.css';
-// import '@/themes/theme-dark.css';
 import '@/index.css';
 import { toHex } from 'viem';
 import { arbitrum, base, mainnet } from 'viem/chains';
 import { PlasmaVaultPicker, type PlasmaVaultValue } from '@/fusion/vaults/components/plasma-vault-picker';
 import { PLASMA_VAULTS_LIST } from '@/lib/plasma-vaults-list';
+import { ThemePicker } from '@/components/theme-picker';
 
 const DEFAULT_PLASMA_VAULT: PlasmaVaultValue = PLASMA_VAULTS_LIST.at(0)!;
 
@@ -44,6 +41,7 @@ const onboard = Onboard({
 const AppWrapper = () => {
   const [provider, setProvider] = useState<EIP1193Provider | undefined>(undefined);
   const [plasmaVault, setPlasmaVault] = useState<PlasmaVaultValue>(DEFAULT_PLASMA_VAULT);
+  const [theme, setTheme] = useState<string>(localStorage.getItem('THEME') || 'theme-default');
 
   const handleSetPlasmaVault = (plasmaVault: PlasmaVaultValue) => {
     setPlasmaVault(plasmaVault);
@@ -57,12 +55,36 @@ const AppWrapper = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const id = 'app-theme-stylesheet';
+    const existing = document.getElementById(id) as HTMLLinkElement | null;
+    const href = `/src/themes/${theme}.css`;
+    if (existing) {
+      existing.href = href;
+    } else {
+      const link = document.createElement('link');
+      link.id = id;
+      link.rel = 'stylesheet';
+      link.href = href;
+      document.head.appendChild(link);
+    }
+  }, [theme]);
+
   return (
     <div className="space-y-10">
-      <PlasmaVaultPicker
-        value={plasmaVault}
-        setPlasmaVault={handleSetPlasmaVault}
-      />
+      <div className="space-y-4 grid grid-cols-2 gap-4">
+        <PlasmaVaultPicker
+          value={plasmaVault}
+          setPlasmaVault={handleSetPlasmaVault}
+        />
+        <ThemePicker
+          value={theme}
+          onChange={(value) => {
+            setTheme(value);
+            localStorage.setItem('THEME', value);
+          }}
+        />
+      </div>
       {plasmaVault && (
         <FusionDepositWidget
           fusionVaultAddress={plasmaVault.vaultAddress}
