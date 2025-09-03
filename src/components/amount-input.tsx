@@ -7,12 +7,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { NumberInput } from '@/components/number-input';
 import { StatusIcon } from '@/components/status-icon';
 import { displayBalance } from '@/lib/display-balance';
 import { cn } from '@/lib/utils';
 import { useFormContext } from 'react-hook-form';
-import { normalizeNumberInput } from '@/lib/normalize-number-input';
 import { type Address, formatUnits, parseUnits } from 'viem';
 
 const PERCENTAGE_VOLUME_OPTIONS = ['25', '50', '75', '100'] as const;
@@ -123,21 +122,16 @@ export const AmountInput = ({
             >
               <div className="flex items-center">
                 <FormControl className="-mr-14">
-                  <Input
+                  <NumberInput
                     placeholder="0"
                     {...field}
-                    onChange={({ target }) => {
-                      const textValue = target.value;
-                      const newValue = normalizeNumberInput(textValue);
-
-                      if (newValue !== null) {
-                        onChange(newValue);
-                        onChangeMax?.(false);
-                      }
+                    onChange={(textValue) => {
+                      onChange(textValue);
+                      onChangeMax?.(false);
                     }}
                     disabled={isDisabled}
                     onFocus={onInteract}
-                    className="text-3xl md:text-3xl h-16 rounded-xl font-medium px-5"
+                    className="font-mono text-3xl md:text-3xl h-16 rounded-xl font-medium px-5"
                   />
                 </FormControl>
                 <StatusIcon
