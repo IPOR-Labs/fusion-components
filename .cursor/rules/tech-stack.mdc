@@ -9,7 +9,7 @@ alwaysApply: true
 ### Frontend & UI
 - **React 19**
 - **CSS Modules**
-- **Shadcn/ui** - High-quality React components, Tailwind CSS is dropped in favor of CSS modules. DO NOT USE TAILWIND CSS!
+- **Shadcn/ui** - High-quality React components
 
 ### Web3 & Blockchain
 - **viem** - TypeScript interface for Ethereum.

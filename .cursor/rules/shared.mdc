@@ -59,10 +59,9 @@ alwaysApply: true
 
 ## Styling and shadcn components library
 
-- This project utilizes shadcn components but Tailwind is dropped in favor of CSS modules
+- This project utilizes shadcn components
 - Before you implement or install any new component, look for a shadcn component to be used first.
-- Use CSS variables from `/src/index.css`
-- After installing any new shadcn component, convert its Tailwind CSS classNames into CSS Modules
+- Use shadcn CSS variables like are set up in themes, for example `/src/themes/theme-default.css`
 
 ## Icons
 

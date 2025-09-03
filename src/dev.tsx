@@ -9,6 +9,7 @@ import { arbitrum, base, mainnet } from 'viem/chains';
 import { PlasmaVaultPicker, type PlasmaVaultValue } from '@/fusion/vaults/components/plasma-vault-picker';
 import { PLASMA_VAULTS_LIST } from '@/lib/plasma-vaults-list';
 import { ThemePicker } from '@/components/theme-picker';
+import { ThemeVariantPicker, type ThemeVariant } from '@/components/theme-variant-picker';
 
 const DEFAULT_PLASMA_VAULT: PlasmaVaultValue = PLASMA_VAULTS_LIST.at(0)!;
 
@@ -41,7 +42,8 @@ const onboard = Onboard({
 const AppWrapper = () => {
   const [provider, setProvider] = useState<EIP1193Provider | undefined>(undefined);
   const [plasmaVault, setPlasmaVault] = useState<PlasmaVaultValue>(DEFAULT_PLASMA_VAULT);
-  const [theme, setTheme] = useState<string>(localStorage.getItem('THEME') || 'theme-default');
+  const [theme, setTheme] = useState<string>(localStorage.getItem('THEME') || 'theme-fusion');
+  const [themeMode, setThemeMode] = useState<ThemeVariant>((localStorage.getItem('THEME_VARIANT') as ThemeVariant) || 'dark');
 
   const handleSetPlasmaVault = (plasmaVault: PlasmaVaultValue) => {
     setPlasmaVault(plasmaVault);
@@ -70,18 +72,38 @@ const AppWrapper = () => {
     }
   }, [theme]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (themeMode === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [themeMode]);
+
   return (
     <div className="space-y-10">
-      <div className="space-y-4 grid grid-cols-2 gap-4">
-        <PlasmaVaultPicker
-          value={plasmaVault}
-          setPlasmaVault={handleSetPlasmaVault}
-        />
-        <ThemePicker
-          value={theme}
-          onChange={(value) => {
-            setTheme(value);
-            localStorage.setItem('THEME', value);
+      <div className="space-y-4 grid grid-cols-3 gap-4">
+        <div className="col-span-3">
+          <PlasmaVaultPicker
+            value={plasmaVault}
+            setPlasmaVault={handleSetPlasmaVault}
+          />
+        </div>
+        <div className="col-span-2">
+          <ThemePicker
+            value={theme}
+            onChange={(value) => {
+              setTheme(value);
+              localStorage.setItem('THEME', value);
+            }}
+          />
+        </div>
+        <ThemeVariantPicker
+          value={themeMode}
+          onChange={(mode) => {
+            setThemeMode(mode);
+            localStorage.setItem('THEME_VARIANT', mode);
           }}
         />
       </div>

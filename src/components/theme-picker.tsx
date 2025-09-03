@@ -14,16 +14,16 @@ interface Props {
 }
 
 const THEMES = [
-  { id: "theme-blue", label: "Blue" },
-  { id: "theme-bubblegum", label: "Bubblegum" },
-  { id: "theme-caffeine", label: "Caffeine" },
-  { id: "theme-default", label: "Default" },
   { id: "theme-fusion", label: "Fusion" },
+  { id: "theme-default", label: "Default" },
+  { id: "theme-blue", label: "Blue" },
   { id: "theme-green", label: "Green" },
-  { id: "theme-neo-brutalism", label: "Neo Brutalism" },
   { id: "theme-orange", label: "Orange" },
-  { id: "theme-retro-arcade", label: "Retro Arcade" },
   { id: "theme-twitter", label: "Twitter" },
+  { id: "theme-caffeine", label: "Caffeine" },
+  { id: "theme-retro-arcade", label: "Retro Arcade" },
+  { id: "theme-bubblegum", label: "Bubblegum" },
+  { id: "theme-neo-brutalism", label: "Neo Brutalism" },
 ];
 
 export const ThemePicker = ({ value, onChange }: Props) => {

@@ -54,7 +54,7 @@ export const PlasmaVaultPicker = ({
 
             return (
               <SelectItem key={value} value={value} className="flex gap-1 justify-between">
-                <div className="w-56 truncate text-left">
+                <div className="w-72 truncate text-left">
                   {name}
                 </div>
                 <div className="text-xs text-muted-foreground">

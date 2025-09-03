@@ -11,7 +11,7 @@ When introducing changes to the project, always follow the directory structure b
 - `/src` - Source code
 - `/src/abi` - ABIs (Application Binary Interface) of smart contracts used in the codebase in TypeScript format
 - `/src/components` - Shared components
-- `/src/components/ui` - Shared components from shadcn/ui adjusted to not use Tailwind CSS
+- `/src/components/ui` - Shared components from shadcn/ui
 - `/src/app` - App module containing all general purpose features
 - `/src/fusion` - Fusion module containing features related to IPOR Fusion protocol
 - `/src/lib` - Services and helpers 
