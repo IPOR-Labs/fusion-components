@@ -33,7 +33,7 @@ export const ApprovalText = ({
 
   return (
     <div className="flex flex-col items-center mb-2">
-      <div data-testid="approval-text" className="text-white font-medium">
+      <div data-testid="approval-text" className="font-medium">
         {state === 'pending' && (
           <div className="flex gap-3">
             <LoaderIcon className="h-4 w-4 animate-spin" />
