@@ -1,33 +1,27 @@
-import { usePlasmaVaultApprove } from '@/fusion/deposit/actions/approve';
-import { usePlasmaVaultDeposit } from '@/fusion/deposit/actions/deposit';
-import { type Params } from '@/fusion/deposit/deposit-asset/deposit-asset.params';
-import { type ContextState } from '@/fusion/deposit/deposit-asset/deposit-asset.state';
+import type { TransactionState } from '@/app/transactions/hooks/use-transaction-state';
+import { useApprove } from '@/app/allowance/actions/approve.action';
+import { usePlasmaVaultDeposit } from '@/fusion/deposit/actions/deposit.action';
 
 interface Args {
-  params: Params;
-  state: ContextState;
+  approveTxState: TransactionState;
+  depositTxState: TransactionState;
 }
 
-export const useActions = ({ state, params }: Args) => {
-  const { chainId, plasmaVaultAddress, setAllowanceFromEvent } = params;
-  const { approveStateHandlers, depositStateHandlers } = state;
-
-  const { execute: approve } = usePlasmaVaultApprove({
-    chainId,
-    plasmaVaultAddress,
-    transactionStateHandlers: approveStateHandlers,
-    onUpateAllowance: setAllowanceFromEvent,
+export const useActions = ({
+  approveTxState,
+  depositTxState
+}: Args) => {
+  const { execute: executeApprove } = useApprove({
+    transactionStateHandlers: approveTxState.transactionStateHandlers,
   });
 
-  const { execute: deposit } = usePlasmaVaultDeposit({
-    chainId,
-    plasmaVaultAddress,
-    transactionStateHandlers: depositStateHandlers,
+  const { execute: executeDeposit } = usePlasmaVaultDeposit({
+    transactionStateHandlers: depositTxState.transactionStateHandlers,
   });
 
   return {
-    approve,
-    deposit,
+    executeApprove,
+    executeDeposit,
   };
 };
 

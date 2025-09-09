@@ -1,80 +1,54 @@
-import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
-import { useWallet } from '@/wallet/context';
-import { useIsWrongWalletChain } from '@/wallet/hooks';
 import { useState } from 'react';
-import { useIsTxPending } from '@/transactions/hooks';
-import { usePlasmaVaultAssetAddress } from '@/fusion/plasma-vault/hooks/usePlasmaVaultAssetAddress';
-import { usePlasmaVaultAllowanceToToken } from '@/fusion/plasma-vault/hooks/usePlasmaVaultAllowanceToToken';
-import { usePlasmaVaultName } from '@/fusion/plasma-vault/hooks/usePlasmaVaultName';
-import { usePlasmaVaultSymbol } from '@/fusion/plasma-vault/hooks/usePlasmaVaultSymbol';
-import { usePlasmaVaultAssetSymbol } from '@/fusion/plasma-vault/hooks/usePlasmaVaultAssetSymbol';
-import { usePlasmaVaultAssetDecimals } from '@/fusion/plasma-vault/hooks/usePlasmaVaultAssetDecimals';
-import { useAccountBalanceOfPlasmaVaultAsset } from '@/fusion/plasma-vault/hooks/useAccountBalanceOfPlasmaVaultAsset';
-import { useIsAccountWhitelisted } from '@/fusion/access-manager/hooks/useIsAccountWhitelisted';
+import { useFusionVaultAssetAddress } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address';
+import { useFusionVaultAllowanceToToken } from '@/fusion/plasma-vault/hooks/use-fusion-vault-allowance-to-token';
+import { useFusionVaultName } from '@/fusion/plasma-vault/hooks/use-fusion-vault-name';
+import { useFusionVaultSymbol } from '@/fusion/plasma-vault/hooks/use-fusion-vault-symbol';
+import { useFusionVaultAssetSymbol } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-symbol';
+import { useFusionVaultAssetDecimals } from '@/fusion/plasma-vault/hooks/use-fusion-vault-asset-decimals';
+import { useAccountBalanceOfFusionVaultAsset } from '@/fusion/plasma-vault/hooks/use-account-balance-of-fusion-vault-asset';
+import { useIsAccountWhitelisted } from '@/fusion/access-manager/hooks/use-is-account-whitelisted';
 import { useWithdrawWindowInSeconds } from '@/fusion/withdraw/hooks/use-withdraw-window-in-seconds';
 import { useIsScheduledWithdrawal } from '@/fusion/withdraw/hooks/use-is-scheduled-withdrawal';
-import { useIsVaultPublic } from '@/fusion/plasma-vault/hooks/useIsVaultPublic';
-import { usePlasmaVaultMaxDeposit } from '@/fusion/plasma-vault/hooks/usePlasmaVaultMaxDeposit';
+import { useIsVaultPublic } from '@/fusion/plasma-vault/hooks/use-is-vault-public';
+import { useFusionVaultMaxDeposit } from '@/fusion/plasma-vault/hooks/use-fusion-vault-max-deposit';
+import { useIsFunctionPaused } from '@/fusion/prehooks/hooks/use-is-function-paused';
 
-interface Args {
-  onConfirm?: () => void;
-  onDepositSuccess?: () => void;
-}
-
-export const useParams = ({ onConfirm, onDepositSuccess }: Args) => {
-  const {
-    params: { plasmaVaultAddress, chainId },
-  } = usePlasmaVault();
-  const { selectWallet, accountAddress, changeChain } = useWallet();
-  const isWrongWalletChain = useIsWrongWalletChain(chainId);
-
-  const assetAddress = usePlasmaVaultAssetAddress({ plasmaVaultAddress });
-  const vaultName = usePlasmaVaultName({ plasmaVaultAddress });
-  const vaultSymbol = usePlasmaVaultSymbol();
-  const assetSymbol = usePlasmaVaultAssetSymbol();
-  const assetDecimals = usePlasmaVaultAssetDecimals({ plasmaVaultAddress });
-  const assetBalance = useAccountBalanceOfPlasmaVaultAsset();
+export const useParams = () => {
+  const assetAddress = useFusionVaultAssetAddress();
+  const vaultName = useFusionVaultName();
+  const vaultSymbol = useFusionVaultSymbol();
+  const assetSymbol = useFusionVaultAssetSymbol();
+  const assetDecimals = useFusionVaultAssetDecimals();
+  const assetBalance = useAccountBalanceOfFusionVaultAsset();
   const isVaultPublic = useIsVaultPublic();
   const isAccountWhitelisted = useIsAccountWhitelisted();
   const withdrawWindowInSeconds = useWithdrawWindowInSeconds();
-  const isScheduledWithdrawal = useIsScheduledWithdrawal({
-    plasmaVaultAddress,
-  });
-  const isApproving = useIsTxPending('plasmaVaultDepositApprove');
-  const isPending = useIsTxPending('plasmaVaultDeposit');
+  const isScheduledWithdrawal = useIsScheduledWithdrawal();
 
-  const assetAllowance = usePlasmaVaultAllowanceToToken({
+  const assetAllowance = useFusionVaultAllowanceToToken({
     tokenAddress: assetAddress,
   });
   const [allowanceFromEvent, setAllowanceFromEvent] = useState<bigint>();
   const allowance = allowanceFromEvent ?? assetAllowance;
 
-  const { data: maxDeposit } = usePlasmaVaultMaxDeposit();
+  const maxDeposit = useFusionVaultMaxDeposit();
+
+  const isDepositPaused = useIsFunctionPaused({ writeFunctionName: 'deposit' });
 
   return {
-    chainId,
-    plasmaVaultAddress,
     vaultName,
     vaultSymbol,
     assetAddress,
     assetSymbol,
     assetDecimals,
     assetBalance,
-    canDeposit: isVaultPublic || isAccountWhitelisted,
-    isWrongWalletChain,
-    switchChain: () => changeChain(chainId),
-    accountAddress,
-    selectWallet,
-    onConfirm,
-    onDepositSuccess,
-    open,
-    allowance,
-    setAllowanceFromEvent,
-    isApproving,
-    isPending,
     withdrawWindowInSeconds,
     isScheduledWithdrawal,
     maxDeposit,
+    isDepositPaused,
+    isWhitelisted: isVaultPublic || isAccountWhitelisted,
+    allowance,
+    setAllowanceFromEvent,
   };
 };
 

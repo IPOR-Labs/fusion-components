@@ -1,6 +1,6 @@
-import type { Preview } from '@storybook/react-vite'
-import '../src/index.css'
-import '@rainbow-me/rainbowkit/styles.css';
+import type { Preview } from '@storybook/react-vite';
+import '@/themes/theme-fusion.css';
+import '../src/index.css';
 
 const preview: Preview = {
   parameters: {

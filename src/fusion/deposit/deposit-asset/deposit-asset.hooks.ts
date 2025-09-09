@@ -1,26 +1,27 @@
 import { formSchema } from '@/fusion/deposit/deposit-asset/deposit-asset.form';
-import { useDeposit } from '@/fusion/deposit/deposit-asset/deposit-asset.context';
-import { parseUnits } from 'viem';
-import { calcNeedsApproval } from '@/utils/calc-needs-approval';
-import { getNeedsRevokeApproval } from '@/revokeAllowance/utils/getNeedsRevokeApproval';
-import { mainnet } from 'viem/chains';
-import { USDT_ADDRESS } from '@/fusion/markets/erc20/erc20.addresses';
+import { useDepositAssetContext } from './deposit-asset.context';
+import { isAddressEqual, parseUnits } from 'viem';
+import { calcNeedsApproval } from '@/app/allowance/utils/calc-needs-approval';
+import { getNeedsRevokeApproval } from '@/app/allowance/utils/get-needs-revoke-approval';
+import { ERC20_TOKENS_TO_REVOKE_BEFORE_APPROVE } from '@/lib/constants';
+import { useConfigContext } from '@/app/config/config.context';
+import { useAppSetup } from '@/app/use-app-setup';
 
-const useNeedsRevokeBeforeApproval = () => {
+export const useNeedsRevokeBeforeApproval = () => {
+  const { chainId } = useConfigContext();
   const {
-    params: { chainId, assetAddress, allowance, assetDecimals },
+    params: { assetAddress, allowance, assetDecimals },
     form,
-  } = useDeposit();
+  } = useDepositAssetContext();
 
-  if (chainId !== mainnet.id) {
-    return false;
-  }
-  if (assetAddress !== USDT_ADDRESS[mainnet.id]) {
-    return false;
-  }
-  if (assetDecimals === undefined) {
-    return false;
-  }
+  if (assetDecimals === undefined) return false;
+  if (assetAddress === undefined) return false;
+
+  const isRevokeToken = assetAddress && ERC20_TOKENS_TO_REVOKE_BEFORE_APPROVE.some((token) => {
+    return token.chainId === chainId && isAddressEqual(token.address, assetAddress);
+  });
+
+  if (!isRevokeToken) return false;
 
   const newAllowance = parseUnits(form.getValues('amount'), assetDecimals);
 
@@ -31,12 +32,13 @@ const useNeedsRevokeBeforeApproval = () => {
 };
 
 export const useSubmit = () => {
+  const { fusionVaultAddress } = useConfigContext();
   const {
     params: { allowance, assetAddress, assetDecimals },
-    actions: { approve, deposit },
+    actions: { executeApprove, executeDeposit },
     form,
-    state: { showRevokeModal },
-  } = useDeposit();
+  } = useDepositAssetContext();
+  const { accountAddress } = useAppSetup();
 
   const needsRevokeBeforeApproval = useNeedsRevokeBeforeApproval();
 
@@ -62,18 +64,31 @@ export const useSubmit = () => {
       }
 
       if (needsRevokeBeforeApproval) {
-        showRevokeModal();
+        await executeApprove?.({
+          amount: 0n,
+          assetAddress,
+          spender: fusionVaultAddress,
+        });
         return;
       }
 
-      await approve?.({
+      await executeApprove?.({
         amount,
         assetAddress,
+        spender: fusionVaultAddress,
       });
       return;
     }
 
-    await deposit?.({ amount });
+    if (accountAddress === undefined) {
+      throw new Error('accountAddress is undefined');
+    }
+
+    await executeDeposit?.({
+      amount,
+      fusionVaultAddress,
+      beneficiary: accountAddress,
+    });
     form.reset();
   };
 
@@ -82,12 +97,12 @@ export const useSubmit = () => {
 
 export const useIsSubmitDisabled = () => {
   const {
-    params: { canDeposit },
+    params: { isWhitelisted },
     form,
-  } = useDeposit();
+  } = useDepositAssetContext();
   const { isDirty, isValid } = form.formState;
 
-  if (canDeposit === false) {
+  if (isWhitelisted === false) {
     return true;
   }
 

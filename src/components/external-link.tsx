@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { type ReactNode } from 'react';
 
-interface ExternalLinkProps {
+interface Props {
   href: string;
   children: ReactNode;
   className?: string;
@@ -11,7 +11,7 @@ interface ExternalLinkProps {
   trusted?: boolean;
 }
 
-export const ExternalLink = (props: ExternalLinkProps) => {
+export const ExternalLink = (props: Props) => {
   const {
     href,
     children,
@@ -29,7 +29,7 @@ export const ExternalLink = (props: ExternalLinkProps) => {
       target="_blank"
       {...(!trusted && { rel: 'noopener noreferrer' })}
       className={cn(className, {
-        'text-ipor-asset hover:underline': !disableDefaultStyles,
+        'text-primary hover:underline': !disableDefaultStyles,
       })}
       data-testid={testId}
     >

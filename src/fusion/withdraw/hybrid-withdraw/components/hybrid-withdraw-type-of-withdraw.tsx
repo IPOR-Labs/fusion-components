@@ -5,17 +5,17 @@ import {
   useInstantWithdrawAmount,
   useIsScheduledWithdrawal,
 } from '../hybrid-withdraw.hooks';
-import { Capacity } from '@/components/capacity/capacity';
+import { Capacity } from '@/components/capacity';
 import { Clock4Icon, InfoIcon, ZapIcon } from 'lucide-react';
 import { TooltipContent, Tooltip, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
 import { intervalToDuration } from 'date-fns';
 import { formatDuration } from 'date-fns';
 import { addSeconds } from 'date-fns';
 import { format } from 'date-fns';
-import { getNow } from '@/utils/getNow';
-import { DATE_FORMAT_WITH_HOUR } from '@/utils/constants';
+import { getNow } from '@/lib/get-now';
+import { DATE_FORMAT_WITH_HOUR } from '@/lib/constants';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { formatSignificant } from '@/utils/format-significant';
+import { formatSignificant } from '@/lib/format-significant';
 
 const MILLISECONDS_IN_SECOND = 1000n;
 const SIGNIFICANT_DECIMALS = 3;
@@ -45,7 +45,7 @@ const InstantWithdraw = () => {
 
   return (
     <TooltipProvider delayDuration={100} skipDelayDuration={100}>
-      <Alert className="bg-ipor-asset/10 border-ipor-asset">
+      <Alert className="bg-primary/10 border-primary">
         <ZapIcon className="h-4 w-4 !text-yellow-500" />
         <AlertTitle className="flex gap-x-1 text-sm">
           <span>Withdrawal type: Instant</span>
@@ -108,10 +108,10 @@ const ScheduledWithdraw = () => {
               <InfoIcon size={16} />
             </TooltipTrigger>
             <TooltipContent className="max-w-sm">
-              <p className="text-muted-foreground">
+              <p>
                 That's a 2-step redemption process. First you need to request
                 withdrawal, after that the vault manager has{' '}
-                <strong className="text-primary">
+                <strong>
                   at most {formatedDuration}
                 </strong>{' '}
                 to fulfill your request. In the second step you can withdraw the
@@ -120,7 +120,7 @@ const ScheduledWithdraw = () => {
                 {assetSymbol && (
                   <>
                     When withdrawing you will receive{' '}
-                    <strong className="text-primary">{assetSymbol}</strong>.
+                    <strong>{assetSymbol}</strong>.
                   </>
                 )}
               </p>

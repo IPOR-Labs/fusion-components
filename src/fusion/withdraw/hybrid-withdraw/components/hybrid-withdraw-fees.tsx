@@ -1,6 +1,6 @@
-import { formatNumber } from '@/utils/format-number';
-import { DEFAULT_DECIMALS, ONE_ETHER } from '@/utils/constants';
-import { formatSignificant } from '@/utils/format-significant';
+import { formatNumber } from '@/lib/format-number';
+import { DEFAULT_DECIMALS, ONE_ETHER } from '@/lib/constants';
+import { formatSignificant } from '@/lib/format-significant';
 import { FullNumber } from '@/components/full-number';
 import { TooltipTrigger, Tooltip, TooltipContent, TooltipProvider } from '@/components/ui/tooltip';
 import { InfoIcon } from 'lucide-react';
@@ -11,7 +11,6 @@ import {
 } from '../hybrid-withdraw.hooks';
 
 const REQUEST_FEE_MESSAGE = `Fee is charged immediately after scheduling a withdraw. Canceling or updating scheduled withdrawal will result in the loss of fee amount. Shares charged as fee are burned increasing value of remaining shares.`;
-
 
 export const HybridWithdrawFees = () => {
   const isScheduledWithdrawal = useIsScheduledWithdrawal();

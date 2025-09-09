@@ -1,25 +1,22 @@
-import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
-import { type TransactionStateHandlers } from '@/transactions/types';
-import { sendAppTransaction } from '@/transactions/send-app-transaction';
-import { type ChainId } from '@/app/wagmi';
+import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
+import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
+import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { z } from 'zod';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
 import { type Address } from 'viem';
-import { isNonZeroAddress } from '@/utils/isNonZeroAddress';
+import { isNonZeroAddress } from '@/lib/is-non-zero-address';
 
 interface Args {
-  chainId: ChainId;
   withdrawManagerAddress: Address | undefined;
   transactionStateHandlers: TransactionStateHandlers;
 }
 
-export const useWithdrawManagerRequestShares = ({
-  chainId,
+export const useRequestShares = ({
   withdrawManagerAddress,
   transactionStateHandlers,
 }: Args) => {
-  return useContractWriteTransaction({
-    writeAsync: async (config, payload) => {
+  return useExecuteTransaction({
+    writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { shares } = payloadSchema.parse(payload);
 
       if (!isNonZeroAddress(withdrawManagerAddress)) {
@@ -33,13 +30,11 @@ export const useWithdrawManagerRequestShares = ({
           abi: withdrawManagerAbi,
           functionName: 'requestShares',
           args: [shares],
-          account: config.accountAddress,
+          account: accountAddress,
         },
       });
     },
-    transactionKey: 'withdrawManagerRequest',
     transactionStateHandlers,
-    chainId,
     enabled: isNonZeroAddress(withdrawManagerAddress),
     payloadSchema,
   });

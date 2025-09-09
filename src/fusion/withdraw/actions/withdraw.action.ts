@@ -1,50 +1,37 @@
-import { useContractWriteTransaction } from '@/transactions/use-contract-write-transaction';
-import { type TransactionStateHandlers } from '@/transactions/types';
-import { useWalletChainAddress } from '@/wallet/hooks';
-import { sendAppTransaction } from '@/transactions/send-app-transaction';
+import { useExecuteTransaction } from '@/app/transactions/hooks/use-execute-transaction';
+import { type TransactionStateHandlers } from '@/app/transactions/transactions.types';
+import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { plasmaVaultAbi } from '@/abi/plasma-vault.abi';
-import { type ChainId } from '@/app/wagmi';
-import { type Address } from 'viem';
 import { z } from 'zod';
+import { useConfigContext } from '@/app/config/config.context';
 
 interface Args {
-  chainId: ChainId;
-  plasmaVaultAddress: Address;
   transactionStateHandlers: TransactionStateHandlers;
 }
 
-export const usePlasmaVaultWithdraw = ({
-  chainId,
-  plasmaVaultAddress,
+export const useWithdraw = ({
   transactionStateHandlers,
 }: Args) => {
-  const beneficiary = useWalletChainAddress(chainId);
+  const {
+    fusionVaultAddress,
+  } = useConfigContext();
 
-  const enabled = Boolean(beneficiary);
-
-  return useContractWriteTransaction({
+  return useExecuteTransaction({
     writeAsync: async ({ accountAddress, ...config }, payload) => {
       const { amount } = payloadSchema.parse(payload);
-
-      if (!beneficiary) {
-        throw new Error('beneficiary is undefined');
-      }
 
       return await sendAppTransaction({
         config,
         parameters: {
-          address: plasmaVaultAddress,
+          address: fusionVaultAddress,
           abi: plasmaVaultAbi,
           functionName: 'withdraw',
-          args: [amount, beneficiary, beneficiary],
+          args: [amount, accountAddress, accountAddress],
           account: accountAddress,
         },
       });
     },
-    transactionKey: 'plasmaVaultWithdraw',
     transactionStateHandlers,
-    chainId,
-    enabled,
     payloadSchema,
   });
 };

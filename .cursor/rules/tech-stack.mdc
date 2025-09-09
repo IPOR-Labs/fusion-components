@@ -1,0 +1,25 @@
+---
+alwaysApply: true
+---
+## Tech Stack
+
+### Core
+- **TypeScript 5**
+
+### Frontend & UI
+- **React 19**
+- **CSS Modules**
+- **Shadcn/ui** - High-quality React components
+
+### Web3 & Blockchain
+- **viem** - TypeScript interface for Ethereum.
+- **wagmi** - React hooks for Ethereum development. Use only to read from blockchain.
+
+### Data & State Management
+- **Tanstack Query**
+- **Zod** - TypeScript-first schema validation
+- **Axios** - HTTP client for API requests
+
+### Other
+- **Lucide React** - Implementation of the Lucide Icon Library for React applications
+- **remeda** - typesafe utility functions for TypeScript

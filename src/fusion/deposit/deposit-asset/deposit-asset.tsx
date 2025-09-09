@@ -1,39 +1,45 @@
-import { PlasmaVaultDepositProvider } from './deposit-asset.context';
-import { Content } from './content';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { useState } from 'react';
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { DepositAssetContext } from './deposit-asset.context';
+import { DepositAssetForm } from './components/deposit-asset-form';
+import { useParams } from './deposit-asset.params';
+import { useActions } from './deposit-asset.actions';
+import { useDepositForm } from './deposit-asset.form';
+import { useTransactionState } from '@/app/transactions/hooks/use-transaction-state';
+import { erc20Abi, parseEventLogs } from 'viem';
 
-export const DepositDialog = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const closeModal = () => setIsModalOpen(false);
-  const { connectModalOpen } = useConnectModal();
+export const DepositAsset = () => {
+  const params = useParams();
+  const approveTxState = useTransactionState({
+    onSuccess: ({ receipt }) => {
+      const logs = parseEventLogs({
+        abi: erc20Abi,
+        eventName: 'Approval',
+        logs: receipt.logs,
+      });
+      const event = logs[0];
+      if (event) {
+        const newAllowance = event.args.value;
+        params.setAllowanceFromEvent(newAllowance);
+      }
+    },
+  },);
+  const depositTxState = useTransactionState();
+  const actions = useActions({ 
+    approveTxState,
+    depositTxState,
+  });
+  const form = useDepositForm();
 
   return (
-    <Dialog
-      open={isModalOpen}
-      onOpenChange={setIsModalOpen}
-      modal={!connectModalOpen}
+    <DepositAssetContext.Provider
+      value={{
+        actions,
+        params,
+        form,
+        approveTxState,
+        depositTxState,
+      }}
     >
-      <DialogTrigger asChild>
-        <Button variant="default">Deposit</Button>
-      </DialogTrigger>
-      <DialogContent
-        className="theme-fusion"
-        onInteractOutside={(e) => {
-          /**
-           * @dev We don't allow interaction outside the dialog
-           * to keep this dialog open when user clicks
-           * on the consent modal or wallet connect modal
-           */
-          e.preventDefault();
-        }}
-      >
-        <PlasmaVaultDepositProvider onConfirm={closeModal}>
-          <Content />
-        </PlasmaVaultDepositProvider>
-      </DialogContent>
-    </Dialog>
+      <DepositAssetForm />
+    </DepositAssetContext.Provider>
   );
 };

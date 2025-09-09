@@ -1,9 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { type ChainId } from '@/app/wagmi';
+import { type ChainId } from '@/app/config/wagmi';
 import { cn } from "@/lib/utils"
 import { type Address, erc20Abi } from 'viem';
 import { useReadContract } from 'wagmi';
+import { useConfigContext } from '@/app/config/config.context';
 
 interface TokenPathProps {
   chainId: ChainId;
@@ -29,15 +30,15 @@ const getTokenPath = ({ chainId, address }: TokenPathProps) => {
 };
 
 interface Props {
-  chainId: ChainId;
   address: Address | undefined;
   className?: string;
   showTitle?: boolean;
 }
 
 export const TokenIcon = ({ address, ...props }: Props) => {
-  if (address === undefined) return <TokenIconPlaceholder {...props} />;
-  return <TokenIconContent {...props} address={address} />;
+  const { chainId } = useConfigContext();
+  if (address === undefined) return <TokenIconPlaceholder {...props} chainId={chainId} />;
+  return <TokenIconContent {...props} address={address} chainId={chainId} />;
 };
 
 type ContentProps = Props & TokenPathProps;

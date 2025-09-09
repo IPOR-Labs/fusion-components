@@ -1,28 +1,23 @@
 import { keepPreviousData } from '@tanstack/react-query';
-import { usePlasmaVault } from '@/fusion/plasma-vault/plasma-vault.context';
-import { BLOCK_INTERVAL } from '@/utils/constants';
+import { BLOCK_INTERVAL } from '@/lib/constants';
 import { useReadContract } from 'wagmi';
 import { useWithdrawManagerAddress } from './use-withdraw-manager-address';
 import { withdrawManagerAbi } from '@/abi/withdraw-manager.abi';
-import { type Address } from 'viem';
 import { type WithdrawManagerFeeType } from '../withdraw.types';
-import { assertNever } from '@/utils/assertNever';
+import { assertNever } from '@/lib/assert-never';
+import { useConfigContext } from "@/app/config/config.context";
 
 interface Args {
-  plasmaVaultAddress: Address;
   feeType: WithdrawManagerFeeType;
 }
 
 export const useWithdrawManagerFee = ({
-  plasmaVaultAddress,
   feeType,
 }: Args) => {
-  const withdrawManagerAddress = useWithdrawManagerAddress({
-    plasmaVaultAddress,
-  });
+  const withdrawManagerAddress = useWithdrawManagerAddress();
   const {
-    params: { chainId },
-  } = usePlasmaVault();
+    chainId,
+  } = useConfigContext();
 
   const { data: feeAmount } = useReadContract({
     chainId,

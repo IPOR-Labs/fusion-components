@@ -1,0 +1,100 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Structure
+
+When introducing changes to the project, always follow the directory structure below:
+
+- `/examples` - Examples how to use the widget on host page
+- `/src` - Source code
+- `/src/abi` - ABIs (Application Binary Interface) of smart contracts used in the codebase in TypeScript format
+- `/src/components` - Shared components
+- `/src/components/ui` - Shared components from shadcn/ui
+- `/src/app` - App module containing all general purpose features
+- `/src/fusion` - Fusion module containing features related to IPOR Fusion protocol
+- `/src/lib` - Services and helpers 
+- `/src/widgets` - Widgets to expose as web components, actual product of this codebase
+- `/src/dev.tsx` - React entry used only for development purposes, direct React reference, bypassing web component interface for convenience
+- `/src/main.tsx` - Actual web component entry used to generate final output code
+- `/public` - Public assets
+- `/build.html` - HTML page used to generate resources in `/dist`
+- `/index.html` - HTML page used for developement only
+
+When modifying the directory structure, always update this structure.
+
+## Organize code in module, domain and feature directories
+
+- There are 3 levels:
+  - module
+  - domain
+  - feature
+- Each level points to the folder in path `/src/<module>/<domain>/<feature>`
+
+Each feature has its separate folder in `/src/<module>/<domain>/` directory for example `/src/fusion/deposit/deposit-asset`. Feature is independent block of application. An examples of features are listed in `example-features` - when implementing new features look into these folders and treat it as an benchmark.
+
+<example-features>
+/src/fusion/deposit/deposit-asset
+/src/fusion/withdraw/hybrid-withdraw
+/src/app/allowance/revoke-allowance
+</example-features>
+
+
+### Features
+
+In case of `/src/fusion/deposit/deposit-asset` the `<feature>` is `deposit-asset`. 
+
+The structure of feature directory:
+- `<module>/<domain>/<feature>/<feature>.tsx` 
+  - Main file with the actual React component to import. 
+  - Contains context provider
+- `<module>/<domain>/<feature>/<feature>.context.tsx` 
+  - The context to avoid drilling props and also for exposing all data, state and logic.
+- `<module>/<domain>/<feature>/<feature>.params.ts` 
+  - Hook for all data shared in the context
+  - Part of the feature to mock in tests
+- `<module>/<domain>/<feature>/<feature>.types.ts` 
+  - Local type definitions, optional
+- `<module>/<domain>/<feature>/components` 
+  - Directory for local components
+- `<module>/<domain>/<feature>.hooks.ts` 
+  - Directory for custom hooks which use context, optional
+  - These hooks can be used only inside the feature because they use feature's context
+
+All the data and logic should be handled in hooks.
+
+### Domains
+
+The structure of domain directory:
+- `<module>/<domain>/abi`
+  - Directory for abis used across the domain
+- `<module>/<domain>/actions`
+  - Directory for actions used across the domain
+  - Single action represent one blockchain write method
+- `<module>/<domain>/components`
+  - Directory for components used across the domain
+  - These components must not use any React context
+  - These components must be pure React view components
+- `<module>/<domain>/utils` 
+  - Directory for other functions (like formatters, accessors, mappers) and constants, optional
+- `<module>/<domain>/hooks` 
+  - Directory for hooks used in `<feature>.params.ts`
+
+### Modules
+
+- Modules are top level directories containing domains
+- There are only two modules: `/src/app` and `/src/fusion`. Any other folder in `/src` may not follow rules from this guide.
+
+## Most important files:
+- `src/app.context.tsx`
+  - Contains React context for sharing app config injected from the host
+- `src/providers.tsx`
+  - All common React Context providers use globally in the widgets
+- `src/wagmi.ts`
+  - wagmi configuration for suported chains
+
+
+
+
+

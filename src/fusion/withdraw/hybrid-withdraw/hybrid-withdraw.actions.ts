@@ -1,45 +1,33 @@
 import { type Params } from './hybrid-withdraw.params';
-import { usePlasmaVaultWithdraw } from '../actions/withdraw.action';
-import { usePlasmaVaultMaxRedeem } from '../actions/max-redeem.action';
-import { useWithdrawManagerRequestShares } from '../actions/request-shares.action';
-import { useWithdrawManagerRequestMaxShares } from '../actions/request-max-shares.action';
-import { type TransactionState } from '@/transactions/useTransactionState';
+import { useWithdraw } from '../actions/withdraw.action';
+import { useRedeem } from '../actions/redeem.action';
+import { useRequestShares } from '../actions/request-shares.action';
+import { type TransactionState } from '@/app/transactions/hooks/use-transaction-state';
 
 interface Args {
   params: Params;
-  state: TransactionState;
+  txState: TransactionState;
 }
 
 export const useActions = ({
-  state: { transactionStateHandlers },
-  params: { chainId, plasmaVaultAddress, withdrawManagerAddress },
+  txState: { transactionStateHandlers },
+  params: { withdrawManagerAddress },
 }: Args) => {
-  const { execute: maxRedeem } = usePlasmaVaultMaxRedeem({
-    chainId,
-    plasmaVaultAddress,
+  const { execute: executeRedeem } = useRedeem({
     transactionStateHandlers,
   });
-  const { execute: withdraw } = usePlasmaVaultWithdraw({
-    chainId,
-    plasmaVaultAddress,
+  const { execute: executeWithdraw } = useWithdraw({
     transactionStateHandlers,
   });
-  const { execute: requestShares } = useWithdrawManagerRequestShares({
-    chainId,
-    withdrawManagerAddress,
-    transactionStateHandlers,
-  });
-  const { execute: requestMaxShares } = useWithdrawManagerRequestMaxShares({
-    chainId,
+  const { execute: executeRequestShares } = useRequestShares({
     withdrawManagerAddress,
     transactionStateHandlers,
   });
 
   return {
-    withdraw,
-    requestShares,
-    requestMaxShares,
-    maxRedeem,
+    executeRedeem,
+    executeWithdraw,
+    executeRequestShares,
   };
 };
 

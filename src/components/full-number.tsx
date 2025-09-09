@@ -1,7 +1,7 @@
 import { NumberDisplay } from '@/components/number-display';
 import { NumberTitle } from '@/components/number-title';
 import { type ReactNode } from 'react';
-import { DEFAULT_DECIMALS } from '@/utils/constants';
+import { DEFAULT_DECIMALS } from '@/lib/constants';
 
 interface Props {
   children: ReactNode;

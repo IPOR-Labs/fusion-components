@@ -1,5 +1,5 @@
 import { useHybridWithdrawContext } from '../hybrid-withdraw.context';
-import { AmountInput } from '@/fusion/markets/erc20/components/AmountInput';
+import { AmountInput } from '@/components/amount-input';
 
 export const HybridWithdrawAmountInput = () => {
   const {
@@ -8,14 +8,12 @@ export const HybridWithdrawAmountInput = () => {
       assetDecimals,
       assetSymbol,
       assetAddress,
-      chainId,
     },
     form,
   } = useHybridWithdrawContext();
 
   return (
     <AmountInput
-      chainId={chainId}
       tokenAddress={assetAddress}
       balance={balanceToWithdraw || 0n}
       decimals={assetDecimals || 0}
