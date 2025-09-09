@@ -66,7 +66,7 @@ describe('Withdraw asset from Plasma Vault', () => {
     act(() => {
       fireEvent.change(redeemAmountInput, { target: { value: '2000' } });
     });
-    expect(redeemAmountInput).toHaveValue('2000');
+    expect(redeemAmountInput).toHaveValue('2,000');
 
     await sleep(500);
 
