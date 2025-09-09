@@ -1,5 +1,5 @@
 import { DepositAssetContext } from './deposit-asset.context';
-import { DepositAssetBody } from './components/deposit-asset-body';
+import { DepositAssetForm } from './components/deposit-asset-form';
 import { useParams } from './deposit-asset.params';
 import { useActions } from './deposit-asset.actions';
 import { useDepositForm } from './deposit-asset.form';
@@ -39,7 +39,7 @@ export const DepositAsset = () => {
         depositTxState,
       }}
     >
-      <DepositAssetBody />
+      <DepositAssetForm />
     </DepositAssetContext.Provider>
   );
 };

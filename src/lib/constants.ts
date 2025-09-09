@@ -19,3 +19,5 @@ export const ERC20_TOKENS_TO_REVOKE_BEFORE_APPROVE = [
 ] as const;
 
 export const DISCORD_LINK = 'https://discord.com/invite/bSKzq6UMJ3';
+
+export const FUSION_DAPP_URL = 'https://app.ipor.io';

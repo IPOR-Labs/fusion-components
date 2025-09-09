@@ -28,7 +28,6 @@ export const FunctionPausedBanner = () => {
         </ExternalLink>
       </AlertDescription>
     </Alert>
-
   );
 };
 

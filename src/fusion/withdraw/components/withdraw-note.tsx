@@ -60,7 +60,7 @@ export const WithdrawNote = ({
 
   return (
     <TooltipProvider delayDuration={100} skipDelayDuration={100}>
-      <p className="flex items-center gap-1 text-sm text-muted-foreground pb-4">
+      <p className="flex items-center gap-1 text-sm text-muted-foreground">
         <span>Withdraw: Scheduled ({formatedDuration})</span>
         <Tooltip>
           <TooltipTrigger>
@@ -69,10 +69,12 @@ export const WithdrawNote = ({
           <TooltipContent className="max-w-80">
             <p>
               This vault has a 2-step redemption process. First you need to
-              request withdrawal, after that the vault manager has
+              request withdrawal, after that the vault manager has{' '}
               <strong>at most {formatedDuration}</strong> to fulfill your
               request. In the second step you can withdraw the assets. If you
-              request redemption now, you have to withdraw it by {redeemByDate}.{' '}
+              request redemption now, you have to withdraw it by {redeemByDate}.
+              If you miss the withdrawal period, the request fee will be charged
+              again.{' '}
               {withdrawTokenSymbol && (
                 <>
                   When withdrawing you will receive{' '}
