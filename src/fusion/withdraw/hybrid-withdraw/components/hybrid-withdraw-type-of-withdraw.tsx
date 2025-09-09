@@ -108,10 +108,10 @@ const ScheduledWithdraw = () => {
               <InfoIcon size={16} />
             </TooltipTrigger>
             <TooltipContent className="max-w-sm">
-              <p className="text-muted-foreground">
+              <p>
                 That's a 2-step redemption process. First you need to request
                 withdrawal, after that the vault manager has{' '}
-                <strong className="text-primary">
+                <strong>
                   at most {formatedDuration}
                 </strong>{' '}
                 to fulfill your request. In the second step you can withdraw the
@@ -120,7 +120,7 @@ const ScheduledWithdraw = () => {
                 {assetSymbol && (
                   <>
                     When withdrawing you will receive{' '}
-                    <strong className="text-primary">{assetSymbol}</strong>.
+                    <strong>{assetSymbol}</strong>.
                   </>
                 )}
               </p>

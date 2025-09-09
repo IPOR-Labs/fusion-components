@@ -61,7 +61,7 @@ export const Capacity = ({
 
   return (
     <div className="space-y-1 w-full">
-      <p className="flex flex-col md:flex-row justify-between text-xs text-muted-foreground gap-x-4">
+      <p className="flex flex-col md:flex-row justify-between text-xs gap-x-4">
         <span>
           {currentLabel}:{' '}
           {formatSignificant(current, decimals, significantDecimals)} {symbol}
@@ -70,10 +70,11 @@ export const Capacity = ({
       </p>
       <Progress
         value={percentFilledNumber}
-        className={cn('h-2')}
+        className="h-2 border border-primary-foreground"
+        indicatorClassName="bg-primary-foreground"
       />
-      <p className="text-xs text-muted-foreground">
-        <span className="font-bold text-sm text-primary">
+      <p className="text-xs">
+        <span className="font-bold text-sm">
           {formatSignificant(remainingOrZero, decimals, significantDecimals)}{' '}
           {symbol}
         </span>{' '}
