@@ -5,7 +5,7 @@
 Install dependencies, then build
 
 ```bash
-yarn install
+yarn setup
 yarn build
 ```
 
@@ -43,7 +43,7 @@ Then go your example and run it following script commands in `package.json` of t
 Install dependencies, then run in dev mode
 
 ```bash
-yarn install
+yarn setup
 yarn dev
 ```
 
