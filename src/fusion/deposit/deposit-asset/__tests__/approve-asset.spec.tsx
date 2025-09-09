@@ -65,7 +65,7 @@ describe('User has to reapprove Plasma Vault when setting custom allowance < tot
     act(() => {
       fireEvent.change(depositAmountInput, { target: { value: '1000' } });
     });
-    expect(depositAmountInput).toHaveValue('1000');
+    expect(depositAmountInput).toHaveValue('1,000');
 
     await sleep(100);
 

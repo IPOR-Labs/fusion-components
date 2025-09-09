@@ -62,7 +62,7 @@ describe('Deposit asset to Plasma Vault', () => {
     act(() => {
       fireEvent.change(depositAmountInput, { target: { value: '2000' } });
     });
-    expect(depositAmountInput).toHaveValue('2000');
+    expect(depositAmountInput).toHaveValue('2,000');
 
     await sleep(100);
 
