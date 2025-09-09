@@ -68,7 +68,7 @@ describe('Withdraw ALL shares from Plasma Vault', () => {
       name: '100%',
     });
     await user.click(_100PercentButton);
-    expect(redeemAmountInput).toHaveValue('3000');
+    expect(redeemAmountInput).toHaveValue('3,000');
 
     await sleep(500);
 
