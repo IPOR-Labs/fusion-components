@@ -29,9 +29,9 @@ export const RedeemFromRequestRedeem = () => {
    * When redeem is done but the requestInfo is still pending.
    */
   return (
-    <div className="flex flex-col gap-2 -mb-7 items-end">
+    <div className="flex flex-col gap-2 items-end">
       {isRedeemFromRequestPaused && <FunctionPausedBanner />}
-      <div className="flex flex-col gap-2 w-56">
+      <div className="flex flex-col gap-2">
         <Debouncer
           value={isPending ? 1 : 0}
           loader={<Pending timeToExpiration={'0'} showSubmitButton />}
@@ -123,7 +123,7 @@ const WaitingForMaturity = ({
   return (
     <>
       {showSubmitButton && (
-        <Button variant="secondary" size="sm" disabled>
+        <Button size="lgRounded" disabled>
           Redeem
         </Button>
       )}
@@ -166,7 +166,7 @@ const Matured = ({
   if (isWrongWalletChain) {
     return (
       <>
-        <Button variant="secondary" size="sm" onClick={switchChain}>
+        <Button size="lgRounded" onClick={switchChain}>
           {getSwitchChainButtonLabel(chainId)}
         </Button>
         <RedeemNote>
@@ -183,8 +183,7 @@ const Matured = ({
     <>
       {showSubmitButton && (
         <Button
-          variant="secondary"
-          size="sm"
+          size="lgRounded"
           onClick={() => onClickButton?.({ shares: requestedAmount })}
           disabled={isPending || isPaused}
         >
@@ -205,7 +204,7 @@ const Expired = ({ showSubmitButton }: { showSubmitButton: boolean }) => {
   return (
     <>
       {showSubmitButton && (
-        <Button variant="secondary" size="sm" disabled>
+        <Button size="lgRounded" disabled>
           Redeem
         </Button>
       )}
@@ -218,7 +217,7 @@ const NotReady = ({ showSubmitButton }: { showSubmitButton: boolean }) => {
   return (
     <>
       {showSubmitButton && (
-        <Button variant="secondary" size="sm" disabled>
+        <Button size="lgRounded" disabled>
           Redeem
         </Button>
       )}
@@ -237,7 +236,7 @@ const Pending = ({
   return (
     <>
       {showSubmitButton && (
-        <Button className="gap-2" variant="secondary" size="sm" disabled>
+        <Button className="gap-2" size="lgRounded" disabled>
           <LoaderCircleIcon className="w-4 h-4 animate-spin" />
           Redeeming...
         </Button>

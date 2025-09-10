@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useFusionVaultAssetAddress } from "@/fusion/plasma-vault/hooks/use-fusion-vault-asset-address";
 import { useFusionVaultAssetDecimals } from "@/fusion/plasma-vault/hooks/use-fusion-vault-asset-decimals";
 import { useFusionVaultAssetSymbol } from "@/fusion/plasma-vault/hooks/use-fusion-vault-asset-symbol";
@@ -7,7 +8,7 @@ import { useIsFunctionPaused } from "@/fusion/prehooks/hooks/use-is-function-pau
 import { useAccountWithdrawRequestInfo } from "@/fusion/withdraw/hooks/use-account-withdraw-request-info";
 
 export const useParams = () => {
-  const showBalanceInDollars = false;
+  const [showBalanceInDollars, setShowBalanceInDollars] = useState(false);
 
   const assetDecimals = useFusionVaultAssetDecimals();
   const assetAddress = useFusionVaultAssetAddress();
@@ -34,6 +35,7 @@ export const useParams = () => {
     withdrawWindowInSeconds: requestInfo?.withdrawWindowInSeconds,
     canWithdraw: requestInfo?.canWithdraw,
     showBalanceInDollars,
+    setShowBalanceInDollars,
     isRedeemFromRequestPaused,
   };
 };

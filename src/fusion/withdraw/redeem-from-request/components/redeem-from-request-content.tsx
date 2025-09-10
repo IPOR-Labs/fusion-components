@@ -25,7 +25,7 @@ export const RedeemFromRequestContent = () => {
 
   return (
     <>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4">
         <RedeemFromRequestRequestedAmount />
         <RedeemFromRequestRedeem />
       </div>

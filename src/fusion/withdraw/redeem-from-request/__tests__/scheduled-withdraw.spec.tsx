@@ -38,6 +38,7 @@ const DEFAULT_PARAMS: Params = {
   assetAddress: ASSET_ADDRESS,
   underlyingAssetPrice: parseEther('1'),
   showBalanceInDollars: false,
+  setShowBalanceInDollars: vi.fn(),
   assetSymbol: 'USDC',
   // 8 hours from now
   endWithdrawWindowTimestamp: BigInt(NOW_TIMESTAMP) + EIGHT_HOURS_IN_SECONDS,
