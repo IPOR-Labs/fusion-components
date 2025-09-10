@@ -1,7 +1,7 @@
 import type { Decorator, Meta, StoryObj } from '@storybook/react';
-import { ScheduledWithdrawContent } from '@/fusion/withdraw/scheduled-withdraw/components/scheduled-withdraw-content';
-import { ScheduledWithdrawContext } from '@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.context';
-import { type Params } from '@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.params';
+import { RedeemFromRequestContent } from '@/fusion/withdraw/redeem-from-request/components/redeem-from-request-content';
+import { RedeemFromRequestContext } from '@/fusion/withdraw/redeem-from-request/redeem-from-request.context';
+import { type Params } from '@/fusion/withdraw/redeem-from-request/redeem-from-request.params';
 import { getUnixTime } from 'date-fns';
 import { parseEther } from 'viem';
 import { useTransactionState } from '@/app/transactions/hooks/use-transaction-state';
@@ -11,12 +11,12 @@ import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
 import { Providers } from '@/app/config/providers';
 
 const meta = {
-  component: ScheduledWithdrawContent,
-} satisfies Meta<typeof ScheduledWithdrawContent>;
+  component: RedeemFromRequestContent,
+} satisfies Meta<typeof RedeemFromRequestContent>;
 
 export default meta;
 
-type Story = StoryObj<typeof ScheduledWithdrawContent>;
+type Story = StoryObj<typeof RedeemFromRequestContent>;
 
 const CHAIN_ID = mainnet.id;
 const PLASMA_VAULT_ADDRESS = ANVIL_TEST_ACCOUNT[0].address;
@@ -35,7 +35,7 @@ const ContextDecorator: Decorator = (Story, context) => {
         fusionVaultAddress: PLASMA_VAULT_ADDRESS,
       }}
     >
-      <ScheduledWithdrawContext.Provider
+      <RedeemFromRequestContext.Provider
         value={{
           actions: {
             executeRedeemFromRequest: () => Promise.resolve(),
@@ -45,7 +45,7 @@ const ContextDecorator: Decorator = (Story, context) => {
         }}
       >
         <Story />
-      </ScheduledWithdrawContext.Provider>
+      </RedeemFromRequestContext.Provider>
     </Providers>
   );
 };

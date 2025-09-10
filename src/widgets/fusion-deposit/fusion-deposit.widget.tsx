@@ -8,7 +8,7 @@ import { HybridWithdraw } from '@/fusion/withdraw/hybrid-withdraw/hybrid-withdra
 import { type ConfigContextValue } from '@/app/config/config.context';
 import { Providers } from '@/app/config/providers';
 import { ArrowDownToLineIcon, ArrowUpFromLineIcon } from 'lucide-react';
-import { ScheduledWithdraw } from '@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw';
+import { RedeemFromRequest } from '@/fusion/withdraw/redeem-from-request/redeem-from-request';
 
 export const FusionDepositWidget = (config: ConfigContextValue) => {
   return (
@@ -20,28 +20,34 @@ export const FusionDepositWidget = (config: ConfigContextValue) => {
 
 const Content = () => {
   return (
-    <Card>
-      <CardContent>
-        <ScheduledWithdraw />
-        <Tabs defaultValue="deposit">
-          <TabsList className="w-full mb-6">
-            <TabsTrigger value="deposit">
-              <ArrowDownToLineIcon />
-              Deposit
-            </TabsTrigger>
-            <TabsTrigger value="withdraw">
-              <ArrowUpFromLineIcon />
-              Withdraw
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="deposit">
-            <DepositAsset />
-          </TabsContent>
-          <TabsContent value="withdraw">
-            <HybridWithdraw />
-          </TabsContent>
-        </Tabs>
-      </CardContent>
-    </Card>
+    <div className="space-y-10">
+      <Card>
+        <CardContent>
+          <RedeemFromRequest />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent>
+          <Tabs defaultValue="deposit">
+            <TabsList className="w-full mb-6">
+              <TabsTrigger value="deposit">
+                <ArrowDownToLineIcon />
+                Deposit
+              </TabsTrigger>
+              <TabsTrigger value="withdraw">
+                <ArrowUpFromLineIcon />
+                Withdraw
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="deposit">
+              <DepositAsset />
+            </TabsContent>
+            <TabsContent value="withdraw">
+              <HybridWithdraw />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

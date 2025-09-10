@@ -14,7 +14,7 @@ interface Props {
   className?: string;
 }
 
-export const ScheduledWithdrawRequestedAmountBalance = ({
+export const RedeemFromRequestRequestedAmountBalance = ({
   showBalanceInDollars,
   requestedAssets,
   assetDecimals,

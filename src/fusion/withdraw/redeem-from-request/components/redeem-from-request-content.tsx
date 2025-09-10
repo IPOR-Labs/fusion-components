@@ -1,11 +1,11 @@
-import { useScheduledWithdrawContext } from "@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.context";
+import { useRedeemFromRequestContext } from "@/fusion/withdraw/redeem-from-request/redeem-from-request.context";
 import { TransactionFeedback } from "@/app/transactions/components/transaction-feedback";
-import { useTimer } from "@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.hooks";
-import { ScheduledWithdrawRequestedAmountBalance } from "@/fusion/withdraw/scheduled-withdraw/components/scheduled-withdraw-requested-amount-balance";
-import { ScheduledWithdrawRequestedAmount } from "@/fusion/withdraw/scheduled-withdraw/components/scheduled-withdraw-requested-amount";
-import { ScheduledWithdrawRedeem } from "@/fusion/withdraw/scheduled-withdraw/components/scheduled-withdraw-redeem";
+import { useTimer } from "@/fusion/withdraw/redeem-from-request/redeem-from-request.hooks";
+import { RedeemFromRequestRequestedAmountBalance } from "@/fusion/withdraw/redeem-from-request/components/redeem-from-request-requested-amount-balance";
+import { RedeemFromRequestRequestedAmount } from "@/fusion/withdraw/redeem-from-request/components/redeem-from-request-requested-amount";
+import { RedeemFromRequestRedeem } from "@/fusion/withdraw/redeem-from-request/components/redeem-from-request-redeem";
 
-export const ScheduledWithdrawContent = () => {
+export const RedeemFromRequestContent = () => {
   const {
     params: {
       requestedAssets,
@@ -13,7 +13,7 @@ export const ScheduledWithdrawContent = () => {
       withdrawWindowInSeconds,
     },
     txState,
-  } = useScheduledWithdrawContext();
+  } = useRedeemFromRequestContext();
   const { isExpired } = useTimer({
     endWithdrawWindowTimestamp,
     withdrawWindowInSeconds,
@@ -26,8 +26,8 @@ export const ScheduledWithdrawContent = () => {
   return (
     <>
       <div className="flex gap-4 items-center">
-        <ScheduledWithdrawRequestedAmount />
-        <ScheduledWithdrawRedeem />
+        <RedeemFromRequestRequestedAmount />
+        <RedeemFromRequestRedeem />
       </div>
       <TransactionFeedback transactionState={txState} />
     </>
@@ -43,7 +43,7 @@ const Expired = () => {
       underlyingAssetPrice,
       assetSymbol,
     },
-  } = useScheduledWithdrawContext();
+  } = useRedeemFromRequestContext();
 
   if (
     requestedAssets === undefined ||
@@ -55,7 +55,7 @@ const Expired = () => {
   return (
     <div className="flex gap-1 items-baseline text-xs font-regular text-muted-foreground">
       <span>Withdrawal request of </span>
-      <ScheduledWithdrawRequestedAmountBalance
+      <RedeemFromRequestRequestedAmountBalance
         showBalanceInDollars={showBalanceInDollars}
         requestedAssets={requestedAssets}
         assetDecimals={assetDecimals}

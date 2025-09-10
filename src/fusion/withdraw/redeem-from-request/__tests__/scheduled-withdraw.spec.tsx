@@ -2,18 +2,18 @@ import { describe, expect, it, type Mock, vi, beforeEach, afterEach } from 'vite
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { fromUnixTime } from 'date-fns';
-import { useParams, type Params } from '@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.params';
+import { useParams, type Params } from '@/fusion/withdraw/redeem-from-request/redeem-from-request.params';
 import { parseEther } from 'viem';
 import { ANVIL_TEST_ACCOUNT } from '@/lib/test-accounts';
 import { mainnet } from 'viem/chains';
-import { ScheduledWithdraw } from '@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw';
+import { RedeemFromRequest } from '@/fusion/withdraw/redeem-from-request/redeem-from-request';
 import { getNow } from '@/lib/get-now';
 import { sendAppTransaction } from '@/app/transactions/utils/send-app-transaction';
 import { useAppSetup } from '@/app/use-app-setup';
 import { useConfigContext } from '@/app/config/config.context';
 import { cleanup } from '@testing-library/react'
 
-vi.mock('@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.params');
+vi.mock('@/fusion/withdraw/redeem-from-request/redeem-from-request.params');
 vi.mock('@/app/config/config.context');
 vi.mock('@/app/transactions/utils/send-app-transaction');
 vi.mock('@/app/use-app-setup');
@@ -45,7 +45,7 @@ const DEFAULT_PARAMS: Params = {
   isRedeemFromRequestPaused: false,
 };
 
-describe('Scheduled withdraw', () => {
+describe('Redeem from request', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (useAppSetup as Mock<typeof useAppSetup>).mockReturnValue({
@@ -74,7 +74,7 @@ describe('Scheduled withdraw', () => {
   it('should allow user to withdraw assets successfuly when can withdraw and request is matured', async () => {
     (useParams as Mock<typeof useParams>).mockReturnValue(DEFAULT_PARAMS);
 
-    render(<ScheduledWithdraw />);
+    render(<RedeemFromRequest />);
 
     screen.getByText('1,023');
     const expiresIn = screen.getByRole('paragraph');
@@ -116,7 +116,7 @@ describe('Scheduled withdraw', () => {
       canWithdraw: false,
     });
 
-    render(<ScheduledWithdraw />);
+    render(<RedeemFromRequest />);
 
     screen.getByText('1,023');
     screen.getByText('Withdrawal request is not ready yet.');
@@ -134,7 +134,7 @@ describe('Scheduled withdraw', () => {
       requestedAssets: undefined,
     });
 
-    const { container } = render(<ScheduledWithdraw />);
+    const { container } = render(<RedeemFromRequest />);
     expect(container.firstChild).toBeNull();
   });
 
@@ -145,7 +145,7 @@ describe('Scheduled withdraw', () => {
       endWithdrawWindowTimestamp: BigInt(NOW_TIMESTAMP) - ONE_DAY_IN_SECONDS,
     });
 
-    render(<ScheduledWithdraw />);
+    render(<RedeemFromRequest />);
 
     screen.getByText('Withdrawal request of');
     screen.getByText('1,023');
@@ -166,7 +166,7 @@ describe('Scheduled withdraw', () => {
       withdrawWindowInSeconds: ONE_DAY_IN_SECONDS,
     });
 
-    render(<ScheduledWithdraw />);
+    render(<RedeemFromRequest />);
 
     screen.getByText('1,023');
     const paragraphs = screen.getAllByRole('paragraph');
@@ -188,7 +188,7 @@ describe('Scheduled withdraw', () => {
       withdrawWindowInSeconds: ONE_DAY_IN_SECONDS,
     });
 
-    render(<ScheduledWithdraw />);
+    render(<RedeemFromRequest />);
 
     screen.getByText('1,023');
     const expiresIn = screen.getByRole('paragraph');

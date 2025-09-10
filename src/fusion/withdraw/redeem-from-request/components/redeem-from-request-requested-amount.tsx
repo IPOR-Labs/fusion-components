@@ -1,8 +1,8 @@
-import { useScheduledWithdrawContext } from '@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.context';
+import { useRedeemFromRequestContext } from '@/fusion/withdraw/redeem-from-request/redeem-from-request.context';
 import { type Address } from 'viem';
-import { ScheduledWithdrawRequestedAmountBalance } from '@/fusion/withdraw/scheduled-withdraw/components/scheduled-withdraw-requested-amount-balance';
+import { RedeemFromRequestRequestedAmountBalance } from '@/fusion/withdraw/redeem-from-request/components/redeem-from-request-requested-amount-balance';
 
-export const ScheduledWithdrawRequestedAmount = () => {
+export const RedeemFromRequestRequestedAmount = () => {
   const {
     params: {
       showBalanceInDollars,
@@ -11,7 +11,7 @@ export const ScheduledWithdrawRequestedAmount = () => {
       assetAddress,
       underlyingAssetPrice,
     },
-  } = useScheduledWithdrawContext();
+  } = useRedeemFromRequestContext();
 
   return (
     <RequestedAmountDisplay
@@ -53,7 +53,7 @@ const RequestedAmountDisplay = ({
       <div className="text-sm font-medium text-muted-foreground">
         Requested:
       </div>
-      <ScheduledWithdrawRequestedAmountBalance
+      <RedeemFromRequestRequestedAmountBalance
         showBalanceInDollars={showBalanceInDollars}
         requestedAssets={requestedAssets}
         assetDecimals={assetDecimals}

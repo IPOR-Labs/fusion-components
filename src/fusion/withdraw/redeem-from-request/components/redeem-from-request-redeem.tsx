@@ -3,13 +3,13 @@ import { useAppSetup } from "@/app/use-app-setup";
 import { getSwitchChainButtonLabel } from "@/app/wallet/utils/get-switch-chain-button-label";
 import { Button } from "@/components/ui/button";
 import { FunctionPausedBanner } from "@/fusion/prehooks/components/function-paused-banner";
-import { useScheduledWithdrawContext } from "@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.context";
-import { useTimer } from "@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw.hooks";
+import { useRedeemFromRequestContext } from "@/fusion/withdraw/redeem-from-request/redeem-from-request.context";
+import { useTimer } from "@/fusion/withdraw/redeem-from-request/redeem-from-request.hooks";
 import { Debouncer } from "@/lib/debouncer";
 import { LoaderCircleIcon } from "lucide-react";
 import type { PropsWithChildren } from "react";
 
-export const ScheduledWithdrawRedeem = () => {
+export const RedeemFromRequestRedeem = () => {
   const {
     params: {
       canWithdraw,
@@ -20,7 +20,7 @@ export const ScheduledWithdrawRedeem = () => {
     },
     actions: { executeRedeemFromRequest },
     txState,
-  } = useScheduledWithdrawContext();
+  } = useRedeemFromRequestContext();
 
   const isPending = txState.txStatus.type === 'pending';
 
@@ -37,7 +37,7 @@ export const ScheduledWithdrawRedeem = () => {
           loader={<Pending timeToExpiration={'0'} showSubmitButton />}
           delay={2000}
         >
-          <RedeemScheduledWithdrawalDisplay
+          <RedeemFromRequestRedeemDisplay
             showSubmitButton
             canWithdraw={canWithdraw || false}
             isPending={isPending}
@@ -53,7 +53,7 @@ export const ScheduledWithdrawRedeem = () => {
   );
 };
 
-export const RedeemScheduledWithdrawalDisplay = ({
+const RedeemFromRequestRedeemDisplay = ({
   showSubmitButton,
   canWithdraw,
   isPending,
