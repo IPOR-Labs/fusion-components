@@ -36,15 +36,13 @@ const WithContext = ({ params, amount, isMax }: WrapperProps) => {
     }
   }, [amount, isMax]);
 
-  const contextValue = {
-    params: params as unknown as Params,
-    actions: {} as unknown as Actions,
-    form,
-    txState,
-  };
-
   return (
-    <HybridWithdrawContext.Provider value={contextValue}>
+    <HybridWithdrawContext.Provider value={{
+      params: params as unknown as Params,
+      actions: {} as unknown as Actions,
+      form,
+      txState,
+    }}>
       <HybridWithdrawDetails />
     </HybridWithdrawContext.Provider>
   );
