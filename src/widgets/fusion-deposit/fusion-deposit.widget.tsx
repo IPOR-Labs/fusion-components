@@ -8,6 +8,7 @@ import { HybridWithdraw } from '@/fusion/withdraw/hybrid-withdraw/hybrid-withdra
 import { type ConfigContextValue } from '@/app/config/config.context';
 import { Providers } from '@/app/config/providers';
 import { ArrowDownToLineIcon, ArrowUpFromLineIcon } from 'lucide-react';
+import { ScheduledWithdraw } from '@/fusion/withdraw/scheduled-withdraw/scheduled-withdraw';
 
 export const FusionDepositWidget = (config: ConfigContextValue) => {
   return (
@@ -21,6 +22,7 @@ const Content = () => {
   return (
     <Card>
       <CardContent>
+        <ScheduledWithdraw />
         <Tabs defaultValue="deposit">
           <TabsList className="w-full mb-6">
             <TabsTrigger value="deposit">
