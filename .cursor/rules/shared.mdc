@@ -82,7 +82,7 @@ alwaysApply: true
 
 ## Package manager
 
-- use pnpm as package manager
+- use yarn as package manager
 
 ## Node.js
 

@@ -9,11 +9,11 @@
  * 
  * Usage:
  *   node scripts/copy-widget-files.js
- *   pnpm copy-widget-files
- *   pnpm build-and-copy  (builds first, then copies)
+ *   yarn copy-widget-files
+ *   yarn build-and-copy  (builds first, then copies)
  * 
  * Prerequisites:
- *   - Run 'pnpm build' first to generate the files in dist/public/
+ *   - Run 'yarn build' first to generate the files in dist/public/
  *   - Set VITE_OUTPUT_FILE_NAME environment variable (defaults to 'fusion-deposit-widget')
  */
 
