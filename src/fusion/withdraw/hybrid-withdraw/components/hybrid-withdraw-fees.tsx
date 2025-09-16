@@ -10,8 +10,6 @@ import {
   useIsScheduledWithdrawal,
 } from '../hybrid-withdraw.hooks';
 
-const REQUEST_FEE_MESSAGE = `Fee is charged immediately after scheduling a withdraw. Canceling or updating scheduled withdrawal will result in the loss of fee amount. Shares charged as fee are burned increasing value of remaining shares.`;
-
 export const HybridWithdrawFees = () => {
   const isScheduledWithdrawal = useIsScheduledWithdrawal();
 
@@ -59,7 +57,7 @@ const ScheduledWithdrawFee = () => {
     <Fee
       fee={requestFee}
       label="Scheduled Withdrawal Fee"
-      tooltip={REQUEST_FEE_MESSAGE}
+      tooltip="Fee is charged immediately after scheduling a withdraw. Canceling or updating scheduled withdrawal will result in the loss of fee amount. Shares charged as fee are burned increasing value of remaining shares. This fee is charged to cover the cost of unwinding the users position and is distributed to the remaining vault share holders."
       testId="scheduled-withdraw-request-fee"
       assetDecimals={assetDecimals}
       assetSymbol={assetSymbol}
